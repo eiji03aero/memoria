@@ -1,7 +1,11 @@
 package main
 
-import "log"
+import (
+	"memoria-api/route"
+)
 
 func main() {
-	log.Println("hoge dazeeee")
+	r := route.InitializeRouter()
+
+	r.Run("0.0.0.0:4200")
 }

@@ -1,17 +1,5 @@
-# Vinculo
+# Memoria
 - An friendly application that tightens family bond.
-
-# Tasks
-- [x] Ground work
-    - [x] selection for design system
-    - [x] List out use cases
-    - [x] Create wireframe
-    - [x] Create models doc
-- [ ] implement create account feature
-    - [ ] implement landing page
-    - [ ] implement sign up page
-- [ ] build infrastructure
-- [ ] create cicd pipeline to deploy automatically
 
 # Features
 ## Usecases
@@ -23,6 +11,7 @@
             - user space name
             - email
             - name
+            - password
         - Next
             - Submit succeeds to 2.
         - Remarks
@@ -168,7 +157,33 @@
 - Infra
     - aws
 
-## Selection
-### Design system
-- Requirements
-    - Taste to be pop and tender
+## API
+### Get app data
+- GET /api/auth/app-data
+- General
+    - Provides data globally used on app
+- Output:
+    - user
+        - id
+        - name
+    - user_space
+        - id
+        - name
+
+### Signup
+- POST /api/public/signup
+- General:
+    - Creates user
+    - Creates user space
+    - Link user and user space created
+- Input:
+    - name: string
+    - email: string
+    - password: string
+    - user_space_name: string
+- Remarks
+    - email has to be unique among all users
+    - jwt will be attached in response header
+
+# Reference
+- Logo data: https://www.canva.com/design/DAGDb1mB68I/3ysozDgehKPU0oWjGwMzBA/edit

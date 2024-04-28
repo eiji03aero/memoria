@@ -3,7 +3,6 @@
 cmd=${1:-up}
 project_name=""
 file_prefix=""
-container_name="workspace"
 
 execute-docker-compose () {
   opts="-f ${file_prefix}docker-compose.yml"
@@ -27,7 +26,13 @@ elif [ $cmd = 'stop' ]; then
   stop-docker-compose
 
 elif [ $cmd = 'bash' ]; then
-  execute-docker-compose exec $container_name /bin/bash
+  execute-docker-compose exec -w /backend memoria-api /bin/bash
+
+elif [ $cmd = 'bash-api' ]; then
+  execute-docker-compose exec -w /backend/services/memoria-api memoria-api /bin/bash
+
+elif [ $cmd = 'bash-db' ]; then
+  execute-docker-compose exec memoria-db /bin/bash
 
 else
   execute-docker-compose $@

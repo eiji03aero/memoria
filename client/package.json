@@ -9,6 +9,7 @@
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
+    "@repo/prettier-config": "*",
     "@repo/typescript-config": "*",
     "prettier": "^3.2.5",
     "turbo": "latest"

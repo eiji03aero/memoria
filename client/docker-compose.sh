@@ -29,6 +29,12 @@ elif [ $cmd = 'stop' ]; then
 elif [ $cmd = 'bash' ]; then
   execute-docker-compose exec $container_name /bin/bash
 
+elif [ $cmd = 'bash-c' ]; then
+  execute-docker-compose exec -w /app/apps/memoria-client $container_name /bin/bash
+
+elif [ $cmd = 'bash-d' ]; then
+  execute-docker-compose exec -w /app/packages/design-system $container_name /bin/bash
+
 else
   execute-docker-compose $@
 fi

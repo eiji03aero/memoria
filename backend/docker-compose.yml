@@ -5,14 +5,42 @@ services:
     build:
       context: ./docker
       dockerfile: Dockerfile.go-dev
+    environment:
+      DB_USER: memoria
+      DB_PASSWORD: password
+      DB_NAME: memoria
+      DB_HOST: memoria-db
+      DB_PORT: 5432
     volumes:
       - .:/backend
     working_dir: /backend/services/memoria-api
     ports:
       - "4200:4200"
+    networks:
+      - memoria-network
     tty: true
     command:
       - /bin/bash
       - -c
       - |
         make run
+  memoria-db:
+    build:
+      context: ./docker
+      dockerfile: Dockerfile.db
+    volumes:
+      - memoria-db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: memoria
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: memoria
+    networks:
+      - memoria-network
+    tty: true
+
+networks:
+  memoria-network:
+    external: true
+
+volumes:
+  memoria-db-data:

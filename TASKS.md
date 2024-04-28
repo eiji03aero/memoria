@@ -1,0 +1,36 @@
+# Tasks
+## WIP
+- [ ] implement create account feature
+    - [x] Implement Bottom navigation
+    - [x] implement landing page
+    - [x] api authentication
+    - [x] app-data api
+        - proceed with the content
+    - [x] implement signup flow
+        - impl sign up form
+            - UI
+            - form
+            - logic
+- [ ] build infrastructure
+- [ ] create cicd pipeline to deploy automatically
+- [ ] implement email confirm flow in signup
+
+## Todo
+- [ ] login feature
+    - make sure to redirect to login page if user not authenticated
+- [ ] improve form error handlings
+    - signup
+- [ ] protect api endpoint from malicious access
+    - too many requests
+- [ ] make sure to replace secretkey for jwt to secure one through env var
+- [ ] implement expire for jwt
+- [ ] make it pwa installable
+- [ ] Refine meta data for each page
+    - document title
+
+## Done
+- [x] Ground work
+    - [x] selection for design system
+    - [x] List out use cases
+    - [x] Create wireframe
+    - [x] Create models doc
