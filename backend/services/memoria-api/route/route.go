@@ -1,6 +1,9 @@
 package route
 
 import (
+	"net/http"
+
+	"memoria-api/config"
 	"memoria-api/handler"
 
 	"github.com/gin-contrib/cors"
@@ -11,8 +14,8 @@ func InitializeRouter() *gin.Engine {
 	router := gin.New()
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"},
-		AllowMethods:     []string{"POST", "PUT", "PATCH", "DELETE"},
+		AllowOrigins:     config.CORSAllowOrigins,
+		AllowMethods:     []string{"POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
@@ -22,6 +25,10 @@ func InitializeRouter() *gin.Engine {
 
 	// -------------------- Public apis --------------------
 	public := api.Group("/public")
+
+	public.GET("/health", func(c *gin.Context) {
+		c.JSON(http.StatusOK, nil)
+	})
 
 	{
 		account := handler.NewAccount()

@@ -7,5 +7,8 @@ import (
 func main() {
 	r := route.InitializeRouter()
 
-	r.Run("0.0.0.0:4200")
+	err := r.Run("0.0.0.0:4200")
+	if err != nil {
+		panic(err.Error())
+	}
 }
