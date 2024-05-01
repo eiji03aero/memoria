@@ -38,3 +38,15 @@ ResourceInitializationError: unable to pull secrets or registry auth: execution 
 ### why the fluff i cannot open public ips?
 - it was the security group
 - the default one does not allow inbound http request
+
+### To be extreme stingy
+- ecs
+    - lower cpu
+    - lower memory
+    - limit the number of containers (task)
+- rds
+    - choose cheap model (this time t3 micro)
+    - lower allocated storage
+    - use magnetic storage
+- alb
+    - use only one alb to handle multiple domains
