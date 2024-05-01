@@ -139,7 +139,7 @@ jobs:
               --query "tasks[0].taskArn" \
               --output "text" \
               --debug \
-              --network-configuration "awsvpcConfiguration={subnets=[subnet-03c27f53525eed075]}"
+              --network-configuration "awsvpcConfiguration={subnets=[subnet-03c27f53525eed075],assignPublicIp=ENABLED}"
           )
           TASK_ID=$( echo "${TASK_ARN}" | grep -oE "[^/]+$")
           echo "check https://ap-northeast-1.console.aws.amazon.com/ecs/v2/clusters/${ECS_CLUSTER}/tasks/${TASK_ID} for status"
