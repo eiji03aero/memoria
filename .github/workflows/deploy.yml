@@ -1,0 +1,147 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+# GitHub recommends pinning actions to a commit SHA.
+# To get a newer version, you will need to update the SHA.
+# You can also reference a tag or branch, but the action may change without warning.
+
+name: Deploy to Amazon ECS
+
+on:
+  push:
+    branches:
+      - main
+      - feature/deploy-workflow
+
+env:
+  # General
+  AWS_REGION: ap-northeast-1
+  ECS_CLUSTER: memoria-cluster
+  # API
+  API_ECR_REPOSITORY: memoria-api
+  API_ECS_SERVICE: memoria-api-service
+  API_ECS_TASK_DEFINITION: .aws/task-definitions/memoria-api.json
+  API_CONTAINER_NAME: memoria-api
+  # Migration
+  DB_MIGRATION_ECR_REPOSITORY: memoria-db-migration
+  DB_MIGRATION_ECS_SERVICE: memoria-db-migration-service
+  DB_MIGRATION_ECS_TASK_DEFINITION: .aws/task-definitions/memoria-db-migration.json
+  DB_MIGRATION_CONTAINER_NAME: memoria-db-migration
+  # Client
+  CLIENT_ECR_REPOSITORY: memoria-client
+  CLIENT_ECS_SERVICE: memoria-client-service
+  CLIENT_ECS_TASK_DEFINITION: .aws/task-definitions/memoria-client.json
+  CLIENT_CONTAINER_NAME: memoria-client
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@0e613a0980cbf65ed5b322eb7a1e075d28913a83
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          wd=$(pwd)
+          cd "${wd}/backend"
+          docker build -t $ECR_REGISTRY/$API_ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.memoria-api .
+          docker push $ECR_REGISTRY/$API_ECR_REPOSITORY:$IMAGE_TAG
+          echo "image-api=$ECR_REGISTRY/$API_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+          cd "${wd}/backend"
+          docker build -t $ECR_REGISTRY/$DB_MIGRATION_ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.db-migration .
+          docker push $ECR_REGISTRY/$DB_MIGRATION_ECR_REPOSITORY:$IMAGE_TAG
+          echo "image-db-migration=$ECR_REGISTRY/$DB_MIGRATION_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+          cd "${wd}/client"
+          docker build -t $ECR_REGISTRY/$CLIENT_ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.memoria-client .
+          docker push $ECR_REGISTRY/$CLIENT_ECR_REPOSITORY:$IMAGE_TAG
+          echo "image-client=$ECR_REGISTRY/$CLIENT_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Render task definition for api
+        id: task-def-api
+        uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+        with:
+          task-definition: ${{ env.API_ECS_TASK_DEFINITION }}
+          container-name: ${{ env.API_CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image-api }}
+          environment-variables: |
+            GIN_MODE=release
+            CORS_ALLOW_ORIGINS=https://memoria-app.com
+            DB_USER=postgres
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_HOST=memoria-database.c1i64geiquh8.ap-northeast-1.rds.amazonaws.com
+            DB_PORT=5432
+            DB_NAME=memoria
+
+      - name: Render task definition for db-migration
+        id: task-def-db-migration
+        uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+        with:
+          task-definition: ${{ env.DB_MIGRATION_ECS_TASK_DEFINITION }}
+          container-name: ${{ env.DB_MIGRATION_CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image-db-migration }}
+          environment-variables: |
+            DB_USER=postgres
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_HOST=memoria-database.c1i64geiquh8.ap-northeast-1.rds.amazonaws.com
+            DB_NAME=memoria
+
+      - name: Render task definition for client
+        id: task-def-client
+        uses: aws-actions/amazon-ecs-render-task-definition@c804dfbdd57f713b6c079302a4c01db7017a36fc
+        with:
+          task-definition: ${{ env.CLIENT_ECS_TASK_DEFINITION }}
+          container-name: ${{ env.CLIENT_CONTAINER_NAME }}
+          image: ${{ steps.build-image.outputs.image-client }}
+
+      - name: Deploy for database migration
+        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
+        with:
+          task-definition: ${{ steps.task-def-db-migration.outputs.task-definition }}
+          service: ${{ env.DB_MIGRATION_ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+      - name: Database migration
+        run: |
+          TASK_DEF_ARN=$(aws ecs list-task-definitions --family-prefix "memoria-db-migration" --query "reverse(taskDefinitionArns)[0]" --output text)
+          TASK_ARN=$(aws ecs run-task --cluster "${ECS_CLUSTER}" --task-definition "${TASK_DEF_ARN}" --launch-type "FARGATE" --query "tasks[0].taskArn" --output "text" --network-configuration "awsvpcConfiguration={subnets=[subnet-03c27f53525eed075]}")
+          TASK_ID=$( echo "${TASK_ARN}" | grep -oE "[^/]+$")
+          echo "check https://ap-northeast-1.console.aws.amazon.com/ecs/v2/clusters/${ECS_CLUSTER}/tasks/${TASK_ID} for status"
+          aws ecs wait tasks-stopped --cluster ${ECS_CLUSTER} --tasks ${TASK_ARN}
+
+      - name: Deploy for api
+        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
+        with:
+          task-definition: ${{ steps.task-def-api.outputs.task-definition }}
+          service: ${{ env.API_ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
+
+      - name: Deploy for client
+        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
+        with:
+          task-definition: ${{ steps.task-def-client.outputs.task-definition }}
+          service: ${{ env.CLIENT_ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true
