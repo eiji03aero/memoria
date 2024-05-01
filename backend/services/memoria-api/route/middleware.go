@@ -19,18 +19,29 @@ import (
 
 func wrap(h func(c *gin.Context, reg registry.Registry) (status int, data any, err error)) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		log.Println(fmt.Sprintf(
+			"API Starting: %s %s",
+			c.Request.Method, c.Request.URL.Path,
+		))
+		defer func() {
+			log.Println("API finished")
+		}()
+
 		dsn := fmt.Sprintf(
-			"host=%s port=%s user=%s password=%s dbname=%s sslmode=disable TimeZone=Asia/Tokyo",
+			"host=%s port=%s user=%s password=%s dbname=%s TimeZone=Asia/Tokyo",
 			os.Getenv("DB_HOST"), os.Getenv("DB_PORT"), os.Getenv("DB_USER"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"),
 		)
 		db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 		if err != nil {
+			log.Println("wrap database err: ", err.Error())
 			return
 		}
 
 		reg := registry.NewRegistry(db)
 		status, data, err := h(c, reg)
 		if err != nil {
+			log.Println("wrap handler result err: ", err.Error())
+
 			if errors.Is(err, cerrors.Validation{}) {
 				c.JSON(http.StatusBadRequest, gin.H{
 					"message": cerrors.NewValidation(err.Error()).Error(),

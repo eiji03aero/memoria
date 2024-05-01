@@ -13,7 +13,6 @@ on:
   push:
     branches:
       - main
-      - feature/deploy-workflow
 
 env:
   # General
@@ -86,6 +85,7 @@ jobs:
           image: ${{ steps.build-image.outputs.image-api }}
           environment-variables: |
             GIN_MODE=release
+            JWT_SECRET_KEY=${{ secrets.API_JWT_SECRET_KEY }}
             CORS_ALLOW_ORIGINS=https://memoria-app.com
             DB_USER=postgres
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}

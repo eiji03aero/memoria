@@ -1,11 +1,17 @@
 package main
 
 import (
+	"log"
+
 	"memoria-api/route"
 )
 
 func main() {
 	r := route.InitializeRouter()
 
-	r.Run("0.0.0.0:4200")
+	log.Println("Starting memoria-api server")
+	err := r.Run("0.0.0.0:4200")
+	if err != nil {
+		panic(err.Error())
+	}
 }

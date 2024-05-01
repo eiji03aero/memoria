@@ -1,21 +1,17 @@
 # Tasks
 ## WIP
-- [ ] implement create account feature
-    - [x] Implement Bottom navigation
-    - [x] implement landing page
-    - [x] api authentication
-    - [x] app-data api
-        - proceed with the content
-    - [x] implement signup flow
-        - impl sign up form
-            - UI
-            - form
-            - logic
-- [ ] build infrastructure
-- [ ] create cicd pipeline to deploy automatically
 - [ ] implement email confirm flow in signup
+    - update the doc
+- [ ] implement 
+    - add the doc
 
 ## Todo
+- [ ] make sure db migration is run once
+    - probably it is run twice in github action
+- [ ] optimize memoria client docker image
+    - multi stage build to pick only required files
+    - standalone build
+- [ ] optimize docker file image sizes
 - [ ] login feature
     - make sure to redirect to login page if user not authenticated
 - [ ] improve form error handlings
@@ -29,6 +25,27 @@
     - document title
 
 ## Done
+- [x] create cicd pipeline to deploy automatically
+- [x] build infrastructure
+    - create vpc
+    - create rds
+    - deploy sample ecs
+    - create next.js
+    - create api
+    - route 53
+    - create bation server with ec2
+    - create migration task
+- [x] implement create account feature
+    - [x] Implement Bottom navigation
+    - [x] implement landing page
+    - [x] api authentication
+    - [x] app-data api
+        - proceed with the content
+    - [x] implement signup flow
+        - impl sign up form
+            - UI
+            - form
+            - logic
 - [x] Ground work
     - [x] selection for design system
     - [x] List out use cases

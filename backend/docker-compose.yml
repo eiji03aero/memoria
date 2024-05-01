@@ -2,15 +2,18 @@ version: '3.8'
 
 services:
   memoria-api:
+    platform: linux/amd64
     build:
       context: ./docker
       dockerfile: Dockerfile.go-dev
     environment:
+      JWT_SECRET_KEY: HogeZamurai
       DB_USER: memoria
       DB_PASSWORD: password
       DB_NAME: memoria
       DB_HOST: memoria-db
       DB_PORT: 5432
+      CORS_ALLOW_ORIGINS: http://localhost:3000
     volumes:
       - .:/backend
     working_dir: /backend/services/memoria-api
