@@ -18,6 +18,7 @@ env:
   # General
   AWS_REGION: ap-northeast-1
   ECS_CLUSTER: memoria-cluster
+  DB_HOST: memoria-database.c1i64geiquh8.ap-northeast-1.rds.amazonaws.com
   # API
   API_ECR_REPOSITORY: memoria-api
   API_ECS_SERVICE: memoria-api-service
@@ -89,7 +90,7 @@ jobs:
             CORS_ALLOW_ORIGINS=https://memoria-app.com
             DB_USER=postgres
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            DB_HOST=memoria-database.c1i64geiquh8.ap-northeast-1.rds.amazonaws.com
+            DB_HOST=${{ env.DB_HOST }}
             DB_PORT=5432
             DB_NAME=memoria
 
@@ -103,7 +104,7 @@ jobs:
           environment-variables: |
             DB_USER=postgres
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
-            DB_HOST=memoria-database.c1i64geiquh8.ap-northeast-1.rds.amazonaws.com
+            DB_HOST=${{ env.DB_HOST }}
             DB_NAME=memoria
 
       - name: Render task definition for client
