@@ -1,2 +1,2 @@
-export const ApiHost = 'http://localhost:4200';
-export const ApiHostInServer = 'http://memoria-api:4200';
+export const ApiHost = process.env.NEXT_PUBLIC_API_HOST;
+export const ApiHostInServer = process.env.API_HOST_IN_SERVER;

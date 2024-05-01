@@ -1,0 +1,32 @@
+FROM golang:1.22.2-alpine3.19 AS base
+
+ARG DB_USER
+ARG DB_PASSWORD
+ARG DB_HOST
+ARG DB_NAME
+
+FROM base AS builder
+
+WORKDIR /app
+
+# Download Go modules
+COPY services/memoria-api/go.mod services/memoria-api/go.sum ./
+RUN go mod download
+
+# Copy the source code. Note the slash at the end, as explained in
+# https://docs.docker.com/reference/dockerfile/#copy
+COPY services/memoria-api /app
+
+# Build
+RUN CGO_ENABLED=0 GOOS=linux go build -o /memoria-api ./cmd/app/*.go
+
+
+FROM base AS executable
+
+WORKDIR /
+
+COPY --from=builder /memoria-api /memoria-api
+
+EXPOSE 4200
+
+ENTRYPOINT ["/memoria-api"]
