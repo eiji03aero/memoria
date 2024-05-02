@@ -13,7 +13,7 @@ export const BottomNavigation = ({
       paddingY="size-100"
       borderTopWidth="thin"
       borderTopColor="dark"
-      backgroundColor="gray-900"
+      backgroundColor="gray-50"
     >
       <Flex justifyContent="space-around">{children}</Flex>
     </View>

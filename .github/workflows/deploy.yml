@@ -26,7 +26,6 @@ env:
   API_CONTAINER_NAME: memoria-api
   # Migration
   DB_MIGRATION_ECR_REPOSITORY: memoria-db-migration
-  DB_MIGRATION_ECS_SERVICE: memoria-db-migration-service
   DB_MIGRATION_ECS_TASK_DEFINITION: .aws/task-definitions/memoria-db-migration.json
   DB_MIGRATION_CONTAINER_NAME: memoria-db-migration
   # Client
@@ -88,6 +87,10 @@ jobs:
             GIN_MODE=release
             JWT_SECRET_KEY=${{ secrets.API_JWT_SECRET_KEY }}
             CORS_ALLOW_ORIGINS=https://memoria-app.com
+            HOST=https://api.memoria-app.com
+            CLIENT_HOST=https://memoria-app.com
+            AWS_ACCESS_KEY_ID=${{ secrets.API_AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY=${{ secrets.API_AWS_SECRET_ACCESS_KEY }}
             DB_USER=postgres
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             DB_HOST=${{ env.DB_HOST }}
@@ -115,14 +118,6 @@ jobs:
           container-name: ${{ env.CLIENT_CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image-client }}
 
-      - name: Deploy for database migration
-        uses: aws-actions/amazon-ecs-deploy-task-definition@df9643053eda01f169e64a0e60233aacca83799a
-        with:
-          task-definition: ${{ steps.task-def-db-migration.outputs.task-definition }}
-          service: ${{ env.DB_MIGRATION_ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
-
       - name: Database migration
         run: |
           TASK_DEF_ARN=$(
@@ -138,7 +133,6 @@ jobs:
               --launch-type "FARGATE" \
               --query "tasks[0].taskArn" \
               --output "text" \
-              --debug \
               --network-configuration "awsvpcConfiguration={subnets=[subnet-03c27f53525eed075],securityGroups=[sg-0445a01064d7c8464],assignPublicIp=ENABLED}"
           )
           TASK_ID=$( echo "${TASK_ARN}" | grep -oE "[^/]+$")

@@ -32,7 +32,7 @@ export const useSignup = () => {
   const { mutate } = useMutation({
     mutationFn: request,
     onSuccess: ({ data }) => {
-      router.push('/');
+      router.push('/signup-guide');
       saveJwt(data.token);
     },
   });

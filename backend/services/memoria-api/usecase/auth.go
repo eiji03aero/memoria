@@ -5,6 +5,8 @@ import (
 
 	"memoria-api/config"
 	"memoria-api/domain/cerrors"
+	"memoria-api/domain/repository"
+	"memoria-api/registry"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -12,22 +14,32 @@ import (
 var SecretKey = []byte(config.JWTSecretKey)
 
 type Auth interface {
-	CreateJWT(userID string, userSpaceID string) (string, error)
-	VerifyJWT(tokenString string) (userID string, userSpaceID string, err error)
+	CreateJWT(dto AuthCreateJWTDTO) (string, error)
+	VerifyJWT(dto AuthVerifyJWTDTO) (userID string, userSpaceID string, err error)
+	HasUserValidStatus(dto AuthHasUserValidStatusDTO) (ret bool, err error)
 }
 
-type auth struct{}
-
-func NewAuth() Auth {
-	return &auth{}
+type auth struct {
+	userRepo repository.User
 }
 
-func (u *auth) CreateJWT(userID string, userSpaceID string) (tokenString string, err error) {
+func NewAuth(reg registry.Registry) Auth {
+	return &auth{
+		userRepo: reg.NewUserRepository(),
+	}
+}
+
+type AuthCreateJWTDTO struct {
+	UserID      string
+	UserSpaceID string
+}
+
+func (u *auth) CreateJWT(dto AuthCreateJWTDTO) (tokenString string, err error) {
 	token := jwt.NewWithClaims(
 		jwt.SigningMethodHS256,
 		jwt.MapClaims{
-			"userID":      userID,
-			"userSpaceID": userSpaceID,
+			"userID":      dto.UserID,
+			"userSpaceID": dto.UserSpaceID,
 			"exp":         time.Now().Add(time.Hour * 24 * 365).Unix(),
 		},
 	)
@@ -40,10 +52,14 @@ func (u *auth) CreateJWT(userID string, userSpaceID string) (tokenString string,
 	return tokenString, nil
 }
 
-func (u *auth) VerifyJWT(tokenString string) (userID string, userSpaceID string, err error) {
+type AuthVerifyJWTDTO struct {
+	TokenString string
+}
+
+func (u *auth) VerifyJWT(dto AuthVerifyJWTDTO) (userID string, userSpaceID string, err error) {
 	claims := jwt.MapClaims{}
 	token, err := jwt.ParseWithClaims(
-		tokenString,
+		dto.TokenString,
 		&claims,
 		func(token *jwt.Token) (interface{}, error) {
 			return SecretKey, nil
@@ -62,5 +78,21 @@ func (u *auth) VerifyJWT(tokenString string) (userID string, userSpaceID string,
 	userID = claims["userID"].(string)
 	userSpaceID = claims["userSpaceID"].(string)
 
+	return
+}
+
+type AuthHasUserValidStatusDTO struct {
+	UserID string
+}
+
+func (u *auth) HasUserValidStatus(dto AuthHasUserValidStatusDTO) (ok bool, err error) {
+	user, err := u.userRepo.FindByID(repository.UserFindByIDDTO{
+		ID: dto.UserID,
+	})
+	if err != nil {
+		return
+	}
+
+	ok = user.IsStatusValidForUse()
 	return
 }

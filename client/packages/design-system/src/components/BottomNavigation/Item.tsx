@@ -19,8 +19,7 @@ export const Item = ({ label, icon, active = false, onPress }: Props) => {
   const ref = React.useRef<HTMLButtonElement>(null);
   const { buttonProps } = useButton({ onPress }, ref);
 
-  const bgColor = active ? 'yellow-700' : undefined;
-  const contentColor = active ? 'gray-100' : 'gray-600';
+  const contentColor = active ? 'yellow-700' : 'gray-600';
 
   return (
     <button
@@ -28,22 +27,17 @@ export const Item = ({ label, icon, active = false, onPress }: Props) => {
       className={styles.classnames(styles.reset.button, 'flex')}
       style={{ display: 'flex' }}
     >
-      <View
-        width="size-700"
-        height="size-700"
-        borderRadius="regular"
-        backgroundColor={bgColor}
-      >
+      <View width="size-700" height="size-700" borderRadius="regular">
         <Flex
           width="100%"
           height="100%"
           direction="column"
           justifyContent="center"
           alignItems="center"
-          gap="size-50"
+          gap="size-25"
         >
           <Icon size="M" color={contentColor} name={icon} />
-          <CustomText size={75} color={contentColor}>
+          <CustomText size={50} color={contentColor}>
             {label}
           </CustomText>
         </Flex>

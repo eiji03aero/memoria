@@ -27,8 +27,12 @@ type AccountSignupRes struct {
 }
 
 func (h *Account) Signup(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
-	accountUc := usecase.NewAccount(reg)
-	authUc := usecase.NewAuth()
+	accountUc, err := usecase.NewAccount(reg)
+	if err != nil {
+		return
+	}
+
+	authUc := usecase.NewAuth(reg)
 
 	body := AccountSignupReq{}
 	err = c.BindJSON(&body)
@@ -48,7 +52,10 @@ func (h *Account) Signup(c *gin.Context, reg registry.Registry) (status int, dat
 		return
 	}
 
-	jwt, err := authUc.CreateJWT(userID, userSpaceID)
+	jwt, err := authUc.CreateJWT(usecase.AuthCreateJWTDTO{
+		UserID:      userID,
+		UserSpaceID: userSpaceID,
+	})
 	if err != nil {
 		status = http.StatusInternalServerError
 		return
@@ -56,4 +63,32 @@ func (h *Account) Signup(c *gin.Context, reg registry.Registry) (status int, dat
 
 	res := AccountSignupRes{Token: jwt}
 	return http.StatusOK, res, nil
+}
+
+type AccountSignupConfirmReq struct {
+	ID *string `form:"id"`
+}
+
+func (h *Account) SignupConfirm(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
+	accountUc, err := usecase.NewAccount(reg)
+	if err != nil {
+		return
+	}
+
+	query := AccountSignupConfirmReq{}
+	err = c.ShouldBindQuery(&query)
+	if err != nil {
+		return
+	}
+
+	ret, err := accountUc.SignupConfirm(usecase.AccountSignupConfirmDTO{
+		ID: query.ID,
+	})
+	if err != nil {
+		c.Redirect(http.StatusSeeOther, ret.RedirectURL)
+		return
+	}
+
+	c.Redirect(http.StatusSeeOther, ret.RedirectURL)
+	return
 }

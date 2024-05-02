@@ -1,10 +1,13 @@
 package repository
 
-import "memoria-api/domain/model"
+import (
+	"memoria-api/domain/model"
+)
 
 type User interface {
 	FindByID(dto UserFindByIDDTO) (user *model.User, err error)
 	Create(dto UserCreateDTO) (err error)
+	Update(user *model.User) (err error)
 }
 
 type UserFindByIDDTO struct {
@@ -12,8 +15,9 @@ type UserFindByIDDTO struct {
 }
 
 type UserCreateDTO struct {
-	ID           string
-	Name         string
-	Email        string
-	PasswordHash string
+	ID            string
+	AccountStatus string
+	Name          string
+	Email         string
+	PasswordHash  string
 }

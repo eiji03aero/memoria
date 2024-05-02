@@ -22,19 +22,37 @@ func NewUser(db *gorm.DB) repository.User {
 func (d *user) FindByID(dto repository.UserFindByIDDTO) (user *model.User, err error) {
 	userTbl := &tbl.User{ID: dto.ID}
 	err = d.db.First(userTbl).Error
-	user = userTbl.ToModel()
+	if err != nil {
+		return
+	}
+
+	user, err = userTbl.ToModel()
 	return
 }
 
 func (d *user) Create(dto repository.UserCreateDTO) (err error) {
-	user := &tbl.User{
-		ID:           dto.ID,
-		Name:         dto.Name,
-		Email:        dto.Email,
-		PasswordHash: dto.PasswordHash,
+	userTbl := &tbl.User{
+		ID:            dto.ID,
+		AccountStatus: dto.AccountStatus,
+		Name:          dto.Name,
+		Email:         dto.Email,
+		PasswordHash:  dto.PasswordHash,
 	}
 
-	result := d.db.Create(user)
+	result := d.db.Create(userTbl)
+	err = result.Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		err = cerrors.NewResourceNotFound("user")
+	}
+
+	return
+}
+
+func (d *user) Update(user *model.User) (err error) {
+	userTbl := &tbl.User{}
+	userTbl.FromModel(user)
+
+	result := d.db.Save(userTbl)
 	err = result.Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		err = cerrors.NewResourceNotFound("user")

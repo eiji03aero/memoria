@@ -85,20 +85,6 @@ export default function Signup() {
             )}
           />
           <form.Field
-            name="email"
-            validators={{
-              onChange: z.string().email(),
-            }}
-            children={field => (
-              <TextField
-                label="Email"
-                name={field.name}
-                value={field.state.value}
-                onChange={value => field.handleChange(value)}
-              />
-            )}
-          />
-          <form.Field
             name="userSpaceName"
             validators={{
               onChange: z.string(),
@@ -106,6 +92,20 @@ export default function Signup() {
             children={field => (
               <TextField
                 label="User space name"
+                name={field.name}
+                value={field.state.value}
+                onChange={value => field.handleChange(value)}
+              />
+            )}
+          />
+          <form.Field
+            name="email"
+            validators={{
+              onChange: z.string().email(),
+            }}
+            children={field => (
+              <TextField
+                label="Email"
                 name={field.name}
                 value={field.state.value}
                 onChange={value => field.handleChange(value)}

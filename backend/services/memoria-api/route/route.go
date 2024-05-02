@@ -33,6 +33,7 @@ func InitializeRouter() *gin.Engine {
 	{
 		account := handler.NewAccount()
 		public.POST("/signup", wrap(account.Signup))
+		public.GET("/signup-confirm", wrap(account.SignupConfirm))
 	}
 
 	// -------------------- Authenticated apis --------------------

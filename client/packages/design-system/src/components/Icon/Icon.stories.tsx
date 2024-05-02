@@ -1,7 +1,6 @@
 import type { Meta, StoryFn } from '@storybook/react';
 
 import { Icon, IconNames } from './Icon';
-import { Text } from '../Text';
 import { Flex } from '../Flex';
 import { View } from '../View';
 import { CustomText } from '../CustomText';
@@ -15,7 +14,7 @@ export default meta;
 
 export const List: StoryFn<typeof Icon> = () => {
   return (
-    <Flex gap="size-100">
+    <Flex gap="size-100" wrap="wrap">
       {IconNames.map(name => (
         <View
           key={name}
@@ -23,8 +22,8 @@ export const List: StoryFn<typeof Icon> = () => {
           borderColor="dark"
           borderWidth="thin"
           borderRadius="small"
-          width="size-2000"
-          height="size-2000"
+          width="size-1600"
+          height="size-1600"
         >
           <Flex
             width="100%"
@@ -33,7 +32,12 @@ export const List: StoryFn<typeof Icon> = () => {
             alignItems="center"
             justifyContent="center"
           >
-            <Icon name={name} size="XL" marginBottom="size-200" />
+            <Icon
+              name={name}
+              color="gray-900"
+              size="XL"
+              marginBottom="size-200"
+            />
             <CustomText size={100} color="gray-700">
               {name}
             </CustomText>

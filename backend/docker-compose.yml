@@ -8,12 +8,14 @@ services:
       dockerfile: Dockerfile.go-dev
     environment:
       JWT_SECRET_KEY: HogeZamurai
+      CORS_ALLOW_ORIGINS: http://localhost:3000
+      HOST: http://localhost:4200
+      CLIENT_HOST: http://localhost:3000
       DB_USER: memoria
       DB_PASSWORD: password
       DB_NAME: memoria
       DB_HOST: memoria-db
       DB_PORT: 5432
-      CORS_ALLOW_ORIGINS: http://localhost:3000
     volumes:
       - .:/backend
     working_dir: /backend/services/memoria-api

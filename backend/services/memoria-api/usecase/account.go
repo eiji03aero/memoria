@@ -1,36 +1,50 @@
 package usecase
 
 import (
+	"context"
 	"fmt"
 	"net/mail"
 
 	"golang.org/x/crypto/bcrypt"
 
+	"memoria-api/config"
 	"memoria-api/domain/cerrors"
+	"memoria-api/domain/interfaces"
 	"memoria-api/domain/repository"
 	"memoria-api/domain/service"
+	"memoria-api/domain/value"
 	"memoria-api/registry"
 )
 
 type Account interface {
 	Signup(dto AccountSignupDTO) (userID string, userSpaceId string, err error)
+	SignupConfirm(dto AccountSignupConfirmDTO) (ret AccountSignupConfirmRet, err error)
 	AddUserToUserSpace(dto AccountAddUserToUserSpaceDTO) error
 }
 
 type account struct {
 	registry                  registry.Registry
+	mailer                    interfaces.Mailer
 	userRepo                  repository.User
 	userSpaceRepo             repository.UserSpace
 	userUserSpaceRelationRepo repository.UserUserSpaceRelation
+	userInvitationRepo        repository.UserInvitation
 }
 
-func NewAccount(reg registry.Registry) Account {
-	return &account{
+func NewAccount(reg registry.Registry) (u Account, err error) {
+	mailer, err := reg.NewSESMailer()
+	if err != nil {
+		return
+	}
+	u = &account{
 		registry:                  reg,
+		mailer:                    mailer,
 		userRepo:                  reg.NewUserRepository(),
 		userSpaceRepo:             reg.NewUserSpaceRepository(),
 		userUserSpaceRelationRepo: reg.NewUserUserSpaceRelationRepository(),
+		userInvitationRepo:        reg.NewUserInvitationRepository(),
 	}
+	return
 }
 
 type AccountSignupDTO struct {
@@ -41,6 +55,7 @@ type AccountSignupDTO struct {
 }
 
 func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID string, err error) {
+	ctx := context.Background()
 	u.registry.BeginTx()
 
 	// name check
@@ -82,10 +97,11 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 
 	// create user
 	err = u.userRepo.Create(repository.UserCreateDTO{
-		ID:           userID,
-		Name:         *dto.Name,
-		Email:        *dto.Email,
-		PasswordHash: string(hashed[:]),
+		ID:            userID,
+		AccountStatus: string(value.UserAccountStatus_Invited),
+		Name:          *dto.Name,
+		Email:         *dto.Email,
+		PasswordHash:  string(hashed[:]),
 	})
 	if err != nil {
 		err = cerrors.NewInternal(fmt.Sprintf("failed to create user: %s", err.Error()))
@@ -118,6 +134,78 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 		return
 	}
 
+	// create invitation
+	invitationID := service.GenerateUlid()
+	err = u.userInvitationRepo.Create(repository.UserInvitationCreateDTO{
+		ID:     invitationID,
+		UserID: userID,
+		Type:   string(value.UserInvitationType_Signup),
+	})
+
+	// send confirm email
+	confirmUrl := config.Host + fmt.Sprintf("/api/public/signup-confirm?id=%s", invitationID)
+	body := fmt.Sprintf(`
+Thanks for signing up memoria.<br/>
+
+Please open the url below to complete signup process and start using memoria.<br/>
+<a href="%s">%s</a>
+`,
+		confirmUrl, confirmUrl,
+	)
+	u.mailer.Send(ctx, interfaces.MailerSendDTO{
+		From:    config.NoReplyEmailAddress,
+		To:      []string{*dto.Email},
+		Subject: "Memoria - Please confirm your email address",
+		Body:    body,
+	})
+
+	return
+}
+
+type AccountSignupConfirmDTO struct {
+	ID *string
+}
+
+type AccountSignupConfirmRet struct {
+	RedirectURL string
+}
+
+func (u *account) SignupConfirm(dto AccountSignupConfirmDTO) (ret AccountSignupConfirmRet, err error) {
+	setErrorURL := func() {
+		ret.RedirectURL = config.ClientHost + "/internal-server-error"
+	}
+
+	if dto.ID == nil {
+		err = cerrors.NewValidation("id is required")
+		setErrorURL()
+		return
+	}
+
+	// confirm invitation exists
+	userInvitation, err := u.userInvitationRepo.FindByID(repository.UserInvitationFindByIDDTO{
+		ID: *dto.ID,
+	})
+	if err != nil {
+		setErrorURL()
+		return
+	}
+
+	user, err := u.userRepo.FindByID(repository.UserFindByIDDTO{
+		ID: userInvitation.UserID,
+	})
+	if err != nil {
+		setErrorURL()
+		return
+	}
+
+	user.SetAccountStatus(value.UserAccountStatus_Confirmed)
+	err = u.userRepo.Update(user)
+	if err != nil {
+		setErrorURL()
+		return
+	}
+
+	ret.RedirectURL = config.ClientHost + "/signup-thanks"
 	return
 }
 

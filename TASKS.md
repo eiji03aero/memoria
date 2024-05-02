@@ -1,8 +1,16 @@
 # Tasks
 ## WIP
-- [ ] implement email confirm flow in signup
+- [x] implement email confirm flow in signup
     - update the doc
-- [ ] implement 
+    - create ses for dev
+    - create ses for prod
+    - implement flow
+    - implement guard for account status
+- [ ] implement login
+    - add the doc
+- [ ] implement logout
+    - add the doc
+- [ ] implement invite user
     - add the doc
 
 ## Todo
