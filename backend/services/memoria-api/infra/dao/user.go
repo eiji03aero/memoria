@@ -11,15 +11,40 @@ import (
 	"memoria-api/infra/tbl"
 )
 
-type user struct {
+type user[T any] struct {
+	BaseDao[T]
 	db *gorm.DB
 }
 
 func NewUser(db *gorm.DB) repository.User {
-	return &user{db: db}
+	return &user[tbl.User]{db: db}
 }
 
-func (d *user) FindByID(dto repository.UserFindByIDDTO) (user *model.User, err error) {
+func (d *user[T]) Find(dto repository.UserFindDTO) (users []*model.User, err error) {
+	userTbls := []tbl.User{}
+
+	query := d.ScopeByFindOption(ScopeByFindOptionDTO{db: d.db, findOption: dto.FindOption})
+	result := query.Find(&userTbls)
+	err = result.Error
+	if err != nil {
+		return
+	}
+
+	users = make([]*model.User, len(userTbls))
+	for _, userTbl := range userTbls {
+		user, e := userTbl.ToModel()
+		if e != nil {
+			err = e
+			return
+		}
+
+		users = append(users, user)
+	}
+
+	return
+}
+
+func (d *user[T]) FindByID(dto repository.UserFindByIDDTO) (user *model.User, err error) {
 	userTbl := &tbl.User{ID: dto.ID}
 	err = d.db.First(userTbl).Error
 	if err != nil {
@@ -30,7 +55,7 @@ func (d *user) FindByID(dto repository.UserFindByIDDTO) (user *model.User, err e
 	return
 }
 
-func (d *user) Create(dto repository.UserCreateDTO) (err error) {
+func (d *user[T]) Create(dto repository.UserCreateDTO) (err error) {
 	userTbl := &tbl.User{
 		ID:            dto.ID,
 		AccountStatus: dto.AccountStatus,
@@ -48,7 +73,7 @@ func (d *user) Create(dto repository.UserCreateDTO) (err error) {
 	return
 }
 
-func (d *user) Update(user *model.User) (err error) {
+func (d *user[T]) Update(user *model.User) (err error) {
 	userTbl := &tbl.User{}
 	userTbl.FromModel(user)
 

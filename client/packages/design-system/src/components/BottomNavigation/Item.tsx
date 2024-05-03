@@ -22,11 +22,7 @@ export const Item = ({ label, icon, active = false, onPress }: Props) => {
   const contentColor = active ? 'yellow-700' : 'gray-600';
 
   return (
-    <button
-      {...buttonProps}
-      className={styles.classnames(styles.reset.button, 'flex')}
-      style={{ display: 'flex' }}
-    >
+    <button {...buttonProps} className={styles.classnames(styles.reset.button)}>
       <View width="size-700" height="size-700" borderRadius="regular">
         <Flex
           width="100%"

@@ -11,22 +11,23 @@ import (
 	"memoria-api/infra/tbl"
 )
 
-type userSpace struct {
+type userSpace[T any] struct {
+	BaseDao[T]
 	db *gorm.DB
 }
 
 func NewUserSpace(db *gorm.DB) repository.UserSpace {
-	return &userSpace{db: db}
+	return &userSpace[tbl.UserSpace]{db: db}
 }
 
-func (d *userSpace) FindByID(dto repository.UserSpaceFindByIDDTO) (userSpace *model.UserSpace, err error) {
+func (d *userSpace[T]) FindByID(dto repository.UserSpaceFindByIDDTO) (userSpace *model.UserSpace, err error) {
 	userSpaceTbl := &tbl.UserSpace{ID: dto.ID}
 	err = d.db.First(userSpaceTbl).Error
 	userSpace = userSpaceTbl.ToModel()
 	return
 }
 
-func (d *userSpace) Create(dto repository.UserSpaceCreateDTO) (err error) {
+func (d *userSpace[T]) Create(dto repository.UserSpaceCreateDTO) (err error) {
 	userSpace := &tbl.UserSpace{
 		ID:   dto.ID,
 		Name: dto.Name,

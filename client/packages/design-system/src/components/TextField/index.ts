@@ -1,1 +1,1 @@
-export { TextField } from '@adobe/react-spectrum';
+export { TextField } from './TextField';

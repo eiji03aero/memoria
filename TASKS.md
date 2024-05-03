@@ -8,6 +8,12 @@
         - resource
         - property
         - value
+    - impliment error feedback
+        - toast or something
+        - for bad request and internal server error
+    - try panda css
+        - if liked it:
+            - say bye bye to tailwind
 - [ ] implement login
     - add the doc
 - [ ] implement logout
@@ -18,6 +24,8 @@
     - add the doc
 
 ## Todo
+- [ ] textfield error icon overflow problem
+    - when error is shown, the red triangle overflows
 - [ ] make sure db migration is run once
     - probably it is run twice in github action
 - [ ] optimize memoria client docker image

@@ -3,6 +3,7 @@ package registry
 import (
 	"memoria-api/domain/interfaces"
 	"memoria-api/domain/interfaces/repository"
+	"memoria-api/domain/service"
 	"memoria-api/infra/caws"
 	"memoria-api/infra/dao"
 
@@ -22,6 +23,8 @@ type Registry interface {
 	NewUserSpaceRepository() repository.UserSpace
 	NewUserUserSpaceRelationRepository() repository.UserUserSpaceRelation
 	NewUserInvitationRepository() repository.UserInvitation
+	// service
+	NewUserService() *service.User
 }
 
 type registry struct {
@@ -74,4 +77,9 @@ func (r *registry) NewUserUserSpaceRelationRepository() repository.UserUserSpace
 
 func (r *registry) NewUserInvitationRepository() repository.UserInvitation {
 	return dao.NewUserInvitation(r.db)
+}
+
+// -------------------- service --------------------
+func (r *registry) NewUserService() *service.User {
+	return service.NewUser(service.NewUserDTO{UserRepository: r.NewUserRepository()})
 }

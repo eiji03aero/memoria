@@ -13,6 +13,7 @@ import (
 	"memoria-api/infra/caws"
 	"memoria-api/infra/db"
 	"memoria-api/registry"
+	"memoria-api/route/res"
 	"memoria-api/usecase"
 	"memoria-api/usecase/ccontext"
 )
@@ -58,14 +59,23 @@ func wrap(h func(c *gin.Context, reg registry.Registry) (status int, data any, e
 		if err != nil {
 			log.Println("wrap handler result err: ", err.Error())
 
-			if errors.Is(err, cerrors.Validation{}) {
-				c.JSON(http.StatusBadRequest, gin.H{
-					"message": cerrors.NewValidation(err.Error()).Error(),
+			if _, ok := err.(cerrors.Validation); ok {
+				log.Println("inside validation error")
+				c.JSON(http.StatusBadRequest, res.NewValidationRes(err.(cerrors.Validation)))
+				c.Abort()
+				return
+			}
+
+			if errors.Is(err, cerrors.Internal{}) {
+				log.Println("inside internal error")
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"message": err.Error(),
 				})
 				c.Abort()
 				return
 			}
 
+			log.Println("last resort")
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": cerrors.NewInternal(err.Error()).Error(),
 			})

@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 
 import * as config from '@/config';
-import { axios } from '@/modules/lib/axios';
+import { axios, AxiosError } from '@/modules/lib/axios';
 
 import { saveJwt } from '@/domain/account/services';
 
@@ -29,7 +29,7 @@ const request = (p: Request) =>
 export const useSignup = () => {
   const router = useRouter();
 
-  const { mutate } = useMutation({
+  const { mutate, error } = useMutation({
     mutationFn: request,
     onSuccess: ({ data }) => {
       router.push('/signup-guide');
@@ -46,5 +46,6 @@ export const useSignup = () => {
 
   return {
     signup,
+    errorResponseBody: (error as AxiosError)?.response?.data,
   };
 };

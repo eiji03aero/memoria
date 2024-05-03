@@ -2,26 +2,13 @@ package cerrors
 
 import "fmt"
 
-// -------------------- Validation --------------------
-type Validation struct {
-	message string
-}
-
-func NewValidation(message string) error {
-	return &Validation{message: message}
-}
-
-func (e Validation) Error() string {
-	return e.message
-}
-
 // -------------------- Consistency --------------------
 type Consistency struct {
 	message string
 }
 
 func NewConsistency(message string) error {
-	return &Consistency{message: message}
+	return Consistency{message: message}
 }
 
 func (e Consistency) Error() string {
@@ -34,7 +21,7 @@ type ResourceNotFound struct {
 }
 
 func NewResourceNotFound(message string) error {
-	return &ResourceNotFound{message: message}
+	return ResourceNotFound{message: message}
 }
 
 func (e ResourceNotFound) Error() string {
@@ -47,18 +34,18 @@ type Internal struct {
 }
 
 func NewInternal(message string) error {
-	return &Internal{message: message}
+	return Internal{message: message}
 }
 
 func (e Internal) Error() string {
-	return "internal error"
+	return fmt.Sprintf("internal error: %s", e.message)
 }
 
 // -------------------- Unauthorized --------------------
 type Unauthorized struct{}
 
 func NewUnauthorized() error {
-	return &Unauthorized{}
+	return Unauthorized{}
 }
 
 func (e Unauthorized) Error() string {

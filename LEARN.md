@@ -73,3 +73,117 @@ ResourceInitializationError: unable to pull secrets or registry auth: execution 
 ### Which code to use for redirects?
 - https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections
 - for post, 303 see other should be preferable
+
+
+---
+
+# Go
+## Basics
+### nested struct will be initialized with zero-values
+- Thought it become nil, but not
+```
+type Parent struct {
+	Child struct {
+		Value string
+	}
+}
+
+func main() {
+	d := &Parent{}
+	// Can set value, it is initialized with zero-values
+	d.Child.Value = "Hoge child"
+}
+```
+
+### zero-value slice
+```
+type Parent struct {
+	Slice []string
+}
+
+func main() {
+	d := &Parent{}
+	log.Println(d.Slice)    // []
+	log.Println(d.Slice[0]) // panics saying index out of range
+}
+```
+
+### declaration of variables in nested that has same name as return variable
+- will be treated as new variable
+    - well it is surrouned by block so :(
+```
+
+func NestedReturnVar() (user error, str string) {
+	str = "base"
+
+	if true {
+		user, str := nil, "from child func
+		return
+	}
+	return
+}
+
+func main() {
+	str := NestedReturnVar()
+	log.Println(str)
+}
+```
+
+### To define custom error
+- Error method for error interface
+- Is method for errors.Is
+```
+
+type Internal struct {
+	message string
+}
+
+func NewInternal(message string) error {
+	return &Internal{message: message}
+}
+
+func (e Internal) Error() string {
+	return fmt.Sprintf("internal error: %s", e.message)
+}
+
+func (e *Internal) Is(err error) bool {
+	other, ok := err.(*Internal)
+	if !ok {
+		return false
+	}
+
+	return e.message == other.message
+}
+```
+
+### Get stuct name from interface value
+```
+if t := reflect.TypeOf(err); t.Kind() == reflect.Ptr {
+    log.Println("pointer name:", t.Elem().Name())
+} else {
+    log.Println("value name:", t.Name())
+}
+```
+
+
+---
+
+# Frontend
+## tanstack-query
+### Difficulty with handling error response body
+- want to run logic with onSuccess
+- error response body can be obtained only when mutateFn is run successfully
+- this leads to running onSuccess thought request was an error
+
+## Motherfxcker react-spectrum
+### where is typography component?
+- it has been discussed for years
+
+### who the fluff uses content-box ... ?
+- why, just why
+
+## pandacss
+### so far so good
+- css in js supporting rsc
+- the css function needs to be imported via direct path to styled-system/css
+    - you cannot reexport, the stylesheet would not be attached

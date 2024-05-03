@@ -10,5 +10,5 @@ module.exports = {
     project: './tsconfig.lint.json',
     tsconfigRootDir: __dirname,
   },
-  ignorePatterns: ['vite.config.js'],
+  ignorePatterns: ['vite.config.js', 'panda.config.ts', 'postcss.config.cjs'],
 };

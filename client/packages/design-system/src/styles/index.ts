@@ -1,17 +1,18 @@
 import classnames from 'classnames';
 import { ColorValue } from '@react-types/shared';
 
-export { classnames };
+import { css } from '../../styled-system/css';
+
+export { classnames, css };
 
 export const reset = {
-  button: classnames(
-    'bg-transparent',
-    'border-0',
-    'cursor-pointer',
-    'outline-0',
-    'padding-0',
-    'appearance-none',
-  ),
+  button: css({
+    bg: 'transparent',
+    border: 'none',
+    cursor: 'pointer',
+    outline: 'none',
+    appearance: 'none',
+  }),
 } as const;
 
 const SizeKeys = [

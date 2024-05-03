@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/mail"
 
 	"golang.org/x/crypto/bcrypt"
@@ -29,6 +30,7 @@ type account struct {
 	userSpaceRepo             repository.UserSpace
 	userUserSpaceRelationRepo repository.UserUserSpaceRelation
 	userInvitationRepo        repository.UserInvitation
+	userSvc                   *service.User
 }
 
 func NewAccount(reg registry.Registry) (u Account, err error) {
@@ -43,6 +45,7 @@ func NewAccount(reg registry.Registry) (u Account, err error) {
 		userSpaceRepo:             reg.NewUserSpaceRepository(),
 		userUserSpaceRelationRepo: reg.NewUserUserSpaceRelationRepository(),
 		userInvitationRepo:        reg.NewUserInvitationRepository(),
+		userSvc:                   reg.NewUserService(),
 	}
 	return
 }
@@ -58,34 +61,59 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 	ctx := context.Background()
 	u.registry.BeginTx()
 
-	// name check
+	// -------------------- validations --------------------
 	if dto.Name == nil {
-		err = cerrors.NewValidation("name is required")
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_Required,
+			Name: "name",
+		})
 		return
 	}
 
-	// email check
 	if dto.Email == nil {
-		err = cerrors.NewValidation("email is required")
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_Required,
+			Name: "email",
+		})
 		return
 	}
-	if _, err = mail.ParseAddress(*dto.Email); err != nil {
-		err = cerrors.NewValidation("email format is invalid")
+	_, err = mail.ParseAddress(*dto.Email)
+	if err != nil {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_InvalidFormat,
+			Name: "email",
+		})
+		return
+	}
+	isEmailTaken, err := u.userSvc.IsEmailTaken(service.UserIsEmailTakenDTO{Email: *dto.Email})
+	if err != nil {
+		return
+	}
+	if isEmailTaken {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_AlreadyTaken,
+			Name: "email",
+		})
 		return
 	}
 
-	// password check
 	if dto.Password == nil {
-		err = cerrors.NewValidation("password is required")
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_InvalidFormat,
+			Name: "password",
+		})
 		return
 	}
 
-	// user space name check
 	if dto.UserSpaceName == nil {
-		err = cerrors.NewValidation("user_space_name is required")
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_InvalidFormat,
+			Name: "user_space_name",
+		})
 		return
 	}
 
+	// -------------------- execution --------------------
 	// generate id for user
 	userID = service.GenerateUlid()
 
@@ -105,6 +133,8 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 	})
 	if err != nil {
 		err = cerrors.NewInternal(fmt.Sprintf("failed to create user: %s", err.Error()))
+		log.Println(err)
+		log.Println(err.Error())
 		u.registry.RollbackTx()
 		return
 	}
@@ -176,7 +206,10 @@ func (u *account) SignupConfirm(dto AccountSignupConfirmDTO) (ret AccountSignupC
 	}
 
 	if dto.ID == nil {
-		err = cerrors.NewValidation("id is required")
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_Required,
+			Name: "id",
+		})
 		setErrorURL()
 		return
 	}

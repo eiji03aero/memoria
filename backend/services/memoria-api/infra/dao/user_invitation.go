@@ -11,15 +11,16 @@ import (
 	"gorm.io/gorm"
 )
 
-type userInvitation struct {
+type userInvitation[T any] struct {
+	BaseDao[T]
 	db *gorm.DB
 }
 
 func NewUserInvitation(db *gorm.DB) repository.UserInvitation {
-	return &userInvitation{db: db}
+	return &userInvitation[tbl.UserInvitation]{db: db}
 }
 
-func (d *userInvitation) FindByID(dto repository.UserInvitationFindByIDDTO) (ui *model.UserInvitation, err error) {
+func (d *userInvitation[T]) FindByID(dto repository.UserInvitationFindByIDDTO) (ui *model.UserInvitation, err error) {
 	uiTbl := &tbl.UserInvitation{ID: dto.ID}
 	err = d.db.First(uiTbl).Error
 	if err != nil {
@@ -30,7 +31,7 @@ func (d *userInvitation) FindByID(dto repository.UserInvitationFindByIDDTO) (ui 
 	return
 }
 
-func (d *userInvitation) Create(dto repository.UserInvitationCreateDTO) (err error) {
+func (d *userInvitation[T]) Create(dto repository.UserInvitationCreateDTO) (err error) {
 	ui := &tbl.UserInvitation{
 		ID:     dto.ID,
 		UserID: dto.UserID,

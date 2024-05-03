@@ -14,9 +14,17 @@ import {
 } from '@repo/design-system';
 
 import { useSignup } from '@/domain/account/hooks/useSignup';
+import { useParseValidationResponse } from '@/domain/common/hooks/useParseValidationResponse';
+import { useValidationErrorProps } from '@/domain/common/hooks/useValidationErrorProps';
 
 export default function Signup() {
-  const { signup } = useSignup();
+  const { signup, errorResponseBody } = useSignup();
+  const parsedValidationResponse = useParseValidationResponse({
+    responseBody: errorResponseBody,
+  });
+  const { buildErrorMessageProps } = useValidationErrorProps({
+    parsedValidationResponse,
+  });
 
   const form = useForm({
     defaultValues: {
@@ -80,6 +88,7 @@ export default function Signup() {
                 label="Name"
                 name={field.name}
                 value={field.state.value}
+                {...buildErrorMessageProps({ field })}
                 onChange={value => field.handleChange(value)}
               />
             )}
@@ -94,6 +103,7 @@ export default function Signup() {
                 label="User space name"
                 name={field.name}
                 value={field.state.value}
+                {...buildErrorMessageProps({ field })}
                 onChange={value => field.handleChange(value)}
               />
             )}
@@ -108,6 +118,7 @@ export default function Signup() {
                 label="Email"
                 name={field.name}
                 value={field.state.value}
+                {...buildErrorMessageProps({ field })}
                 onChange={value => field.handleChange(value)}
               />
             )}
@@ -123,6 +134,7 @@ export default function Signup() {
                 type="password"
                 name={field.name}
                 value={field.state.value}
+                {...buildErrorMessageProps({ field })}
                 onChange={value => field.handleChange(value)}
               />
             )}

@@ -7,15 +7,16 @@ import (
 	"memoria-api/infra/tbl"
 )
 
-type userUserSpaceRelation struct {
+type userUserSpaceRelation[T any] struct {
+	BaseDao[T]
 	db *gorm.DB
 }
 
 func NewUserUserSpaceRelation(db *gorm.DB) repository.UserUserSpaceRelation {
-	return &userUserSpaceRelation{db: db}
+	return &userUserSpaceRelation[tbl.UserUserSpaceRelation]{db: db}
 }
 
-func (d *userUserSpaceRelation) Create(dto repository.UserUserSpaceRelationCreateDTO) (err error) {
+func (d *userUserSpaceRelation[T]) Create(dto repository.UserUserSpaceRelationCreateDTO) (err error) {
 	uusr := &tbl.UserUserSpaceRelation{
 		UserID:      dto.UserID,
 		UserSpaceID: dto.UserSpaceID,
