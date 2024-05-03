@@ -6,8 +6,8 @@ import (
 	"gorm.io/gorm"
 
 	"memoria-api/domain/cerrors"
+	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/model"
-	"memoria-api/domain/repository"
 	"memoria-api/infra/tbl"
 )
 

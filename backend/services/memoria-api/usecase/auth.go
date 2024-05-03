@@ -5,7 +5,7 @@ import (
 
 	"memoria-api/config"
 	"memoria-api/domain/cerrors"
-	"memoria-api/domain/repository"
+	"memoria-api/domain/interfaces/repository"
 	"memoria-api/registry"
 
 	"github.com/golang-jwt/jwt/v5"

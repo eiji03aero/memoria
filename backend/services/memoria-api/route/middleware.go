@@ -18,19 +18,16 @@ import (
 )
 
 func buildRegistry(ctx context.Context) (reg registry.Registry, err error) {
-	// -------------------- database --------------------
 	db, err := db.New()
 	if err != nil {
 		return
 	}
 
-	// -------------------- aws --------------------
 	awsCfg, err := caws.LoadConfig(ctx)
 	if err != nil {
 		return
 	}
 
-	// -------------------- registry --------------------
 	reg = registry.NewRegistry(registry.NewRegistryDTO{
 		DB:     db,
 		AWSCfg: awsCfg,

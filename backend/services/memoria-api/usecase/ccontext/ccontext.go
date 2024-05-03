@@ -2,6 +2,7 @@ package ccontext
 
 import (
 	"memoria-api/domain/cerrors"
+	"memoria-api/domain/interfaces"
 
 	"github.com/gin-gonic/gin"
 )
@@ -11,17 +12,12 @@ var (
 	KeyUserSpaceID = "cctx-user-space-id"
 )
 
-type Context interface {
-	GetUserID() string
-	GetUserSpaceID() string
-}
-
 type context struct {
 	userID      string
 	userSpaceID string
 }
 
-func NewContext(ctx *gin.Context) Context {
+func NewContext(ctx *gin.Context) interfaces.Context {
 	return &context{
 		userID:      GetUserID(ctx),
 		userSpaceID: GetUserSpaceID(ctx),

@@ -1,15 +1,19 @@
 # Tasks
 ## WIP
-- [x] implement email confirm flow in signup
-    - update the doc
-    - create ses for dev
-    - create ses for prod
-    - implement flow
-    - implement guard for account status
+- [ ] implement validation system
+    - allow api to return validation body
+    - will be only one error (not returning multiple)
+    - content will be
+        - key
+        - resource
+        - property
+        - value
 - [ ] implement login
     - add the doc
 - [ ] implement logout
     - add the doc
+    - implement in frontend
+    - this is because persisting jwt is done in frontend, for consistency
 - [ ] implement invite user
     - add the doc
 
@@ -33,6 +37,20 @@
     - document title
 
 ## Done
+- [x] refactor
+    - backend
+    - move repository to interfaces/repository
+    - move interface definition of ccontext to interfaces
+- [x] cost optimization
+    - use fargat spot
+    - https://qiita.com/kurifumi/items/8480b415da65c4692c75
+    - https://qiita.com/sugimount-a/items/1b64e1f2eb544e059371
+- [x] implement email confirm flow in signup
+    - update the doc
+    - create ses for dev
+    - create ses for prod
+    - implement flow
+    - implement guard for account status
 - [x] create cicd pipeline to deploy automatically
 - [x] build infrastructure
     - create vpc

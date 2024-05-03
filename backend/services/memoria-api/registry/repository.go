@@ -2,7 +2,7 @@ package registry
 
 import (
 	"memoria-api/domain/interfaces"
-	"memoria-api/domain/repository"
+	"memoria-api/domain/interfaces/repository"
 	"memoria-api/infra/caws"
 	"memoria-api/infra/dao"
 

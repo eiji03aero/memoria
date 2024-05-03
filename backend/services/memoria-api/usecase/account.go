@@ -10,7 +10,7 @@ import (
 	"memoria-api/config"
 	"memoria-api/domain/cerrors"
 	"memoria-api/domain/interfaces"
-	"memoria-api/domain/repository"
+	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/service"
 	"memoria-api/domain/value"
 	"memoria-api/registry"

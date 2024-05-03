@@ -3,7 +3,7 @@ package dao
 import (
 	"gorm.io/gorm"
 
-	"memoria-api/domain/repository"
+	"memoria-api/domain/interfaces/repository"
 	"memoria-api/infra/tbl"
 )
 
