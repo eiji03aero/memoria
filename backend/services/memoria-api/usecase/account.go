@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log"
 	"net/mail"
@@ -21,6 +22,7 @@ type Account interface {
 	Signup(dto AccountSignupDTO) (userID string, userSpaceId string, err error)
 	SignupConfirm(dto AccountSignupConfirmDTO) (ret AccountSignupConfirmRet, err error)
 	AddUserToUserSpace(dto AccountAddUserToUserSpaceDTO) error
+	Login(dto AccountLoginDTO) (ret AccountLoginRet, err error)
 }
 
 type account struct {
@@ -31,6 +33,9 @@ type account struct {
 	userUserSpaceRelationRepo repository.UserUserSpaceRelation
 	userInvitationRepo        repository.UserInvitation
 	userSvc                   *service.User
+	userInvitationSvc         *service.UserInvitation
+	userSpaceSvc              *service.UserSpace
+	userUserSpaceRelationSvc  *service.UserUserSpaceRelation
 }
 
 func NewAccount(reg registry.Registry) (u Account, err error) {
@@ -46,6 +51,9 @@ func NewAccount(reg registry.Registry) (u Account, err error) {
 		userUserSpaceRelationRepo: reg.NewUserUserSpaceRelationRepository(),
 		userInvitationRepo:        reg.NewUserInvitationRepository(),
 		userSvc:                   reg.NewUserService(),
+		userInvitationSvc:         reg.NewUserInvitationService(),
+		userSpaceSvc:              reg.NewUserSpaceService(),
+		userUserSpaceRelationSvc:  reg.NewUserUserSpaceRelationService(),
 	}
 	return
 }
@@ -61,7 +69,7 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 	ctx := context.Background()
 	u.registry.BeginTx()
 
-	// -------------------- validations --------------------
+	// -------------------- validation --------------------
 	if dto.Name == nil {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
 			Key:  cerrors.ValidationKey_Required,
@@ -85,15 +93,15 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 		})
 		return
 	}
-	isEmailTaken, err := u.userSvc.IsEmailTaken(service.UserIsEmailTakenDTO{Email: *dto.Email})
-	if err != nil {
-		return
-	}
-	if isEmailTaken {
+	isEmailExists, err := u.userSvc.ExistsByEmail(*dto.Email)
+	if isEmailExists {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
 			Key:  cerrors.ValidationKey_AlreadyTaken,
 			Name: "email",
 		})
+		return
+	}
+	if err != nil {
 		return
 	}
 
@@ -205,6 +213,7 @@ func (u *account) SignupConfirm(dto AccountSignupConfirmDTO) (ret AccountSignupC
 		ret.RedirectURL = config.ClientHost + "/internal-server-error"
 	}
 
+	// -------------------- validation --------------------
 	if dto.ID == nil {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
 			Key:  cerrors.ValidationKey_Required,
@@ -214,18 +223,13 @@ func (u *account) SignupConfirm(dto AccountSignupConfirmDTO) (ret AccountSignupC
 		return
 	}
 
-	// confirm invitation exists
-	userInvitation, err := u.userInvitationRepo.FindByID(repository.UserInvitationFindByIDDTO{
-		ID: *dto.ID,
-	})
+	userInvitatation, err := u.userInvitationSvc.FindByID(*dto.ID)
 	if err != nil {
 		setErrorURL()
 		return
 	}
 
-	user, err := u.userRepo.FindByID(repository.UserFindByIDDTO{
-		ID: userInvitation.UserID,
-	})
+	user, err := u.userSvc.FindByID(userInvitatation.UserID)
 	if err != nil {
 		setErrorURL()
 		return
@@ -255,5 +259,66 @@ func (u *account) AddUserToUserSpace(dto AccountAddUserToUserSpaceDTO) (err erro
 		UserSpaceID: dto.UserSpaceID,
 	})
 
+	return
+}
+
+type AccountLoginDTO struct {
+	Email    *string
+	Password *string
+}
+
+type AccountLoginRet struct {
+	UserID      string
+	UserSpaceID string
+}
+
+func (u *account) Login(dto AccountLoginDTO) (ret AccountLoginRet, err error) {
+	// -------------------- validations --------------------
+	if dto.Email == nil {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_Required,
+			Name: "email",
+		})
+		return
+	}
+	emailExists, err := u.userSvc.ExistsByEmail(*dto.Email)
+	if !emailExists {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_ResourceNotFound,
+			Name: "email",
+		})
+		return
+	}
+
+	if dto.Password == nil {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_Required,
+			Name: "password",
+		})
+		return
+	}
+
+	// -------------------- execution --------------------
+	user, err := u.userSvc.FindByEmail(*dto.Email)
+	if err != nil {
+		return
+	}
+
+	uusr, err := u.userUserSpaceRelationSvc.FindByUserID(user.ID)
+	if err != nil {
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(*dto.Password))
+	if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_Invalid,
+			Name: "password",
+		})
+		return
+	}
+
+	ret.UserID = user.ID
+	ret.UserSpaceID = uusr.UserSpaceID
 	return
 }

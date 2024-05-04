@@ -5,12 +5,8 @@ import (
 )
 
 type UserInvitation interface {
-	FindByID(dto UserInvitationFindByIDDTO) (ui *model.UserInvitation, err error)
+	FindOne(findOption *FindOption) (ui *model.UserInvitation, err error)
 	Create(dto UserInvitationCreateDTO) (err error)
-}
-
-type UserInvitationFindByIDDTO struct {
-	ID string
 }
 
 type UserInvitationCreateDTO struct {

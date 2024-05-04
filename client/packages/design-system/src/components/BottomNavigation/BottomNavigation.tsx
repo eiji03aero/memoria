@@ -10,7 +10,6 @@ export const BottomNavigation = ({
   return (
     <View
       elementType="nav"
-      paddingY="size-100"
       borderTopWidth="thin"
       borderTopColor="dark"
       backgroundColor="gray-50"

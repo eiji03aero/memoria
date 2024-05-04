@@ -1,27 +1,9 @@
 # Tasks
 ## WIP
-- [ ] implement validation system
-    - allow api to return validation body
-    - will be only one error (not returning multiple)
-    - content will be
-        - key
-        - resource
-        - property
-        - value
-    - impliment error feedback
-        - toast or something
-        - for bad request and internal server error
-    - try panda css
-        - if liked it:
-            - say bye bye to tailwind
-- [ ] implement login
-    - add the doc
-- [ ] implement logout
-    - add the doc
-    - implement in frontend
-    - this is because persisting jwt is done in frontend, for consistency
 - [ ] implement invite user
     - add the doc
+- [ ] implement testing
+    - consider how we do it
 
 ## Todo
 - [ ] textfield error icon overflow problem
@@ -45,6 +27,27 @@
     - document title
 
 ## Done
+- [x] implement logout
+    - add the doc
+    - implement in frontend
+    - this is because persisting jwt is done in frontend, for consistency
+- [x] implement login
+    - add the doc
+    - implement feedback part
+- [x] implement validation system
+    - allow api to return validation body
+    - will be only one error (not returning multiple)
+    - content will be
+        - key
+        - resource
+        - property
+        - value
+    - impliment error feedback
+        - toast or something
+        - for bad request and internal server error
+    - try panda css
+        - if liked it:
+            - say bye bye to tailwind
 - [x] refactor
     - backend
     - move repository to interfaces/repository

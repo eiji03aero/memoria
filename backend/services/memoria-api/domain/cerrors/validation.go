@@ -5,9 +5,11 @@ import "fmt"
 type ValidationKey string
 
 var (
-	ValidationKey_Required      = ValidationKey("required")
-	ValidationKey_InvalidFormat = ValidationKey("invalid-format")
-	ValidationKey_AlreadyTaken  = ValidationKey("already-taken")
+	ValidationKey_Required         = ValidationKey("required")
+	ValidationKey_Invalid          = ValidationKey("invalid")
+	ValidationKey_InvalidFormat    = ValidationKey("invalid-format")
+	ValidationKey_AlreadyTaken     = ValidationKey("already-taken")
+	ValidationKey_ResourceNotFound = ValidationKey("resource-not-found")
 )
 
 type Validation struct {

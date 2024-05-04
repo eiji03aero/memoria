@@ -13,12 +13,12 @@ import {
   Button,
 } from '@repo/design-system';
 
-import { useSignup } from '@/domain/account/hooks/useSignup';
+import { useLogin } from '@/domain/account/hooks/useLogin';
 import { useParseValidationResponse } from '@/domain/common/hooks/useParseValidationResponse';
 import { useValidationErrorProps } from '@/domain/common/hooks/useValidationErrorProps';
 
-export default function Signup() {
-  const { signup, errorResponseBody } = useSignup();
+export default function Login() {
+  const { login, errorResponseBody } = useLogin();
   const parsedValidationResponse = useParseValidationResponse({
     responseBody: errorResponseBody,
   });
@@ -28,13 +28,11 @@ export default function Signup() {
 
   const form = useForm({
     defaultValues: {
-      name: '',
       email: '',
-      userSpaceName: '',
       password: '',
     },
     onSubmit: async ({ value }) => {
-      signup(value);
+      login(value);
     },
     validatorAdapter: zodValidator,
   });
@@ -78,36 +76,6 @@ export default function Signup() {
             form.handleSubmit();
           }}
         >
-          <form.Field
-            name="name"
-            validators={{
-              onChange: z.string(),
-            }}
-            children={field => (
-              <TextField
-                label="Name"
-                name={field.name}
-                value={field.state.value}
-                {...buildErrorMessageProps({ field })}
-                onChange={value => field.handleChange(value)}
-              />
-            )}
-          />
-          <form.Field
-            name="userSpaceName"
-            validators={{
-              onChange: z.string(),
-            }}
-            children={field => (
-              <TextField
-                label="User space name"
-                name={field.name}
-                value={field.state.value}
-                {...buildErrorMessageProps({ field, name: 'user_space_name' })}
-                onChange={value => field.handleChange(value)}
-              />
-            )}
-          />
           <form.Field
             name="email"
             validators={{

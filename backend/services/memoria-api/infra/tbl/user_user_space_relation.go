@@ -1,6 +1,10 @@
 package tbl
 
-import "time"
+import (
+	"time"
+
+	"memoria-api/domain/model"
+)
 
 type UserUserSpaceRelation struct {
 	UserID      string    `gorm:"column:user_id"`
@@ -11,4 +15,13 @@ type UserUserSpaceRelation struct {
 
 func (t UserUserSpaceRelation) TableName() string {
 	return "user_user_space_relations"
+}
+
+func (t UserUserSpaceRelation) ToModel() *model.UserUserSpaceRelation {
+	return model.NewUserUserSpaceRelation(model.NewUserUserSpaceRelationDTO{
+		UserID:      t.UserID,
+		UserSpaceID: t.UserSpaceID,
+		CreatedAt:   t.CreatedAt,
+		UpdatedAt:   t.UpdatedAt,
+	})
 }

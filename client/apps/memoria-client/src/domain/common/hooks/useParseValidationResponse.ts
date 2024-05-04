@@ -22,6 +22,9 @@ export const useParseValidationResponse = ({ responseBody }: Params) => {
       case 'required':
         validationMessage = `${name} is required`;
         break;
+      case 'invalid':
+        validationMessage = `${name} is invalid`;
+        break;
       case 'invalid-format':
         validationMessage = `${name} format is invalid`;
         break;

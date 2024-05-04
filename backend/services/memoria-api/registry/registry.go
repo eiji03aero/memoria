@@ -25,6 +25,9 @@ type Registry interface {
 	NewUserInvitationRepository() repository.UserInvitation
 	// service
 	NewUserService() *service.User
+	NewUserInvitationService() *service.UserInvitation
+	NewUserSpaceService() *service.UserSpace
+	NewUserUserSpaceRelationService() *service.UserUserSpaceRelation
 }
 
 type registry struct {
@@ -82,4 +85,16 @@ func (r *registry) NewUserInvitationRepository() repository.UserInvitation {
 // -------------------- service --------------------
 func (r *registry) NewUserService() *service.User {
 	return service.NewUser(service.NewUserDTO{UserRepository: r.NewUserRepository()})
+}
+
+func (r *registry) NewUserInvitationService() *service.UserInvitation {
+	return service.NewUserInvitation(service.NewUserInvitationDTO{UserInvitationRepository: r.NewUserInvitationRepository()})
+}
+
+func (r *registry) NewUserSpaceService() *service.UserSpace {
+	return service.NewUserSpace(service.NewUserSpaceDTO{UserSpaceRepository: r.NewUserSpaceRepository()})
+}
+
+func (r *registry) NewUserUserSpaceRelationService() *service.UserUserSpaceRelation {
+	return service.NewUserUserSpaceRelation(service.NewUserUserSpaceRelationDTO{UserUserSpaceRelationRepository: r.NewUserUserSpaceRelationRepository()})
 }

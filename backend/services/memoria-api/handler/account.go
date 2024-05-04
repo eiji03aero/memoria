@@ -27,12 +27,11 @@ type AccountSignupRes struct {
 }
 
 func (h *Account) Signup(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
+	authUc := usecase.NewAuth(reg)
 	accountUc, err := usecase.NewAccount(reg)
 	if err != nil {
 		return
 	}
-
-	authUc := usecase.NewAuth(reg)
 
 	body := AccountSignupReq{}
 	err = c.BindJSON(&body)
@@ -91,4 +90,47 @@ func (h *Account) SignupConfirm(c *gin.Context, reg registry.Registry) (status i
 
 	c.Redirect(http.StatusSeeOther, ret.RedirectURL)
 	return
+}
+
+type AccountLoginReq struct {
+	Email    *string `json:"email"`
+	Password *string `json:"password"`
+}
+
+type AccountLoginRes struct {
+	Token string `json:"token"`
+}
+
+func (h *Account) Login(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
+	accountUc, err := usecase.NewAccount(reg)
+	if err != nil {
+		return
+	}
+
+	authUc := usecase.NewAuth(reg)
+
+	body := AccountLoginReq{}
+	err = c.BindJSON(&body)
+	if err != nil {
+		return
+	}
+
+	ret, err := accountUc.Login(usecase.AccountLoginDTO{
+		Email:    body.Email,
+		Password: body.Password,
+	})
+	if err != nil {
+		return
+	}
+
+	jwt, err := authUc.CreateJWT(usecase.AuthCreateJWTDTO{
+		UserID:      ret.UserID,
+		UserSpaceID: ret.UserSpaceID,
+	})
+	if err != nil {
+		return
+	}
+
+	res := AccountLoginRes{Token: jwt}
+	return http.StatusOK, res, nil
 }

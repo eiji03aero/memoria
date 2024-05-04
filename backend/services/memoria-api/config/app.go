@@ -35,6 +35,7 @@ var (
 	DBUser     = os.Getenv("DB_USER")
 	DBPassword = os.Getenv("DB_PASSWORD")
 	DBName     = os.Getenv("DB_NAME")
+	DBLogLevel = os.Getenv("DB_LOG_LEVEL")
 
 	NoReplyEmailAddress = "no-reply@memoria-app.com"
 )

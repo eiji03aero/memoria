@@ -11,8 +11,9 @@ export const useValidationErrorProps = ({
   parsedValidationResponse,
 }: Params) => {
   const getErrorMessage = React.useCallback(
-    (params: { field: FieldApi<unknown, any> }) => {
-      if (params.field.name === parsedValidationResponse.name) {
+    (params: { field: FieldApi<unknown, any>; name?: string }) => {
+      const name = params.name ?? params.field.name;
+      if (name === parsedValidationResponse.name) {
         return parsedValidationResponse.validationMessage;
       }
 
@@ -28,7 +29,7 @@ export const useValidationErrorProps = ({
 
   const buildErrorMessageProps = React.useCallback(
     // Ah let us fuck with FieldApi type params
-    (params: { field: FieldApi<any, any, any, any, any> }) => {
+    (params: { field: FieldApi<any, any, any, any, any>; name?: string }) => {
       const { isDirty } = params.field.state.meta;
 
       const errorMessage = getErrorMessage(params);

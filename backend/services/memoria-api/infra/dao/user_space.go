@@ -1,11 +1,8 @@
 package dao
 
 import (
-	"errors"
-
 	"gorm.io/gorm"
 
-	"memoria-api/domain/cerrors"
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/model"
 	"memoria-api/infra/tbl"
@@ -20,9 +17,18 @@ func NewUserSpace(db *gorm.DB) repository.UserSpace {
 	return &userSpace[tbl.UserSpace]{db: db}
 }
 
-func (d *userSpace[T]) FindByID(dto repository.UserSpaceFindByIDDTO) (userSpace *model.UserSpace, err error) {
-	userSpaceTbl := &tbl.UserSpace{ID: dto.ID}
-	err = d.db.First(userSpaceTbl).Error
+func (d *userSpace[T]) FindOne(findOption *repository.FindOption) (userSpace *model.UserSpace, err error) {
+	userSpaceTbl := &tbl.UserSpace{}
+	query := d.ScopeByFindOption(d.db, findOption)
+	err = query.First(userSpaceTbl).Error
+	if ok, dmnErr := d.handleResourceNotFound(err, "user space"); ok {
+		err = dmnErr
+		return
+	}
+	if err != nil {
+		return
+	}
+
 	userSpace = userSpaceTbl.ToModel()
 	return
 }
@@ -35,9 +41,5 @@ func (d *userSpace[T]) Create(dto repository.UserSpaceCreateDTO) (err error) {
 
 	result := d.db.Create(userSpace)
 	err = result.Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		err = cerrors.NewResourceNotFound("user space")
-	}
-
 	return nil
 }

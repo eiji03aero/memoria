@@ -1,11 +1,10 @@
 package dao
 
 import (
-	"errors"
+	"log"
 
 	"gorm.io/gorm"
 
-	"memoria-api/domain/cerrors"
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/model"
 	"memoria-api/infra/tbl"
@@ -20,12 +19,16 @@ func NewUser(db *gorm.DB) repository.User {
 	return &user[tbl.User]{db: db}
 }
 
-func (d *user[T]) Find(dto repository.UserFindDTO) (users []*model.User, err error) {
+func (d *user[T]) Find(findOption *repository.FindOption) (users []*model.User, err error) {
 	userTbls := []tbl.User{}
 
-	query := d.ScopeByFindOption(ScopeByFindOptionDTO{db: d.db, findOption: dto.FindOption})
+	query := d.ScopeByFindOption(d.db, findOption)
 	result := query.Find(&userTbls)
 	err = result.Error
+	if ok, dmnErr := d.handleResourceNotFound(err, "user"); ok {
+		err = dmnErr
+		return
+	}
 	if err != nil {
 		return
 	}
@@ -44,9 +47,15 @@ func (d *user[T]) Find(dto repository.UserFindDTO) (users []*model.User, err err
 	return
 }
 
-func (d *user[T]) FindByID(dto repository.UserFindByIDDTO) (user *model.User, err error) {
-	userTbl := &tbl.User{ID: dto.ID}
-	err = d.db.First(userTbl).Error
+func (d *user[T]) FindOne(findOption *repository.FindOption) (user *model.User, err error) {
+	userTbl := &tbl.User{}
+	query := d.ScopeByFindOption(d.db, findOption)
+	err = query.First(userTbl).Error
+	log.Println("going in dao user", err)
+	if ok, dmnErr := d.handleResourceNotFound(err, "user"); ok {
+		err = dmnErr
+		return
+	}
 	if err != nil {
 		return
 	}
@@ -66,9 +75,6 @@ func (d *user[T]) Create(dto repository.UserCreateDTO) (err error) {
 
 	result := d.db.Create(userTbl)
 	err = result.Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		err = cerrors.NewResourceNotFound("user")
-	}
 
 	return
 }
@@ -79,8 +85,9 @@ func (d *user[T]) Update(user *model.User) (err error) {
 
 	result := d.db.Save(userTbl)
 	err = result.Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		err = cerrors.NewResourceNotFound("user")
+	if ok, dmnErr := d.handleResourceNotFound(err, "user"); ok {
+		err = dmnErr
+		return
 	}
 
 	return

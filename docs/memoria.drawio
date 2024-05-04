@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-05-02T17:27:12.664Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="MXyts-Yc3PAvoQBJFiV7" version="22.0.0" type="device" pages="3">
+<mxfile host="app.diagrams.net" modified="2024-05-04T14:55:59.890Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36" etag="n4kHt3FIUI_Ah4EufAzg" version="22.0.0" type="device" pages="3">
   <diagram name="Models" id="qY8TvXbZnKOkte3jlt84">
     <mxGraphModel dx="1004" dy="723" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -343,7 +343,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="b7baOWwbE4pzvD4GS0TY" name="Wireframe">
-    <mxGraphModel dx="2588" dy="2839" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="4588" dy="4278" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -357,9 +357,9 @@
           <mxGeometry width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="3gcf0JgR6cjeALGf9hCr-4" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="-1480" y="-640" width="280" height="430" as="geometry" />
+          <mxGeometry x="-1520" y="-1240" width="280" height="430" as="geometry" />
         </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-5" value="Unauthorized user will be sent here&lt;br&gt;Has link to sign up page" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="3gcf0JgR6cjeALGf9hCr-4" vertex="1">
+        <mxCell id="3gcf0JgR6cjeALGf9hCr-5" value="Unauthorized user will be sent here&lt;br&gt;Has link to sign up page&lt;br&gt;- Has link to login page" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="3gcf0JgR6cjeALGf9hCr-4" vertex="1">
           <mxGeometry width="280" height="430" as="geometry" />
         </mxCell>
         <mxCell id="3gcf0JgR6cjeALGf9hCr-6" value="Landing page&lt;br&gt;/lp" style="rounded=0;whiteSpace=wrap;html=1;" parent="3gcf0JgR6cjeALGf9hCr-4" vertex="1">
@@ -384,7 +384,7 @@
           <mxGeometry width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="3gcf0JgR6cjeALGf9hCr-13" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="1470" y="750" width="280" height="430" as="geometry" />
+          <mxGeometry x="1500" y="200" width="280" height="430" as="geometry" />
         </mxCell>
         <mxCell id="3gcf0JgR6cjeALGf9hCr-14" value="Media will be displayed&lt;br&gt;Has menu:&lt;br&gt;- Link the media to album&lt;br&gt;- Open thread&lt;br&gt;&lt;br&gt;Thread is provided as drawer." style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="3gcf0JgR6cjeALGf9hCr-13" vertex="1">
           <mxGeometry width="280" height="430" as="geometry" />
@@ -398,7 +398,7 @@
         <mxCell id="3gcf0JgR6cjeALGf9hCr-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="3gcf0JgR6cjeALGf9hCr-8" target="3gcf0JgR6cjeALGf9hCr-11" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" parent="1" source="3gcf0JgR6cjeALGf9hCr-11" target="3gcf0JgR6cjeALGf9hCr-14" edge="1">
+        <mxCell id="3gcf0JgR6cjeALGf9hCr-18" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="3gcf0JgR6cjeALGf9hCr-11" target="3gcf0JgR6cjeALGf9hCr-14" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="3gcf0JgR6cjeALGf9hCr-19" value="" style="group" parent="1" vertex="1" connectable="0">
@@ -414,7 +414,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="3gcf0JgR6cjeALGf9hCr-23" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="-1080" y="-640" width="280" height="430" as="geometry" />
+          <mxGeometry x="-1120" y="-1240" width="280" height="430" as="geometry" />
         </mxCell>
         <mxCell id="3gcf0JgR6cjeALGf9hCr-24" value="Dashboard kind of page&lt;br&gt;- User&#39;s activities&lt;br&gt;- User space activities" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="3gcf0JgR6cjeALGf9hCr-23" vertex="1">
           <mxGeometry width="280" height="430" as="geometry" />
@@ -426,7 +426,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="3gcf0JgR6cjeALGf9hCr-28" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="-370" y="-120" width="280" height="430" as="geometry" />
+          <mxGeometry x="-370" y="40" width="280" height="430" as="geometry" />
         </mxCell>
         <mxCell id="3gcf0JgR6cjeALGf9hCr-29" value="User can sign up via invitation" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="3gcf0JgR6cjeALGf9hCr-28" vertex="1">
           <mxGeometry width="280" height="430" as="geometry" />
@@ -437,47 +437,8 @@
         <mxCell id="3gcf0JgR6cjeALGf9hCr-31" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="3gcf0JgR6cjeALGf9hCr-29" target="3gcf0JgR6cjeALGf9hCr-1" edge="1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-32" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="640" y="2010" width="280" height="430" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-33" value="User can see list of users belonging to user space" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="3gcf0JgR6cjeALGf9hCr-32" vertex="1">
-          <mxGeometry width="280" height="430" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-34" value="User space page&lt;br&gt;/user-space/:id" style="rounded=0;whiteSpace=wrap;html=1;" parent="3gcf0JgR6cjeALGf9hCr-32" vertex="1">
-          <mxGeometry width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-35" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="3gcf0JgR6cjeALGf9hCr-1" target="3gcf0JgR6cjeALGf9hCr-33" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-36" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="640" y="1320" width="280" height="430" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-37" value="User can view which date has media" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="3gcf0JgR6cjeALGf9hCr-36" vertex="1">
-          <mxGeometry width="280" height="430" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-38" value="Calendar page&lt;br&gt;/calendar?date=xx" style="rounded=0;whiteSpace=wrap;html=1;" parent="3gcf0JgR6cjeALGf9hCr-36" vertex="1">
-          <mxGeometry width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="3gcf0JgR6cjeALGf9hCr-1" target="3gcf0JgR6cjeALGf9hCr-37" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-40" value="" style="group" parent="1" vertex="1" connectable="0">
-          <mxGeometry x="1080" y="1320" width="280" height="430" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-41" value="User can view grid of media for the date" style="rounded=0;whiteSpace=wrap;html=1;align=left;" parent="3gcf0JgR6cjeALGf9hCr-40" vertex="1">
-          <mxGeometry width="280" height="430" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-42" value="Date detail page&lt;br&gt;/calendar/date?date=xx" style="rounded=0;whiteSpace=wrap;html=1;" parent="3gcf0JgR6cjeALGf9hCr-40" vertex="1">
-          <mxGeometry width="140" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-43" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="3gcf0JgR6cjeALGf9hCr-37" target="3gcf0JgR6cjeALGf9hCr-41" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="3gcf0JgR6cjeALGf9hCr-44" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="3gcf0JgR6cjeALGf9hCr-41" target="3gcf0JgR6cjeALGf9hCr-14" edge="1">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
         <mxCell id="0Gjfl6TbjRJOHr-WR5C5-1" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="-680" y="-640" width="280" height="430" as="geometry" />
+          <mxGeometry x="-720" y="-1240" width="280" height="430" as="geometry" />
         </mxCell>
         <mxCell id="0Gjfl6TbjRJOHr-WR5C5-2" value="User will be guided to open email and confirm email address" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="0Gjfl6TbjRJOHr-WR5C5-1">
           <mxGeometry width="280" height="430" as="geometry" />
@@ -489,7 +450,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="0Gjfl6TbjRJOHr-WR5C5-5" value="" style="group" vertex="1" connectable="0" parent="1">
-          <mxGeometry x="-280" y="-640" width="280" height="430" as="geometry" />
+          <mxGeometry x="-320" y="-1240" width="280" height="430" as="geometry" />
         </mxCell>
         <mxCell id="0Gjfl6TbjRJOHr-WR5C5-6" value="User will be thanked for signup.&lt;br&gt;Also shows link to top page to start using." style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="0Gjfl6TbjRJOHr-WR5C5-5">
           <mxGeometry width="280" height="430" as="geometry" />
@@ -511,6 +472,39 @@
         </mxCell>
         <mxCell id="tVO8eSDJfFtNGfMK3ptr-3" value="Internal server error page&lt;br&gt;/internal-server-error" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="tVO8eSDJfFtNGfMK3ptr-1">
           <mxGeometry width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-4" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="-1110" y="-670" width="280" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-5" value="Provides login" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="tVO8eSDJfFtNGfMK3ptr-4">
+          <mxGeometry width="280" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-6" value="Login page&lt;br&gt;/login" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="tVO8eSDJfFtNGfMK3ptr-4">
+          <mxGeometry width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="3gcf0JgR6cjeALGf9hCr-5" target="tVO8eSDJfFtNGfMK3ptr-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-8" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="tVO8eSDJfFtNGfMK3ptr-5" target="3gcf0JgR6cjeALGf9hCr-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-9" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="640" y="840" width="280" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-10" value="Provides various info about user account&lt;br&gt;Also configuration" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="tVO8eSDJfFtNGfMK3ptr-9">
+          <mxGeometry width="280" height="430" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-11" value="Account page&lt;br&gt;/account" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="tVO8eSDJfFtNGfMK3ptr-9">
+          <mxGeometry width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="3gcf0JgR6cjeALGf9hCr-1" target="tVO8eSDJfFtNGfMK3ptr-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-16" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="tVO8eSDJfFtNGfMK3ptr-10" target="tVO8eSDJfFtNGfMK3ptr-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="tVO8eSDJfFtNGfMK3ptr-15" value="Logout" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="840" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

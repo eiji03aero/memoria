@@ -165,6 +165,52 @@ if t := reflect.TypeOf(err); t.Kind() == reflect.Ptr {
 }
 ```
 
+### using errors.Is
+- whether value or pointer affects the result
+```
+type CError struct{}
+
+func (e CError) Error() string {
+	return "let's go"
+}
+
+func main() {
+	err := CError{}
+	log.Println(errors.Is(err, CError{})) // true
+
+	err2 := CError{}
+	log.Println(errors.Is(err2, &CError{})) // false
+
+	err3 := &CError{}
+	log.Println(errors.Is(err3, CError{})) // false
+
+	err4 := &CError{}
+	log.Println(errors.Is(err4, &CError{})) // true
+}
+```
+
+- seems to be the return value of Error method needs to be same to be true for errors.Is comparison
+- seems to be:
+    - errors.Is is pretty much for constant error the ones that are static and do not have dynamic properties
+    - to cover above case, you should use errors.As
+```
+type CError struct{ message string }
+
+func (e CError) Error() string {
+	return "let's go " + e.message
+}
+
+func main() {
+	err := CError{}
+	log.Println(errors.Is(err, CError{message: "1"})) // false
+
+	err2 := CError{}
+	log.Println(errors.Is(err2, CError{})) // true
+
+	err3 := CError{}
+	log.Println(errors.As(err3, &CError{message: "3"})) // true
+}
+```
 
 ---
 

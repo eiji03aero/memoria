@@ -23,16 +23,16 @@ export const Item = ({ label, icon, active = false, onPress }: Props) => {
 
   return (
     <button {...buttonProps} className={styles.classnames(styles.reset.button)}>
-      <View width="size-700" height="size-700" borderRadius="regular">
+      <View width="size-600" height="size-500" borderRadius="regular">
         <Flex
           width="100%"
           height="100%"
           direction="column"
           justifyContent="center"
           alignItems="center"
-          gap="size-25"
+          gap="size-10"
         >
-          <Icon size="M" color={contentColor} name={icon} />
+          <Icon size="S" color={contentColor} name={icon} />
           <CustomText size={50} color={contentColor}>
             {label}
           </CustomText>

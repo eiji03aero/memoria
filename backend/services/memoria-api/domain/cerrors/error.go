@@ -17,15 +17,15 @@ func (e Consistency) Error() string {
 
 // -------------------- Resource not found --------------------
 type ResourceNotFound struct {
-	message string
+	name string
 }
 
-func NewResourceNotFound(message string) error {
-	return ResourceNotFound{message: message}
+func NewResourceNotFound(name string) error {
+	return ResourceNotFound{name: name}
 }
 
 func (e ResourceNotFound) Error() string {
-	return fmt.Sprintf("resource not found: %s", e.message)
+	return fmt.Sprintf("resource not found: %s", e.name)
 }
 
 // -------------------- Internal --------------------

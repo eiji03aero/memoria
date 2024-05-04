@@ -16,6 +16,7 @@ services:
       DB_NAME: memoria
       DB_HOST: memoria-db
       DB_PORT: 5432
+      DB_LOG_LEVEL: info
     volumes:
       - .:/backend
     working_dir: /backend/services/memoria-api

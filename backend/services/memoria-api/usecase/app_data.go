@@ -3,6 +3,7 @@ package usecase
 import (
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/model"
+	"memoria-api/domain/service"
 	"memoria-api/registry"
 )
 
@@ -13,12 +14,16 @@ type AppData interface {
 type appData struct {
 	userRepo      repository.User
 	userSpaceRepo repository.UserSpace
+	userSvc       *service.User
+	userSpaceSvc  *service.UserSpace
 }
 
 func NewAppData(reg registry.Registry) AppData {
 	return &appData{
 		userRepo:      reg.NewUserRepository(),
 		userSpaceRepo: reg.NewUserSpaceRepository(),
+		userSvc:       reg.NewUserService(),
+		userSpaceSvc:  reg.NewUserSpaceService(),
 	}
 }
 
@@ -32,16 +37,12 @@ type AppDataGetRet struct {
 }
 
 func (u *appData) Get(dto AppDataGetDTO) (ret AppDataGetRet, err error) {
-	user, err := u.userRepo.FindByID(repository.UserFindByIDDTO{
-		ID: dto.UserID,
-	})
+	user, err := u.userSvc.FindByID(dto.UserID)
 	if err != nil {
 		return
 	}
 
-	userSpace, err := u.userSpaceRepo.FindByID(repository.UserSpaceFindByIDDTO{
-		ID: dto.UserSpaceID,
-	})
+	userSpace, err := u.userSpaceSvc.FindByID(dto.UserSpaceID)
 	if err != nil {
 		return
 	}

@@ -7,6 +7,8 @@ import Article from '@spectrum-icons/workflow/Article';
 import ImageAlbum from '@spectrum-icons/workflow/ImageAlbum';
 import ImageCarousel from '@spectrum-icons/workflow/ImageCarousel';
 import Settings from '@spectrum-icons/workflow/Settings';
+import User from '@spectrum-icons/workflow/User';
+import UserGroup from '@spectrum-icons/workflow/UserGroup';
 
 import * as styles from '../../styles';
 
@@ -18,6 +20,8 @@ const IconMap = {
   add: Add,
   article: Article,
   settings: Settings,
+  user: User,
+  'user-group': UserGroup,
 } as const;
 
 export type IconName = keyof typeof IconMap;

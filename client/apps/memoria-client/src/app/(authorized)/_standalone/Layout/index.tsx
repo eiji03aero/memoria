@@ -56,10 +56,10 @@ export const Layout = ({
           onPress={() => router.push('/slides')}
         />
         <BottomNavigation.Item
-          active={pathname === '/settings'}
-          label="Settings"
-          icon="settings"
-          onPress={() => router.push('/settings')}
+          active={pathname === '/account'}
+          label="Account"
+          icon="user"
+          onPress={() => router.push('/account')}
         />
       </BottomNavigation>
     </Flex>

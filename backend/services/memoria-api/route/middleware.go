@@ -59,14 +59,14 @@ func wrap(h func(c *gin.Context, reg registry.Registry) (status int, data any, e
 		if err != nil {
 			log.Println("wrap handler result err: ", err.Error())
 
-			if _, ok := err.(cerrors.Validation); ok {
+			if errors.As(err, &cerrors.Validation{}) {
 				log.Println("inside validation error")
 				c.JSON(http.StatusBadRequest, res.NewValidationRes(err.(cerrors.Validation)))
 				c.Abort()
 				return
 			}
 
-			if errors.Is(err, cerrors.Internal{}) {
+			if errors.As(err, &cerrors.Internal{}) {
 				log.Println("inside internal error")
 				c.JSON(http.StatusInternalServerError, gin.H{
 					"message": err.Error(),
