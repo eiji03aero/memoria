@@ -16,6 +16,7 @@ type Registry interface {
 	BeginTx()
 	RollbackTx()
 	CommitTx()
+	CloseDB()
 	// mailer
 	NewSESMailer() (interfaces.Mailer, error)
 	// repository
@@ -58,6 +59,15 @@ func (r *registry) RollbackTx() {
 
 func (r *registry) CommitTx() {
 	r.db.Commit()
+}
+
+func (r *registry) CloseDB() {
+	d, err := r.db.DB()
+	if err != nil {
+		panic(err)
+	}
+
+	d.Close()
 }
 
 // -------------------- mailer --------------------

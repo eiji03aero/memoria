@@ -8,11 +8,12 @@ import (
 )
 
 type UserInvitation struct {
-	ID        string    `gorm:"column:id"`
-	UserID    string    `gorm:"column:user_id"`
-	Type      string    `gorm:"column:type"`
-	CreatedAt time.Time `gorm:"column:created_at"`
-	UpdatedAt time.Time `gorm:"column:updated_at"`
+	ID          string    `gorm:"column:id"`
+	UserID      string    `gorm:"column:user_id"`
+	UserSpaceID string    `gorm:"column:user_space_id"`
+	Type        string    `gorm:"column:type"`
+	CreatedAt   time.Time `gorm:"column:created_at"`
+	UpdatedAt   time.Time `gorm:"column:updated_at"`
 }
 
 func (t UserInvitation) TableNmae() string {
@@ -26,8 +27,9 @@ func (t UserInvitation) ToModel() (ui *model.UserInvitation, err error) {
 	}
 
 	return model.NewUserInvitation(model.NewUserInvitationDTO{
-		ID:     t.ID,
-		UserID: t.UserID,
-		Type:   uit,
+		ID:          t.ID,
+		UserID:      t.UserID,
+		UserSpaceID: t.UserSpaceID,
+		Type:        uit,
 	})
 }

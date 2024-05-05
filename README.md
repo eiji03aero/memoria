@@ -140,7 +140,7 @@
         - Submit succeeds to 2.
     - Remarks
         - Cannot invite email that exists in the same user space
-- 2: Top page
+- 2: Dashboard page
     - User will be feedbacked with the result
 - 3: User receives email
     - User receives email to sign up
@@ -277,6 +277,20 @@
         - id
         - name
 
+### Invite user
+- POST /api/auth/invte-user
+- Input:
+    - email: string
+- Remark:
+    - email has to be unique among all users
+
+### Confirm invite user
+- GET /api/public/invite-user-confirm
+- Input:
+    - invitation_id: string
+    - name: string
+    - password string
+
 ### Signup
 - POST /api/public/signup
 - General:
@@ -294,14 +308,6 @@
     - email has to be unique among all users
     - jwt will be attached in response header
 
-### Login
-- POST /api/public/login
-- General:
-    - This is to login for user
-- Input:
-    - email: string
-    - password: string
-
 ### Confirm signup
 - GET /api/public/signup-confirm
 - General:
@@ -312,9 +318,23 @@
 - Redirects:
     - client/signup-thanks
 
+### Login
+- POST /api/public/login
+- General:
+    - This is to login for user
+- Input:
+    - email: string
+    - password: string
+
 # Reminding notes
 ## Workmail
 - It is created in oregon region
+
+# Issues
+## service or dao?
+- especially query logics
+- they are kind of scattered among these two
+- should have solid rules or reorganization
 
 # Reference
 - Logo data: https://www.canva.com/design/DAGDb1mB68I/3ysozDgehKPU0oWjGwMzBA/edit

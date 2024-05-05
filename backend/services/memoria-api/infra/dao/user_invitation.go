@@ -35,9 +35,10 @@ func (d *userInvitation[T]) FindOne(findOption *repository.FindOption) (ui *mode
 
 func (d *userInvitation[T]) Create(dto repository.UserInvitationCreateDTO) (err error) {
 	ui := &tbl.UserInvitation{
-		ID:     dto.ID,
-		UserID: dto.UserID,
-		Type:   dto.Type,
+		ID:          dto.ID,
+		UserID:      dto.UserID,
+		UserSpaceID: dto.UserSpaceID,
+		Type:        dto.Type,
 	}
 
 	result := d.db.Create(ui)

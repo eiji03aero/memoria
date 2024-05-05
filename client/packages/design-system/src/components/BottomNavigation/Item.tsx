@@ -19,7 +19,7 @@ export const Item = ({ label, icon, active = false, onPress }: Props) => {
   const ref = React.useRef<HTMLButtonElement>(null);
   const { buttonProps } = useButton({ onPress }, ref);
 
-  const contentColor = active ? 'yellow-700' : 'gray-600';
+  const contentColor = active ? 'yellow-500' : 'gray-600';
 
   return (
     <button {...buttonProps} className={styles.classnames(styles.reset.button)}>

@@ -10,7 +10,8 @@ type UserInvitation interface {
 }
 
 type UserInvitationCreateDTO struct {
-	ID     string
-	UserID string
-	Type   string
+	ID          string
+	UserID      string
+	UserSpaceID string
+	Type        string
 }

@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"log"
+	"errors"
 
 	"gorm.io/gorm"
 
@@ -51,7 +51,6 @@ func (d *user[T]) FindOne(findOption *repository.FindOption) (user *model.User, 
 	userTbl := &tbl.User{}
 	query := d.ScopeByFindOption(d.db, findOption)
 	err = query.First(userTbl).Error
-	log.Println("going in dao user", err)
 	if ok, dmnErr := d.handleResourceNotFound(err, "user"); ok {
 		err = dmnErr
 		return
@@ -61,6 +60,25 @@ func (d *user[T]) FindOne(findOption *repository.FindOption) (user *model.User, 
 	}
 
 	user, err = userTbl.ToModel()
+	return
+}
+
+func (d *user[T]) EmailExistsInUserSpace(userSpaceID string, email string) (exists bool, err error) {
+	userTbl := &tbl.User{}
+	err = d.db.Table("users").
+		Select("users.email").
+		Joins("join user_user_space_relations uusr on uusr.user_space_id = users.id").
+		Where("uusr.user_space_id = ?", userSpaceID).
+		Where("users.email = ?", email).
+		First(userTbl).
+		Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		exists = false
+		err = nil
+		return
+	}
+
+	exists = true
 	return
 }
 

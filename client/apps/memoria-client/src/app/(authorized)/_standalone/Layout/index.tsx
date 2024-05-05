@@ -33,7 +33,12 @@ export const Layout = ({
           </Link>
         </Flex>
       </View>
-      <View minHeight="size-0" flex={1} UNSAFE_className="overflow-auto">
+      <View
+        minHeight="size-0"
+        flex={1}
+        UNSAFE_className="overflow-auto"
+        backgroundColor="gray-200"
+      >
         {children}
       </View>
       <BottomNavigation>
@@ -56,7 +61,7 @@ export const Layout = ({
           onPress={() => router.push('/slides')}
         />
         <BottomNavigation.Item
-          active={pathname === '/account'}
+          active={pathname.startsWith('/account')}
           label="Account"
           icon="user"
           onPress={() => router.push('/account')}

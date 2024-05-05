@@ -9,10 +9,22 @@
     - lower cpu
     - lower memory
     - limit the number of containers (task)
+- fargate
+    - use fargate spote
+    - this time it reduced (per day):
+        - before: $0.87
+        - after: $0.15
+        - ratio: down to 17.2%, cutting 82,8%
 - rds
     - choose cheap model (this time t3 micro)
     - lower allocated storage
     - use magnetic storage
+- ec2
+    - stop a basion server if you are not using
+- vpc
+    - for now the usage is on:
+        - public ip ($0.005 / hour)
+        - bastion, client, api, db-migration, alb?
 - alb
     - use only one alb to handle multiple domains
 
@@ -221,9 +233,16 @@ func main() {
 - error response body can be obtained only when mutateFn is run successfully
 - this leads to running onSuccess thought request was an error
 
-## Motherfxcker react-spectrum
+## Motherfxcking react-spectrum
 ### where is typography component?
 - it has been discussed for years
+
+### Just gave up utilizing this as design sytem
+- functionality is very limited (should be as intended though)
+- size attributes are very not intuitive
+- cannot reuse color, size in other place
+- thanks for wasting my time
+- just gonna go with panda and use this as base ui component library
 
 ### who the fluff uses content-box ... ?
 - why, just why

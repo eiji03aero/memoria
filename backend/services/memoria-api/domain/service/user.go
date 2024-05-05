@@ -41,15 +41,18 @@ func (s *User) FindByEmail(email string) (u *model.User, err error) {
 }
 
 func (s *User) ExistsByEmail(email string) (exists bool, err error) {
-	user, err := s.FindByEmail(email)
+	_, err = s.userRepo.FindOne(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "email = ?", Value: email},
+		},
+	})
 	if errors.As(err, &cerrors.ResourceNotFound{}) {
-		return false, nil
-	}
-	if err != nil {
+		exists = false
+		err = nil
 		return
 	}
 
-	exists = user != nil
+	exists = true
 	return
 }
 

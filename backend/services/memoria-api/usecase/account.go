@@ -23,6 +23,8 @@ type Account interface {
 	SignupConfirm(dto AccountSignupConfirmDTO) (ret AccountSignupConfirmRet, err error)
 	AddUserToUserSpace(dto AccountAddUserToUserSpaceDTO) error
 	Login(dto AccountLoginDTO) (ret AccountLoginRet, err error)
+	InviteUser(dto AccountInviteUserDTO) (err error)
+	InviteUserConfirm(dto AccountInviteUserConfirmDTO) (ret AccountInviteUserConfirmRet, err error)
 }
 
 type account struct {
@@ -141,8 +143,6 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 	})
 	if err != nil {
 		err = cerrors.NewInternal(fmt.Sprintf("failed to create user: %s", err.Error()))
-		log.Println(err)
-		log.Println(err.Error())
 		u.registry.RollbackTx()
 		return
 	}
@@ -175,9 +175,10 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 	// create invitation
 	invitationID := service.GenerateUlid()
 	err = u.userInvitationRepo.Create(repository.UserInvitationCreateDTO{
-		ID:     invitationID,
-		UserID: userID,
-		Type:   string(value.UserInvitationType_Signup),
+		ID:          invitationID,
+		UserID:      userID,
+		UserSpaceID: userSpaceID,
+		Type:        string(value.UserInvitationType_Signup),
 	})
 
 	// send confirm email
@@ -196,6 +197,8 @@ Please open the url below to complete signup process and start using memoria.<br
 		Subject: "Memoria - Please confirm your email address",
 		Body:    body,
 	})
+
+	u.registry.CommitTx()
 
 	return
 }
@@ -223,6 +226,7 @@ func (u *account) SignupConfirm(dto AccountSignupConfirmDTO) (ret AccountSignupC
 		return
 	}
 
+	// -------------------- execution --------------------
 	userInvitatation, err := u.userInvitationSvc.FindByID(*dto.ID)
 	if err != nil {
 		setErrorURL()
@@ -281,14 +285,6 @@ func (u *account) Login(dto AccountLoginDTO) (ret AccountLoginRet, err error) {
 		})
 		return
 	}
-	emailExists, err := u.userSvc.ExistsByEmail(*dto.Email)
-	if !emailExists {
-		err = cerrors.NewValidation(cerrors.NewValidationDTO{
-			Key:  cerrors.ValidationKey_ResourceNotFound,
-			Name: "email",
-		})
-		return
-	}
 
 	if dto.Password == nil {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
@@ -320,5 +316,162 @@ func (u *account) Login(dto AccountLoginDTO) (ret AccountLoginRet, err error) {
 
 	ret.UserID = user.ID
 	ret.UserSpaceID = uusr.UserSpaceID
+	return
+}
+
+type AccountInviteUserDTO struct {
+	UserSpaceID string
+	Email       *string
+}
+
+func (u *account) InviteUser(dto AccountInviteUserDTO) (err error) {
+	ctx := context.Background()
+	u.registry.BeginTx()
+
+	// -------------------- validation --------------------
+	if dto.Email == nil {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_Required,
+			Name: "email",
+		})
+		return
+	}
+
+	userExists, err := u.userRepo.EmailExistsInUserSpace(dto.UserSpaceID, *dto.Email)
+	if userExists {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_AlreadyTaken,
+			Name: "email",
+		})
+		return
+	}
+	if err != nil {
+		return
+	}
+
+	// -------------------- execution --------------------
+	userID := service.GenerateUlid()
+
+	err = u.userRepo.Create(repository.UserCreateDTO{
+		ID:            userID,
+		AccountStatus: string(value.UserAccountStatus_Invited),
+		Name:          "Invited user",
+		Email:         *dto.Email,
+		PasswordHash:  "",
+	})
+	if err != nil {
+		u.registry.RollbackTx()
+		return
+	}
+
+	err = u.AddUserToUserSpace(AccountAddUserToUserSpaceDTO{
+		UserID:      userID,
+		UserSpaceID: dto.UserSpaceID,
+	})
+	if err != nil {
+		err = cerrors.NewInternal(fmt.Sprintf("failed to add user to user space: %s", err.Error()))
+		u.registry.RollbackTx()
+		return
+	}
+
+	invitationID := service.GenerateUlid()
+	err = u.userInvitationRepo.Create(repository.UserInvitationCreateDTO{
+		ID:          invitationID,
+		UserID:      userID,
+		UserSpaceID: dto.UserSpaceID,
+		Type:        string(value.UserInvitationType_Invite),
+	})
+	if err != nil {
+		u.registry.RollbackTx()
+		return
+	}
+
+	confirmUrl := config.ClientHost + "/invite-user-confirm?id=" + invitationID
+	body := fmt.Sprintf(`
+Hello this is memoria.<br/>
+
+You have been invited to a user space in memoria.<br />
+Please open below url to join them! <br />
+<a href="%s">%s</a>
+`,
+		confirmUrl, confirmUrl,
+	)
+	u.mailer.Send(ctx, interfaces.MailerSendDTO{
+		From:    config.NoReplyEmailAddress,
+		To:      []string{*dto.Email},
+		Subject: "Memoria - Please confirm your invitation",
+		Body:    body,
+	})
+
+	u.registry.CommitTx()
+
+	return
+}
+
+type AccountInviteUserConfirmDTO struct {
+	Name         *string
+	Password     *string
+	InvitationID *string
+}
+
+type AccountInviteUserConfirmRet struct {
+	UserID      string
+	UserSpaceID string
+}
+
+func (u *account) InviteUserConfirm(dto AccountInviteUserConfirmDTO) (ret AccountInviteUserConfirmRet, err error) {
+	// -------------------- validation --------------------
+	if dto.Name == nil {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_Required,
+			Name: "email",
+		})
+		return
+	}
+
+	if dto.Password == nil {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_Required,
+			Name: "password",
+		})
+		return
+	}
+
+	if dto.InvitationID == nil {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_Required,
+			Name: "invitation id",
+		})
+		return
+	}
+
+	// -------------------- execution --------------------
+	ui, err := u.userInvitationRepo.FindOne(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "id = ?", Value: *dto.InvitationID},
+		},
+	})
+
+	user, err := u.userSvc.FindByID(ui.UserID)
+	if err != nil {
+		return
+	}
+
+	hashed, err := bcrypt.GenerateFromPassword([]byte(*dto.Password), 10)
+	if err != nil {
+		return
+	}
+
+	user.Name = *dto.Name
+	user.PasswordHash = string(hashed)
+	user.SetAccountStatus(value.UserAccountStatus_Confirmed)
+	err = u.userRepo.Update(user)
+	if err != nil {
+		return
+	}
+
+	ret.UserID = ui.UserID
+	ret.UserSpaceID = ui.UserSpaceID
+	log.Println("finishing usecase:", ret)
 	return
 }

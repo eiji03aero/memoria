@@ -16,7 +16,7 @@ func InitializeRouter() *gin.Engine {
 	router.Use(cors.New(cors.Config{
 		AllowOrigins:     config.CORSAllowOrigins,
 		AllowMethods:     []string{"POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
@@ -35,6 +35,7 @@ func InitializeRouter() *gin.Engine {
 		public.POST("/signup", wrap(account.Signup))
 		public.GET("/signup-confirm", wrap(account.SignupConfirm))
 		public.POST("/login", wrap(account.Login))
+		public.POST("/invite-user-confirm", wrap(account.InviteUserConfirm))
 	}
 
 	// -------------------- Authenticated apis --------------------
@@ -43,6 +44,9 @@ func InitializeRouter() *gin.Engine {
 	{
 		appData := handler.NewAppData()
 		authenticated.GET("/app-data", wrap(appData.Get))
+
+		account := handler.NewAccount()
+		authenticated.POST("/invite-user", wrap(account.InviteUser))
 	}
 
 	return router

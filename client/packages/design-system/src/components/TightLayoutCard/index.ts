@@ -1,0 +1,1 @@
+export { TightLayoutCard } from './TightLayoutCard';

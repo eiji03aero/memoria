@@ -1,4 +1,3 @@
-import { useIsMobileDevice } from '@react-spectrum/utils';
 import { ColorValue } from '@react-types/shared';
 
 import * as styles from '../../styles';
@@ -38,7 +37,9 @@ export const CustomText = ({
   className,
   ...rest
 }: Props) => {
-  const isMobile = useIsMobileDevice();
+  const {
+    initialMatches: { mobile: isMobile },
+  } = styles.useMediaQueries();
 
   const Component = asProp;
   const sizeConfig = FontSizes[size];

@@ -49,6 +49,7 @@ func wrap(h func(c *gin.Context, reg registry.Registry) (status int, data any, e
 
 		ctx := context.Background()
 		reg, err := buildRegistry(ctx)
+		defer reg.CloseDB()
 		if err != nil {
 			log.Println("wrap build registry error:", err.Error())
 			return
@@ -92,6 +93,7 @@ func Authenticate() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx := context.Background()
 		reg, err := buildRegistry(ctx)
+		defer reg.CloseDB()
 		if err != nil {
 			log.Println("Authenticate build registry error:", err.Error())
 			return
@@ -114,6 +116,7 @@ func Authenticate() gin.HandlerFunc {
 		userID, userSpaceID, err := authUc.VerifyJWT(usecase.AuthVerifyJWTDTO{
 			TokenString: tokenString,
 		})
+		log.Println("decoded:", userID, "us:", userSpaceID)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"message": cerrors.NewUnauthorized().Error(),

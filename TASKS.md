@@ -1,11 +1,12 @@
 # Tasks
 ## WIP
-- [ ] implement invite user
-    - add the doc
 - [ ] implement testing
     - consider how we do it
 
 ## Todo
+- [ ] remove react-spectrum utility components
+    - do not use
+    - replace the tokens stuff as well
 - [ ] textfield error icon overflow problem
     - when error is shown, the red triangle overflows
 - [ ] make sure db migration is run once
@@ -27,6 +28,8 @@
     - document title
 
 ## Done
+- [x] implement invite user
+    - add the doc
 - [x] implement logout
     - add the doc
     - implement in frontend

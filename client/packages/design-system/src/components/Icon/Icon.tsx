@@ -8,6 +8,7 @@ import ImageAlbum from '@spectrum-icons/workflow/ImageAlbum';
 import ImageCarousel from '@spectrum-icons/workflow/ImageCarousel';
 import Settings from '@spectrum-icons/workflow/Settings';
 import User from '@spectrum-icons/workflow/User';
+import UserAdd from '@spectrum-icons/workflow/UserAdd';
 import UserGroup from '@spectrum-icons/workflow/UserGroup';
 
 import * as styles from '../../styles';
@@ -21,6 +22,7 @@ const IconMap = {
   article: Article,
   settings: Settings,
   user: User,
+  'user-add': UserAdd,
   'user-group': UserGroup,
 } as const;
 

@@ -35,7 +35,7 @@ export default function LP() {
           <CustomText size={200} color="gray-900">
             Cherish your moments for memories
           </CustomText>
-          <Flex gap="size-200" direction="column" alignItems="center">
+          <Flex gap="size-100" alignItems="center">
             <Button variant="primary" elementType={Link} href="/signup">
               Sign up now
             </Button>
