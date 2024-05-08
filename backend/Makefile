@@ -1,7 +1,3 @@
-.PHONY: psql
-psql:
-	PGPASSWORD=${POSTGRES_PASSWORD} psql -U ${POSTGRES_USER} -d ${POSTGRES_DB}
-
 # just a sample, do not run this
 .PHONY: generate-migration
 generate-migration:
@@ -11,10 +7,6 @@ generate-migration:
 migrate:
 	migrate --path db/migrations --database 'postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?sslmode=disable' -verbose up
 
-.PHONY: migrate-down-all
-migrate-down-all:
-	migrate --path db/migrations --database 'postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?sslmode=disable' -verbose down --all
-
 .PHONY: db-reset
 db-reset:
 	make db-drop
@@ -23,3 +15,8 @@ db-reset:
 .PHONY: db-drop
 db-drop:
 	migrate --path db/migrations --database 'postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?sslmode=disable' -verbose drop -f
+
+.PHONY: test-db-setup
+test-db-setup:
+	migrate --path db/migrations --database 'postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/memoria-test?sslmode=disable' -verbose drop -f
+	migrate --path db/migrations --database 'postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/memoria-test?sslmode=disable' -verbose up

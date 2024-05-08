@@ -41,7 +41,7 @@ func (h *Account) Signup(c *gin.Context, reg registry.Registry) (status int, dat
 		return
 	}
 
-	userID, userSpaceID, err := accountUc.Signup(usecase.AccountSignupDTO{
+	ret, err := accountUc.Signup(usecase.AccountSignupDTO{
 		Name:          body.Name,
 		Email:         body.Email,
 		Password:      body.Password,
@@ -53,8 +53,8 @@ func (h *Account) Signup(c *gin.Context, reg registry.Registry) (status int, dat
 	}
 
 	jwt, err := authUc.CreateJWT(usecase.AuthCreateJWTDTO{
-		UserID:      userID,
-		UserSpaceID: userSpaceID,
+		UserID:      ret.UserID,
+		UserSpaceID: ret.UserSpaceID,
 	})
 	if err != nil {
 		status = http.StatusInternalServerError
@@ -89,7 +89,8 @@ func (h *Account) SignupConfirm(c *gin.Context, reg registry.Registry) (status i
 		return
 	}
 
-	c.Redirect(http.StatusSeeOther, ret.RedirectURL)
+	status = http.StatusSeeOther
+	c.Redirect(status, ret.RedirectURL)
 	return
 }
 
@@ -103,12 +104,11 @@ type AccountLoginRes struct {
 }
 
 func (h *Account) Login(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
+	authUc := usecase.NewAuth(reg)
 	accountUc, err := usecase.NewAccount(reg)
 	if err != nil {
 		return
 	}
-
-	authUc := usecase.NewAuth(reg)
 
 	body := AccountLoginReq{}
 	err = c.BindJSON(&body)
@@ -153,7 +153,7 @@ func (h *Account) InviteUser(c *gin.Context, reg registry.Registry) (status int,
 		return
 	}
 
-	err = accountUc.InviteUser(usecase.AccountInviteUserDTO{
+	_, err = accountUc.InviteUser(usecase.AccountInviteUserDTO{
 		Email:       body.Email,
 		UserSpaceID: cctx.GetUserSpaceID(),
 	})

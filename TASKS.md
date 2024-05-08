@@ -2,32 +2,43 @@
 ## WIP
 - [ ] implement testing
     - consider how we do it
+    - refactor codings
+    - refactor struct namings
+    - refactor scopebyfindoption to be Scope method based
+    - refactor find methods
+        - try to DRY it up little
+- [ ] remove react-spectrum utility components
+    - do not use it
+    - replace the tokens stuff as well
+- [ ] refine the definition of service and usecase and dao
+    - create documents
+        - definition
+        - architecture diagram
+    - refactor based on it
 
 ## Todo
-- [ ] remove react-spectrum utility components
-    - do not use
-    - replace the tokens stuff as well
-- [ ] textfield error icon overflow problem
-    - when error is shown, the red triangle overflows
-- [ ] make sure db migration is run once
-    - probably it is run twice in github action
+- [ ] implement transaction / rollback
+    - for all the end points that need it
 - [ ] optimize memoria client docker image
     - multi stage build to pick only required files
     - standalone build
-- [ ] optimize docker file image sizes
-- [ ] login feature
-    - make sure to redirect to login page if user not authenticated
-- [ ] improve form error handlings
-    - signup
 - [ ] protect api endpoint from malicious access
     - too many requests
-- [ ] make sure to replace secretkey for jwt to secure one through env var
 - [ ] implement expire for jwt
 - [ ] make it pwa installable
 - [ ] Refine meta data for each page
     - document title
 
 ## Done
+- [x] make sure to replace secretkey for jwt to secure one through env var
+- [x] improve form error handlings
+    - signup
+- [x] login feature
+    - make sure to redirect to login page if user not authenticated
+- [x] make sure db migration is run once
+    - probably it is run twice in github action
+- [x] textfield error icon overflow problem
+    - when error is shown, the red triangle overflows
 - [x] implement invite user
     - add the doc
 - [x] implement logout

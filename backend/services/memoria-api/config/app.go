@@ -23,10 +23,7 @@ func init() {
 }
 
 var (
-	JWTSecretKey = os.Getenv("JWT_SECRET_KEY")
-
-	CORSAllowOrigins = strings.Split(os.Getenv("CORS_ALLOW_ORIGINS"), ",")
-
+	Env        = os.Getenv("ENV")
 	Host       = os.Getenv("HOST")
 	ClientHost = os.Getenv("CLIENT_HOST")
 
@@ -36,6 +33,9 @@ var (
 	DBPassword = os.Getenv("DB_PASSWORD")
 	DBName     = os.Getenv("DB_NAME")
 	DBLogLevel = os.Getenv("DB_LOG_LEVEL")
+
+	JWTSecretKey     = os.Getenv("JWT_SECRET_KEY")
+	CORSAllowOrigins = strings.Split(os.Getenv("CORS_ALLOW_ORIGINS"), ",")
 
 	NoReplyEmailAddress = "no-reply@memoria-app.com"
 )

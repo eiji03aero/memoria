@@ -11,12 +11,55 @@ import (
 
 type BaseDao[T any] struct{}
 
-func (d *BaseDao[T]) ScopeByFindOption(db *gorm.DB, findOption *repository.FindOption) *gorm.DB {
-	query := db
-	for _, filter := range findOption.Filters {
-		query = db.Where(filter.Query, filter.Value)
+type findWithFindOptionDTO struct {
+	db         *gorm.DB
+	findOption *repository.FindOption
+	data       any
+	name       string
+}
+
+func (d *BaseDao[T]) findWithFindOption(dto findWithFindOptionDTO) (result *gorm.DB, err error) {
+	result = dto.db.Scopes(d.scopeByFindOption(dto.findOption)).Find(dto.data)
+	err = result.Error
+	if isRNF, dmnErr := d.handleResourceNotFound(result.Error, dto.name); isRNF {
+		err = dmnErr
+		return
 	}
-	return query
+
+	return
+}
+
+type findOneWithFindOptionDTO struct {
+	db         *gorm.DB
+	findOption *repository.FindOption
+	data       any
+	name       string
+}
+
+func (d *BaseDao[T]) findOneWithFindOption(dto findOneWithFindOptionDTO) (result *gorm.DB, err error) {
+	result = dto.db.Scopes(d.scopeByFindOption(dto.findOption)).First(dto.data)
+	err = result.Error
+	if isRNF, dmnErr := d.handleResourceNotFound(result.Error, dto.name); isRNF {
+		err = dmnErr
+		return
+	}
+
+	return
+}
+
+func (d *BaseDao[T]) scopeByFindOption(findOption *repository.FindOption) func(db *gorm.DB) *gorm.DB {
+	return func(db *gorm.DB) *gorm.DB {
+		query := db
+		for _, filter := range findOption.Filters {
+			query = query.Where(filter.Query, filter.Value)
+		}
+
+		if findOption.Order != "" {
+			query = query.Order(findOption.Order)
+		}
+
+		return query
+	}
 }
 
 func (d *BaseDao[T]) handleResourceNotFound(err error, name string) (isRNF bool, dmnErr error) {

@@ -10,12 +10,15 @@ import (
 	"gorm.io/gorm/logger"
 )
 
-type NewDTO struct{}
-
 func New() (db *gorm.DB, err error) {
+	dbName := config.DBName
+	if config.Env == "test" {
+		dbName = "memoria-test"
+	}
+
 	dsn := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s TimeZone=Asia/Tokyo",
-		config.DBHost, config.DBPort, config.DBUser, config.DBPassword, config.DBName,
+		config.DBHost, config.DBPort, config.DBUser, config.DBPassword, dbName,
 	)
 
 	logLevel := logger.Silent

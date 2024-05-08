@@ -61,14 +61,12 @@ func wrap(h func(c *gin.Context, reg registry.Registry) (status int, data any, e
 			log.Println("wrap handler result err: ", err.Error())
 
 			if errors.As(err, &cerrors.Validation{}) {
-				log.Println("inside validation error")
 				c.JSON(http.StatusBadRequest, res.NewValidationRes(err.(cerrors.Validation)))
 				c.Abort()
 				return
 			}
 
 			if errors.As(err, &cerrors.Internal{}) {
-				log.Println("inside internal error")
 				c.JSON(http.StatusInternalServerError, gin.H{
 					"message": err.Error(),
 				})
@@ -76,7 +74,6 @@ func wrap(h func(c *gin.Context, reg registry.Registry) (status int, data any, e
 				return
 			}
 
-			log.Println("last resort")
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"message": cerrors.NewInternal(err.Error()).Error(),
 			})
@@ -113,10 +110,7 @@ func Authenticate() gin.HandlerFunc {
 
 		tokenString = tokenString[leadingLen:]
 
-		userID, userSpaceID, err := authUc.VerifyJWT(usecase.AuthVerifyJWTDTO{
-			TokenString: tokenString,
-		})
-		log.Println("decoded:", userID, "us:", userSpaceID)
+		ret, err := authUc.VerifyJWT(tokenString)
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{
 				"message": cerrors.NewUnauthorized().Error(),
@@ -125,8 +119,8 @@ func Authenticate() gin.HandlerFunc {
 			return
 		}
 
-		ccontext.SetUserID(c, userID)
-		ccontext.SetUserSpaceID(c, userSpaceID)
+		ccontext.SetUserID(c, ret.UserID)
+		ccontext.SetUserSpaceID(c, ret.UserSpaceID)
 
 		c.Next()
 	}

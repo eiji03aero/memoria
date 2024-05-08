@@ -6,8 +6,14 @@ build:
 run:
 	reflex -r '(\.go|go\.mod)' -s go run ./cmd/app/*.go
 
-# just a sample, do not run this
-.PHONY: generate-migration
-generate-migration:
-	cd /backend
-	echo migrate create -ext sql -dir db/migrations -seq create_users_table
+.PHONY: test
+test:
+	ENV=test go test -v ./...
+
+.PHONY: test-package
+test-package:
+	ENV=test reflex -r '(\.go|go\.mod)' -s go test -v ./
+
+.PHONY: mockgen
+mockgen:
+	sh ./mockgen.sh

@@ -4,8 +4,7 @@ services:
   memoria-api:
     platform: linux/amd64
     build:
-      context: ./docker
-      dockerfile: Dockerfile.go-dev
+      context: ./docker/go
     environment:
       JWT_SECRET_KEY: HogeZamurai
       CORS_ALLOW_ORIGINS: http://localhost:3000
@@ -32,10 +31,11 @@ services:
         make run
   memoria-db:
     build:
-      context: ./docker
-      dockerfile: Dockerfile.db
+      context: ./docker/db
     volumes:
       - memoria-db-data:/var/lib/postgresql/data
+      - ./docker/db/initdb.d:/docker-entrypoint-initdb.d
+    working_dir: /home
     environment:
       POSTGRES_USER: memoria
       POSTGRES_PASSWORD: password

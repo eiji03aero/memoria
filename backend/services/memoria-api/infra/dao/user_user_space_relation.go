@@ -17,14 +17,33 @@ func NewUserUserSpaceRelation(db *gorm.DB) repository.UserUserSpaceRelation {
 	return &userUserSpaceRelation[tbl.UserUserSpaceRelation]{db: db}
 }
 
-func (d *userUserSpaceRelation[T]) FindOne(findOption *repository.FindOption) (uusr *model.UserUserSpaceRelation, err error) {
-	uusrTbl := &tbl.UserUserSpaceRelation{}
-	query := d.ScopeByFindOption(d.db, findOption)
-	err = query.First(uusrTbl).Error
-	if ok, dmnErr := d.handleResourceNotFound(err, "user user space relation"); ok {
-		err = dmnErr
+func (d *userUserSpaceRelation[T]) Find(findOption *repository.FindOption) (uusrs []*model.UserUserSpaceRelation, err error) {
+	uusrTbls := []*tbl.UserUserSpaceRelation{}
+	_, err = d.findWithFindOption(findWithFindOptionDTO{
+		db:         d.db,
+		findOption: findOption,
+		data:       &uusrTbls,
+		name:       "user-user-space-relation",
+	})
+	if err != nil {
 		return
 	}
+
+	uusrs = make([]*model.UserUserSpaceRelation, 0, len(uusrTbls))
+	for _, uusrTbl := range uusrTbls {
+		uusrs = append(uusrs, uusrTbl.ToModel())
+	}
+	return
+}
+
+func (d *userUserSpaceRelation[T]) FindOne(findOption *repository.FindOption) (uusr *model.UserUserSpaceRelation, err error) {
+	uusrTbl := tbl.UserUserSpaceRelation{}
+	_, err = d.findOneWithFindOption(findOneWithFindOptionDTO{
+		db:         d.db,
+		findOption: findOption,
+		data:       &uusrTbl,
+		name:       "user-user-space-relation",
+	})
 	if err != nil {
 		return
 	}

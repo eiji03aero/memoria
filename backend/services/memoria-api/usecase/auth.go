@@ -15,8 +15,8 @@ import (
 var SecretKey = []byte(config.JWTSecretKey)
 
 type Auth interface {
-	CreateJWT(dto AuthCreateJWTDTO) (string, error)
-	VerifyJWT(dto AuthVerifyJWTDTO) (userID string, userSpaceID string, err error)
+	CreateJWT(dto AuthCreateJWTDTO) (tokenString string, err error)
+	VerifyJWT(tokenString string) (ret AuthVerifyJWTRet, err error)
 }
 
 type auth struct {
@@ -54,14 +54,15 @@ func (u *auth) CreateJWT(dto AuthCreateJWTDTO) (tokenString string, err error) {
 	return tokenString, nil
 }
 
-type AuthVerifyJWTDTO struct {
-	TokenString string
+type AuthVerifyJWTRet struct {
+	UserID      string
+	UserSpaceID string
 }
 
-func (u *auth) VerifyJWT(dto AuthVerifyJWTDTO) (userID string, userSpaceID string, err error) {
+func (u *auth) VerifyJWT(tokenString string) (ret AuthVerifyJWTRet, err error) {
 	claims := jwt.MapClaims{}
 	token, err := jwt.ParseWithClaims(
-		dto.TokenString,
+		tokenString,
 		&claims,
 		func(token *jwt.Token) (interface{}, error) {
 			return SecretKey, nil
@@ -77,8 +78,8 @@ func (u *auth) VerifyJWT(dto AuthVerifyJWTDTO) (userID string, userSpaceID strin
 		return
 	}
 
-	userID = claims["userID"].(string)
-	userSpaceID = claims["userSpaceID"].(string)
+	ret.UserID = claims["userID"].(string)
+	ret.UserSpaceID = claims["userSpaceID"].(string)
 
 	return
 }

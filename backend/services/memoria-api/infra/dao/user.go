@@ -20,20 +20,18 @@ func NewUser(db *gorm.DB) repository.User {
 }
 
 func (d *user[T]) Find(findOption *repository.FindOption) (users []*model.User, err error) {
-	userTbls := []tbl.User{}
-
-	query := d.ScopeByFindOption(d.db, findOption)
-	result := query.Find(&userTbls)
-	err = result.Error
-	if ok, dmnErr := d.handleResourceNotFound(err, "user"); ok {
-		err = dmnErr
-		return
-	}
+	userTbls := []*tbl.User{}
+	_, err = d.findWithFindOption(findWithFindOptionDTO{
+		db:         d.db,
+		findOption: findOption,
+		data:       &userTbls,
+		name:       "user",
+	})
 	if err != nil {
 		return
 	}
 
-	users = make([]*model.User, len(userTbls))
+	users = make([]*model.User, 0, len(userTbls))
 	for _, userTbl := range userTbls {
 		user, e := userTbl.ToModel()
 		if e != nil {
@@ -48,13 +46,13 @@ func (d *user[T]) Find(findOption *repository.FindOption) (users []*model.User, 
 }
 
 func (d *user[T]) FindOne(findOption *repository.FindOption) (user *model.User, err error) {
-	userTbl := &tbl.User{}
-	query := d.ScopeByFindOption(d.db, findOption)
-	err = query.First(userTbl).Error
-	if ok, dmnErr := d.handleResourceNotFound(err, "user"); ok {
-		err = dmnErr
-		return
-	}
+	userTbl := tbl.User{}
+	_, err = d.findOneWithFindOption(findOneWithFindOptionDTO{
+		db:         d.db,
+		findOption: findOption,
+		data:       &userTbl,
+		name:       "user",
+	})
 	if err != nil {
 		return
 	}
@@ -67,7 +65,7 @@ func (d *user[T]) EmailExistsInUserSpace(userSpaceID string, email string) (exis
 	userTbl := &tbl.User{}
 	err = d.db.Table("users").
 		Select("users.email").
-		Joins("join user_user_space_relations uusr on uusr.user_space_id = users.id").
+		Joins("join user_user_space_relations uusr on uusr.user_id = users.id").
 		Where("uusr.user_space_id = ?", userSpaceID).
 		Where("users.email = ?", email).
 		First(userTbl).
@@ -75,6 +73,10 @@ func (d *user[T]) EmailExistsInUserSpace(userSpaceID string, email string) (exis
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		exists = false
 		err = nil
+		return
+	}
+	if err != nil {
+		exists = false
 		return
 	}
 
@@ -103,7 +105,7 @@ func (d *user[T]) Update(user *model.User) (err error) {
 
 	result := d.db.Save(userTbl)
 	err = result.Error
-	if ok, dmnErr := d.handleResourceNotFound(err, "user"); ok {
+	if isRNF, dmnErr := d.handleResourceNotFound(err, "user"); isRNF {
 		err = dmnErr
 		return
 	}

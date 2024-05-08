@@ -224,6 +224,29 @@ func main() {
 }
 ```
 
+### Make new slice with capacity
+- 2nd arg is for length
+- 3rd arg is for capacity
+```
+userSpaces = make([]*model.UserSpace, 0, len(userSpaceTbls))
+```
+
+### Zero-value for func is nil
+```
+func main() {
+	var d func()
+	log.Println(d)
+}
+```
+
+### nil pointer deference panics
+```
+func main() {
+	var d *bool
+	log.Println(*d) // panics with invalid memory address or nil pointer dereference
+}
+```
+
 ---
 
 # Frontend
@@ -252,3 +275,9 @@ func main() {
 - css in js supporting rsc
 - the css function needs to be imported via direct path to styled-system/css
     - you cannot reexport, the stylesheet would not be attached
+
+---
+
+# Makefile
+## Difficulty with exntending
+- cannot pass arguments like sh file can

@@ -34,6 +34,9 @@ elif [ $cmd = 'bash-api' ]; then
 elif [ $cmd = 'bash-db' ]; then
   execute-docker-compose exec memoria-db /bin/bash
 
+elif [ $cmd = 'psql' ]; then
+  execute-docker-compose exec memoria-db psql postgresql://memoria:password@memoria-db:5432/memoria
+
 else
   execute-docker-compose $@
 fi

@@ -19,11 +19,11 @@ import (
 )
 
 type Account interface {
-	Signup(dto AccountSignupDTO) (userID string, userSpaceId string, err error)
+	Signup(dto AccountSignupDTO) (ret AccountSignupRet, err error)
 	SignupConfirm(dto AccountSignupConfirmDTO) (ret AccountSignupConfirmRet, err error)
 	AddUserToUserSpace(dto AccountAddUserToUserSpaceDTO) error
 	Login(dto AccountLoginDTO) (ret AccountLoginRet, err error)
-	InviteUser(dto AccountInviteUserDTO) (err error)
+	InviteUser(dto AccountInviteUserDTO) (ret AccountInviteUserRet, err error)
 	InviteUserConfirm(dto AccountInviteUserConfirmDTO) (ret AccountInviteUserConfirmRet, err error)
 }
 
@@ -65,11 +65,17 @@ type AccountSignupDTO struct {
 	Email         *string
 	Password      *string
 	UserSpaceName *string
+	SkipEmail     *bool
 }
 
-func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID string, err error) {
+type AccountSignupRet struct {
+	UserID       string
+	UserSpaceID  string
+	InvitationID string
+}
+
+func (u *account) Signup(dto AccountSignupDTO) (ret AccountSignupRet, err error) {
 	ctx := context.Background()
-	u.registry.BeginTx()
 
 	// -------------------- validation --------------------
 	if dto.Name == nil {
@@ -109,7 +115,7 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 
 	if dto.Password == nil {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
-			Key:  cerrors.ValidationKey_InvalidFormat,
+			Key:  cerrors.ValidationKey_Required,
 			Name: "password",
 		})
 		return
@@ -117,7 +123,7 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 
 	if dto.UserSpaceName == nil {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
-			Key:  cerrors.ValidationKey_InvalidFormat,
+			Key:  cerrors.ValidationKey_Required,
 			Name: "user_space_name",
 		})
 		return
@@ -125,7 +131,7 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 
 	// -------------------- execution --------------------
 	// generate id for user
-	userID = service.GenerateUlid()
+	userID := service.GenerateUlid()
 
 	// assuming password sent was pretty strong
 	hashed, err := bcrypt.GenerateFromPassword([]byte(*dto.Password), 10)
@@ -143,12 +149,11 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 	})
 	if err != nil {
 		err = cerrors.NewInternal(fmt.Sprintf("failed to create user: %s", err.Error()))
-		u.registry.RollbackTx()
 		return
 	}
 
 	// generate id for user space
-	userSpaceID = service.GenerateUlid()
+	userSpaceID := service.GenerateUlid()
 
 	// create user space
 	err = u.userSpaceRepo.Create(repository.UserSpaceCreateDTO{
@@ -157,7 +162,6 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 	})
 	if err != nil {
 		err = cerrors.NewInternal(fmt.Sprintf("failed to create user space: %s", err.Error()))
-		u.registry.RollbackTx()
 		return
 	}
 
@@ -168,7 +172,6 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 	})
 	if err != nil {
 		err = cerrors.NewInternal(fmt.Sprintf("failed to add user to user space: %s", err.Error()))
-		u.registry.RollbackTx()
 		return
 	}
 
@@ -181,25 +184,30 @@ func (u *account) Signup(dto AccountSignupDTO) (userID string, userSpaceID strin
 		Type:        string(value.UserInvitationType_Signup),
 	})
 
-	// send confirm email
-	confirmUrl := config.Host + fmt.Sprintf("/api/public/signup-confirm?id=%s", invitationID)
-	body := fmt.Sprintf(`
+	shouldSendEmail := dto.SkipEmail == nil || !*dto.SkipEmail
+	if shouldSendEmail {
+
+		// send confirm email
+		confirmUrl := config.Host + fmt.Sprintf("/api/public/signup-confirm?id=%s", invitationID)
+		body := fmt.Sprintf(`
 Thanks for signing up memoria.<br/>
 
 Please open the url below to complete signup process and start using memoria.<br/>
 <a href="%s">%s</a>
 `,
-		confirmUrl, confirmUrl,
-	)
-	u.mailer.Send(ctx, interfaces.MailerSendDTO{
-		From:    config.NoReplyEmailAddress,
-		To:      []string{*dto.Email},
-		Subject: "Memoria - Please confirm your email address",
-		Body:    body,
-	})
+			confirmUrl, confirmUrl,
+		)
+		u.mailer.Send(ctx, interfaces.MailerSendDTO{
+			From:    config.NoReplyEmailAddress,
+			To:      []string{*dto.Email},
+			Subject: "Memoria - Please confirm your email address",
+			Body:    body,
+		})
+	}
 
-	u.registry.CommitTx()
-
+	ret.UserID = userID
+	ret.UserSpaceID = userSpaceID
+	ret.InvitationID = invitationID
 	return
 }
 
@@ -296,6 +304,13 @@ func (u *account) Login(dto AccountLoginDTO) (ret AccountLoginRet, err error) {
 
 	// -------------------- execution --------------------
 	user, err := u.userSvc.FindByEmail(*dto.Email)
+	if errors.As(err, &cerrors.ResourceNotFound{}) {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_ResourceNotFound,
+			Name: "email",
+		})
+		return
+	}
 	if err != nil {
 		return
 	}
@@ -305,12 +320,15 @@ func (u *account) Login(dto AccountLoginDTO) (ret AccountLoginRet, err error) {
 		return
 	}
 
-	err = bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(*dto.Password))
-	if errors.Is(err, bcrypt.ErrMismatchedHashAndPassword) {
+	matched, err := service.CompareHashAndPassword([]byte(user.PasswordHash), []byte(*dto.Password))
+	if !matched {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
 			Key:  cerrors.ValidationKey_Invalid,
 			Name: "password",
 		})
+		return
+	}
+	if err != nil {
 		return
 	}
 
@@ -322,11 +340,15 @@ func (u *account) Login(dto AccountLoginDTO) (ret AccountLoginRet, err error) {
 type AccountInviteUserDTO struct {
 	UserSpaceID string
 	Email       *string
+	SkipEmail   *bool
 }
 
-func (u *account) InviteUser(dto AccountInviteUserDTO) (err error) {
+type AccountInviteUserRet struct {
+	InvitationID string
+}
+
+func (u *account) InviteUser(dto AccountInviteUserDTO) (ret AccountInviteUserRet, err error) {
 	ctx := context.Background()
-	u.registry.BeginTx()
 
 	// -------------------- validation --------------------
 	if dto.Email == nil {
@@ -336,8 +358,18 @@ func (u *account) InviteUser(dto AccountInviteUserDTO) (err error) {
 		})
 		return
 	}
+	_, err = mail.ParseAddress(*dto.Email)
+	if err != nil {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_InvalidFormat,
+			Name: "email",
+		})
+		return
+	}
 
 	userExists, err := u.userRepo.EmailExistsInUserSpace(dto.UserSpaceID, *dto.Email)
+	users, err := u.userRepo.Find(&repository.FindOption{})
+	log.Println(*users[0])
 	if userExists {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
 			Key:  cerrors.ValidationKey_AlreadyTaken,
@@ -360,7 +392,6 @@ func (u *account) InviteUser(dto AccountInviteUserDTO) (err error) {
 		PasswordHash:  "",
 	})
 	if err != nil {
-		u.registry.RollbackTx()
 		return
 	}
 
@@ -370,7 +401,6 @@ func (u *account) InviteUser(dto AccountInviteUserDTO) (err error) {
 	})
 	if err != nil {
 		err = cerrors.NewInternal(fmt.Sprintf("failed to add user to user space: %s", err.Error()))
-		u.registry.RollbackTx()
 		return
 	}
 
@@ -382,29 +412,30 @@ func (u *account) InviteUser(dto AccountInviteUserDTO) (err error) {
 		Type:        string(value.UserInvitationType_Invite),
 	})
 	if err != nil {
-		u.registry.RollbackTx()
 		return
 	}
 
-	confirmUrl := config.ClientHost + "/invite-user-confirm?id=" + invitationID
-	body := fmt.Sprintf(`
+	shouldSendEmail := dto.SkipEmail == nil || !*dto.SkipEmail
+	if shouldSendEmail {
+		confirmUrl := config.ClientHost + "/invite-user-confirm?id=" + invitationID
+		body := fmt.Sprintf(`
 Hello this is memoria.<br/>
 
 You have been invited to a user space in memoria.<br />
 Please open below url to join them! <br />
 <a href="%s">%s</a>
 `,
-		confirmUrl, confirmUrl,
-	)
-	u.mailer.Send(ctx, interfaces.MailerSendDTO{
-		From:    config.NoReplyEmailAddress,
-		To:      []string{*dto.Email},
-		Subject: "Memoria - Please confirm your invitation",
-		Body:    body,
-	})
+			confirmUrl, confirmUrl,
+		)
+		u.mailer.Send(ctx, interfaces.MailerSendDTO{
+			From:    config.NoReplyEmailAddress,
+			To:      []string{*dto.Email},
+			Subject: "Memoria - Please confirm your invitation",
+			Body:    body,
+		})
+	}
 
-	u.registry.CommitTx()
-
+	ret.InvitationID = invitationID
 	return
 }
 
@@ -424,7 +455,7 @@ func (u *account) InviteUserConfirm(dto AccountInviteUserConfirmDTO) (ret Accoun
 	if dto.Name == nil {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
 			Key:  cerrors.ValidationKey_Required,
-			Name: "email",
+			Name: "name",
 		})
 		return
 	}
@@ -440,7 +471,7 @@ func (u *account) InviteUserConfirm(dto AccountInviteUserConfirmDTO) (ret Accoun
 	if dto.InvitationID == nil {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
 			Key:  cerrors.ValidationKey_Required,
-			Name: "invitation id",
+			Name: "invitation-id",
 		})
 		return
 	}
@@ -451,13 +482,23 @@ func (u *account) InviteUserConfirm(dto AccountInviteUserConfirmDTO) (ret Accoun
 			{Query: "id = ?", Value: *dto.InvitationID},
 		},
 	})
+	if errors.As(err, &cerrors.ResourceNotFound{}) {
+		err = cerrors.NewValidation(cerrors.NewValidationDTO{
+			Key:  cerrors.ValidationKey_ResourceNotFound,
+			Name: "invitation-id",
+		})
+		return
+	}
+	if err != nil {
+		return
+	}
 
 	user, err := u.userSvc.FindByID(ui.UserID)
 	if err != nil {
 		return
 	}
 
-	hashed, err := bcrypt.GenerateFromPassword([]byte(*dto.Password), 10)
+	hashed, err := service.GenerateHashedPassword([]byte(*dto.Password))
 	if err != nil {
 		return
 	}
@@ -472,6 +513,5 @@ func (u *account) InviteUserConfirm(dto AccountInviteUserConfirmDTO) (ret Accoun
 
 	ret.UserID = ui.UserID
 	ret.UserSpaceID = ui.UserSpaceID
-	log.Println("finishing usecase:", ret)
 	return
 }

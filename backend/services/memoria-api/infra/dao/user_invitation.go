@@ -17,14 +17,38 @@ func NewUserInvitation(db *gorm.DB) repository.UserInvitation {
 	return &userInvitation[tbl.UserInvitation]{db: db}
 }
 
-func (d *userInvitation[T]) FindOne(findOption *repository.FindOption) (ui *model.UserInvitation, err error) {
-	uiTbl := &tbl.UserInvitation{}
-	query := d.ScopeByFindOption(d.db, findOption)
-	err = query.First(uiTbl).Error
-	if ok, dmnErr := d.handleResourceNotFound(err, "user invitation"); ok {
-		err = dmnErr
+func (d *userInvitation[T]) Find(findOption *repository.FindOption) (uis []*model.UserInvitation, err error) {
+	uiTbls := []tbl.UserInvitation{}
+	_, err = d.findWithFindOption(findWithFindOptionDTO{
+		db:         d.db,
+		findOption: findOption,
+		data:       &uiTbls,
+		name:       "user-invitation",
+	})
+	if err != nil {
 		return
 	}
+
+	uis = make([]*model.UserInvitation, 0, len(uiTbls))
+	for _, uiTbl := range uiTbls {
+		ui, e := uiTbl.ToModel()
+		if err != nil {
+			err = e
+			return
+		}
+		uis = append(uis, ui)
+	}
+	return
+}
+
+func (d *userInvitation[T]) FindOne(findOption *repository.FindOption) (ui *model.UserInvitation, err error) {
+	uiTbl := tbl.UserInvitation{}
+	_, err = d.findOneWithFindOption(findOneWithFindOptionDTO{
+		db:         d.db,
+		findOption: findOption,
+		data:       &uiTbl,
+		name:       "user-invitation",
+	})
 	if err != nil {
 		return
 	}

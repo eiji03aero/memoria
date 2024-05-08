@@ -7,4 +7,5 @@ type FindOptionFilter struct {
 
 type FindOption struct {
 	Filters []*FindOptionFilter
+	Order   string
 }
