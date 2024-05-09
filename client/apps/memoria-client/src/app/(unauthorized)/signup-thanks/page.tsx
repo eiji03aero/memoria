@@ -1,34 +1,41 @@
 'use client';
 
 import Image from 'next/image';
-import { Flex, View, CustomText, Button } from '@repo/design-system';
+import { Button } from '@repo/design-system';
+import { css } from '@/../styled-system/css';
 
 import { Link } from '@/modules/components';
 
 export default function SignupThanks() {
   return (
-    <View width="100%" height="100dvh" backgroundColor="yellow-400">
-      <Flex
-        width="100%"
-        height="100%"
-        direction="column"
-        justifyContent="center"
-        alignItems="center"
-        gap="size-300"
-      >
-        <Image
-          src="/images/Logo-horizontal-black.png"
-          width={300}
-          height={72}
-          alt="service logo"
-        />
-        <CustomText size={200} color="gray-900">
-          Thanks for joining memoria!
-        </CustomText>
-        <Button variant="primary" elementType={Link} href="/dashboard">
-          Go to dashboard page
-        </Button>
-      </Flex>
-    </View>
+    <div
+      className={css({
+        display: 'flex',
+        flexDir: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: '1rem',
+        width: '100%',
+        height: '100dvh',
+        backgroundColor: 'sky.400',
+        padding: '1rem',
+      })}
+    >
+      <Image
+        src="/images/Logo-horizontal-black.png"
+        width={300}
+        height={72}
+        alt="service logo"
+        className={css({
+          marginBottom: '1rem',
+        })}
+      />
+      <p className={css({ fontSize: '1rem', color: 'black' })}>
+        Thanks for joining memoria!
+      </p>
+      <Button variant="primary" elementType={Link} href="/dashboard">
+        Go to dashboard page
+      </Button>
+    </div>
   );
 }

@@ -1,22 +1,24 @@
+import { css } from '../../../styled-system/css';
+
 import { Item } from './Item';
-import { Flex } from '../Flex';
-import { View } from '../View';
 
 export const BottomNavigation = ({
   children,
 }: {
   children: React.ReactNode;
 }) => {
-  return (
-    <View
-      elementType="nav"
-      borderTopWidth="thin"
-      borderTopColor="dark"
-      backgroundColor="gray-50"
-    >
-      <Flex justifyContent="space-around">{children}</Flex>
-    </View>
-  );
+  return <nav className={Styles.navigation}>{children}</nav>;
+};
+
+const Styles = {
+  navigation: css({
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-around',
+    borderTop: '1px solid',
+    borderColor: 'gray.200',
+    backgroundColor: 'white',
+  }),
 };
 
 BottomNavigation.Item = Item;

@@ -22,10 +22,13 @@ TightLayoutCard.Background = ({ children }: BackgroundProps) => {
 
 const Styles = {
   card: css({
+    width: '100%',
     background: 'white',
-    margin: '0.125rem 0',
   }),
   background: css({
+    display: 'flex',
+    flexDir: 'column',
+    gap: '0.125rem',
     height: '100%',
     paddingY: '0.125rem',
     background: 'gray.300',

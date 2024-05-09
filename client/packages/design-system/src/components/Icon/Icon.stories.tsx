@@ -1,9 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
+import { css } from '../../../styled-system/css';
 
 import { Icon, IconNames } from './Icon';
-import { Flex } from '../Flex';
-import { View } from '../View';
-import { CustomText } from '../CustomText';
 
 const meta: Meta<typeof Icon> = {
   component: Icon,
@@ -14,36 +12,38 @@ export default meta;
 
 export const List: StoryFn<typeof Icon> = () => {
   return (
-    <Flex gap="size-100" wrap="wrap">
+    <div
+      className={css({
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '0.5rem',
+      })}
+    >
       {IconNames.map(name => (
-        <View
-          key={name}
-          padding="size-100"
-          borderColor="dark"
-          borderWidth="thin"
-          borderRadius="small"
-          width="size-1600"
-          height="size-1600"
+        <div
+          className={css({
+            display: 'flex',
+            flexDir: 'column',
+            alignContent: 'center',
+            justifyContent: 'center',
+            gap: '1rem',
+            border: '1px solid gray.200',
+            borderRadius: 'md',
+            width: '2xl',
+            height: '2xl',
+          })}
         >
-          <Flex
-            width="100%"
-            height="100%"
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
+          <Icon name={name} color="gray.900" size="XL" />
+          <span
+            className={css({
+              fontSize: '1rem',
+              color: 'gray.900',
+            })}
           >
-            <Icon
-              name={name}
-              color="gray-900"
-              size="XL"
-              marginBottom="size-200"
-            />
-            <CustomText size={100} color="gray-700">
-              {name}
-            </CustomText>
-          </Flex>
-        </View>
+            {name}
+          </span>
+        </div>
       ))}
-    </Flex>
+    </div>
   );
 };

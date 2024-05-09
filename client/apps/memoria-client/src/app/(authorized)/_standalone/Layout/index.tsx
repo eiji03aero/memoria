@@ -2,7 +2,8 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
-import { View, Flex, BottomNavigation } from '@repo/design-system';
+import { BottomNavigation } from '@repo/design-system';
+import { css } from '@/../styled-system/css';
 
 import { Link } from '@/modules/components';
 
@@ -15,32 +16,18 @@ export const Layout = ({
   const pathname = usePathname();
 
   return (
-    <Flex width="100%" height="100dvh" direction="column">
-      <View
-        height="size-500"
-        borderBottomWidth="thin"
-        borderBottomColor="dark"
-        paddingX="size-100"
-      >
-        <Flex height="100%" alignItems="center">
-          <Link href="/dashboard">
-            <Image
-              src="/images/Logo-horizontal-black.png"
-              width={150}
-              height={36}
-              alt="service logo"
-            />
-          </Link>
-        </Flex>
-      </View>
-      <View
-        minHeight="size-0"
-        flex={1}
-        UNSAFE_className="overflow-auto"
-        backgroundColor="gray-200"
-      >
-        {children}
-      </View>
+    <div className={Styles.layout}>
+      <nav className={Styles.header}>
+        <Link href="/dashboard">
+          <Image
+            src="/images/Logo-horizontal-black.png"
+            width={150}
+            height={36}
+            alt="service logo"
+          />
+        </Link>
+      </nav>
+      <main className={Styles.content}>{children}</main>
       <BottomNavigation>
         <BottomNavigation.Item
           active={pathname === '/dashboard'}
@@ -67,6 +54,30 @@ export const Layout = ({
           onPress={() => router.push('/account')}
         />
       </BottomNavigation>
-    </Flex>
+    </div>
   );
+};
+
+const Styles = {
+  layout: css({
+    width: '100%',
+    height: '100dvh',
+    display: 'flex',
+    flexDir: 'column',
+  }),
+  header: css({
+    width: '100%',
+    height: '3rem',
+    display: 'flex',
+    alignItems: 'center',
+    borderBottom: '1px solid',
+    borderBottomColor: 'gray.200',
+    paddingX: '0.5rem',
+  }),
+  content: css({
+    minHeight: 0,
+    flex: 1,
+    overflow: 'auto',
+    backgroundColor: 'gray.100',
+  }),
 };

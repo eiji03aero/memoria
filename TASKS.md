@@ -1,15 +1,5 @@
 # Tasks
 ## WIP
-- [ ] implement testing
-    - consider how we do it
-    - refactor codings
-    - refactor struct namings
-    - refactor scopebyfindoption to be Scope method based
-    - refactor find methods
-        - try to DRY it up little
-- [ ] remove react-spectrum utility components
-    - do not use it
-    - replace the tokens stuff as well
 - [ ] refine the definition of service and usecase and dao
     - create documents
         - definition
@@ -30,6 +20,17 @@
     - document title
 
 ## Done
+- [x] remove react-spectrum utility components
+    - fix the problem with usesearchparams
+    - do not use it
+    - replace the tokens stuff as well
+- [x] implement testing
+    - consider how we do it
+    - refactor codings
+    - refactor struct namings
+    - refactor scopebyfindoption to be Scope method based
+    - refactor find methods
+        - try to DRY it up little
 - [x] make sure to replace secretkey for jwt to secure one through env var
 - [x] improve form error handlings
     - signup

@@ -1,5 +1,5 @@
 import { IconPropsWithoutChildren } from '@react-spectrum/icon';
-import { ColorValue } from '@react-types/shared';
+import * as sstokens from '../../../styled-system/tokens';
 
 import Add from '@spectrum-icons/workflow/Add';
 import AddTo from '@spectrum-icons/workflow/AddTo';
@@ -10,8 +10,6 @@ import Settings from '@spectrum-icons/workflow/Settings';
 import User from '@spectrum-icons/workflow/User';
 import UserAdd from '@spectrum-icons/workflow/UserAdd';
 import UserGroup from '@spectrum-icons/workflow/UserGroup';
-
-import * as styles from '../../styles';
 
 // https://spectrum.adobe.com/page/icons/
 const IconMap = {
@@ -31,13 +29,13 @@ export const IconNames = Object.keys(IconMap) as IconName[];
 
 type Props = Omit<IconPropsWithoutChildren, 'color'> & {
   name: IconName;
-  color: ColorValue;
+  color: sstokens.ColorToken;
 };
 
 export const Icon = ({ name, color, ...rest }: Props) => {
   const Component = IconMap[name];
   const style = {
-    color: styles.CSSVar.color(color),
+    color: sstokens.token.var(`colors.${color}`),
   };
   return <Component UNSAFE_style={style} {...rest} />;
 };

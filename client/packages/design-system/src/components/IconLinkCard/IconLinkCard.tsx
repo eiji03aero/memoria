@@ -2,7 +2,6 @@ import { css } from '../../../styled-system/css';
 
 import * as styles from '../../styles';
 import { Icon, IconName } from '../Icon';
-import { CustomText } from '../CustomText';
 
 type Props = {
   iconName: IconName;
@@ -18,11 +17,9 @@ export const IconLinkCard = ({ iconName, label, href, className }: Props) => {
         UNSAFE_className={Styles.icon}
         name={iconName}
         size="M"
-        color="gray-900"
+        color="gray.900"
       />
-      <CustomText size={75} color="gray-900">
-        {label}
-      </CustomText>
+      <span className={Styles.label}>{label}</span>
     </a>
   );
 };
@@ -40,5 +37,9 @@ const Styles = {
   }),
   icon: css({
     flexShrink: 0,
+  }),
+  label: css({
+    fontSize: '0.75rem',
+    color: 'gray.900',
   }),
 };

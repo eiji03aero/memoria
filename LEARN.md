@@ -19,6 +19,8 @@
     - choose cheap model (this time t3 micro)
     - lower allocated storage
     - use magnetic storage
+    - seems to be we can run rds on ec2 spot instances
+        - https://reintech.io/blog/managing-costs-aws-rds-reserved-spot-instances
 - ec2
     - stop a basion server if you are not using
 - vpc
