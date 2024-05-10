@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"memoria-api/config"
-	"memoria-api/handler"
+	"memoria-api/infra/handler"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

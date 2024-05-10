@@ -9,13 +9,13 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
+	"memoria-api/application/registry"
 	"memoria-api/config"
 	"memoria-api/domain/cerrors"
 	"memoria-api/domain/interfaces"
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/service"
 	"memoria-api/domain/value"
-	"memoria-api/registry"
 )
 
 type Account interface {

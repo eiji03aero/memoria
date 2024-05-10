@@ -9,13 +9,13 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"memoria-api/application/ccontext"
+	"memoria-api/application/registry"
+	"memoria-api/application/usecase"
 	"memoria-api/domain/cerrors"
 	"memoria-api/infra/caws"
 	"memoria-api/infra/db"
-	"memoria-api/registry"
-	"memoria-api/route/res"
-	"memoria-api/usecase"
-	"memoria-api/usecase/ccontext"
+	"memoria-api/infra/route/res"
 )
 
 func buildRegistry(ctx context.Context) (reg registry.Registry, err error) {

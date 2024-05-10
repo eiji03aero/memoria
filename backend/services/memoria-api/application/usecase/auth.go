@@ -3,11 +3,11 @@ package usecase
 import (
 	"time"
 
+	"memoria-api/application/registry"
 	"memoria-api/config"
 	"memoria-api/domain/cerrors"
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/service"
-	"memoria-api/registry"
 
 	"github.com/golang-jwt/jwt/v5"
 )

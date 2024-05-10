@@ -3,9 +3,9 @@ package handler
 import (
 	"net/http"
 
-	"memoria-api/registry"
-	"memoria-api/usecase"
-	"memoria-api/usecase/ccontext"
+	"memoria-api/application/ccontext"
+	"memoria-api/application/registry"
+	"memoria-api/application/usecase"
 
 	"github.com/gin-gonic/gin"
 )

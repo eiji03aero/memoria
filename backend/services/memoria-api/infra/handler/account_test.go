@@ -4,13 +4,13 @@ import (
 	"net/http"
 	"testing"
 
+	"memoria-api/application/usecase"
 	"memoria-api/domain/cerrors"
 	"memoria-api/domain/interfaces"
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/service"
 	"memoria-api/domain/value"
 	"memoria-api/testutil"
-	"memoria-api/usecase"
 	"memoria-api/util"
 
 	"github.com/stretchr/testify/assert"

@@ -1,10 +1,10 @@
 package usecase
 
 import (
+	"memoria-api/application/registry"
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/model"
 	"memoria-api/domain/service"
-	"memoria-api/registry"
 )
 
 type AppData interface {

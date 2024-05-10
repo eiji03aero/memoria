@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"memoria-api/route"
+	"memoria-api/infra/route"
 )
 
 func main() {
