@@ -37,12 +37,16 @@ type AppDataGetRet struct {
 }
 
 func (u *appData) Get(dto AppDataGetDTO) (ret AppDataGetRet, err error) {
-	user, err := u.userSvc.FindByID(dto.UserID)
+	user, err := u.userRepo.FindByID(dto.UserID)
 	if err != nil {
 		return
 	}
 
-	userSpace, err := u.userSpaceSvc.FindByID(dto.UserSpaceID)
+	userSpace, err := u.userSpaceRepo.FindOne(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "id = ?", Value: dto.UserSpaceID},
+		},
+	})
 	if err != nil {
 		return
 	}

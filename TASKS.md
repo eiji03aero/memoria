@@ -1,12 +1,12 @@
 # Tasks
 ## WIP
-- [ ] refine the definition of service and usecase and dao
-    - create documents
-        - definition
-        - architecture diagram
-    - refactor based on it
+- [ ] groundwork for albums feature
+    - create doc for specs
+    - break down the task and work on it
 
 ## Todo
+- [ ] research lightsail
+    - see if we can cut cost
 - [ ] implement transaction / rollback
     - for all the end points that need it
 - [ ] optimize memoria client docker image
@@ -20,6 +20,14 @@
     - document title
 
 ## Done
+- [x] refine the definition of service and usecase and dao
+    - create documents
+        - definition
+        - architecture diagram
+    - refactor based on it
+    - should allow defning shortcut method (like find by id)
+        - if not, the find option will be spreading the db detail (column name to be specified in findopt)
+        - we cannot really prevent this entirely, but allowing shortcut method mitigates this problem
 - [x] remove react-spectrum utility components
     - fix the problem with usesearchparams
     - do not use it

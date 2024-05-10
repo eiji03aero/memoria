@@ -5,6 +5,7 @@ import (
 
 	"gorm.io/gorm"
 
+	"memoria-api/domain/cerrors"
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/model"
 	"memoria-api/infra/tbl"
@@ -58,6 +59,32 @@ func (d *user[T]) FindOne(findOption *repository.FindOption) (user *model.User, 
 	}
 
 	user, err = userTbl.ToModel()
+	return
+}
+
+func (d *user[T]) FindByID(userID string) (user *model.User, err error) {
+	return d.FindOne(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "id = ?", Value: userID},
+		},
+	})
+}
+
+func (d *user[T]) Exists(findOpt *repository.FindOption) (exists bool, err error) {
+	userTbl := tbl.User{}
+	_, err = d.findOneWithFindOption(findOneWithFindOptionDTO{
+		db:         d.db,
+		findOption: findOpt,
+		data:       &userTbl,
+		name:       "user",
+	})
+	if errors.As(err, &cerrors.ResourceNotFound{}) {
+		exists = false
+		err = nil
+		return
+	}
+
+	exists = true
 	return
 }
 

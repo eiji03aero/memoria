@@ -167,11 +167,7 @@ func (t *TestEnvAPI) InstallBaseUserEnv() (userEnv UserEnv) {
 		panic(err)
 	}
 
-	user, err := userRepo.FindOne(&repository.FindOption{
-		Filters: []*repository.FindOptionFilter{
-			{Query: "id = ?", Value: signupRet.UserID},
-		},
-	})
+	user, err := userRepo.FindByID(signupRet.UserID)
 	if err != nil {
 		panic(err)
 	}

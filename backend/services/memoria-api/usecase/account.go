@@ -101,7 +101,11 @@ func (u *account) Signup(dto AccountSignupDTO) (ret AccountSignupRet, err error)
 		})
 		return
 	}
-	isEmailExists, err := u.userSvc.ExistsByEmail(*dto.Email)
+	isEmailExists, err := u.userRepo.Exists(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "email = ?", Value: *dto.Email},
+		},
+	})
 	if isEmailExists {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
 			Key:  cerrors.ValidationKey_AlreadyTaken,
@@ -235,13 +239,17 @@ func (u *account) SignupConfirm(dto AccountSignupConfirmDTO) (ret AccountSignupC
 	}
 
 	// -------------------- execution --------------------
-	userInvitatation, err := u.userInvitationSvc.FindByID(*dto.ID)
+	userInvitation, err := u.userInvitationRepo.FindOne(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "id = ?", Value: *dto.ID},
+		},
+	})
 	if err != nil {
 		setErrorURL()
 		return
 	}
 
-	user, err := u.userSvc.FindByID(userInvitatation.UserID)
+	user, err := u.userRepo.FindByID(userInvitation.UserID)
 	if err != nil {
 		setErrorURL()
 		return
@@ -303,7 +311,11 @@ func (u *account) Login(dto AccountLoginDTO) (ret AccountLoginRet, err error) {
 	}
 
 	// -------------------- execution --------------------
-	user, err := u.userSvc.FindByEmail(*dto.Email)
+	user, err := u.userRepo.FindOne(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "email = ?", Value: *dto.Email},
+		},
+	})
 	if errors.As(err, &cerrors.ResourceNotFound{}) {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
 			Key:  cerrors.ValidationKey_ResourceNotFound,
@@ -315,7 +327,11 @@ func (u *account) Login(dto AccountLoginDTO) (ret AccountLoginRet, err error) {
 		return
 	}
 
-	uusr, err := u.userUserSpaceRelationSvc.FindByUserID(user.ID)
+	uusr, err := u.userUserSpaceRelationRepo.FindOne(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "user_id = ?", Value: user.ID},
+		},
+	})
 	if err != nil {
 		return
 	}
@@ -493,7 +509,7 @@ func (u *account) InviteUserConfirm(dto AccountInviteUserConfirmDTO) (ret Accoun
 		return
 	}
 
-	user, err := u.userSvc.FindByID(ui.UserID)
+	user, err := u.userRepo.FindByID(ui.UserID)
 	if err != nil {
 		return
 	}
