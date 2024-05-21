@@ -1,7 +1,6 @@
 package route
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -10,50 +9,25 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"memoria-api/application/ccontext"
-	"memoria-api/application/registry"
 	"memoria-api/application/usecase"
 	"memoria-api/domain/cerrors"
-	"memoria-api/infra/caws"
-	"memoria-api/infra/db"
-	"memoria-api/infra/route/res"
+	"memoria-api/domain/interfaces"
+	"memoria-api/infra/handler/res"
+	"memoria-api/infra/registry"
 )
 
-func buildRegistry(ctx context.Context) (reg registry.Registry, err error) {
-	db, err := db.New()
-	if err != nil {
-		return
-	}
-
-	awsCfg, err := caws.LoadConfig(ctx)
-	if err != nil {
-		return
-	}
-
-	reg = registry.NewRegistry(registry.NewRegistryDTO{
-		DB:     db,
-		AWSCfg: awsCfg,
-	})
-
-	return
-}
-
-func wrap(h func(c *gin.Context, reg registry.Registry) (status int, data any, err error)) gin.HandlerFunc {
+func wrap(regb *registry.Builder, h func(c *gin.Context, reg interfaces.Registry) (status int, data any, err error)) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		reg, err := regb.Build()
+
 		log.Println(fmt.Sprintf(
 			"API Starting: %s %s",
 			c.Request.Method, c.Request.URL.Path,
 		))
 		defer func() {
 			log.Println("API finished")
+			reg.CloseDB()
 		}()
-
-		ctx := context.Background()
-		reg, err := buildRegistry(ctx)
-		defer reg.CloseDB()
-		if err != nil {
-			log.Println("wrap build registry error:", err.Error())
-			return
-		}
 
 		// -------------------- handler --------------------
 		status, data, err := h(c, reg)
@@ -86,15 +60,10 @@ func wrap(h func(c *gin.Context, reg registry.Registry) (status int, data any, e
 	}
 }
 
-func Authenticate() gin.HandlerFunc {
+func Authenticate(regb *registry.Builder) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ctx := context.Background()
-		reg, err := buildRegistry(ctx)
+		reg, err := regb.Build()
 		defer reg.CloseDB()
-		if err != nil {
-			log.Println("Authenticate build registry error:", err.Error())
-			return
-		}
 
 		authUc := usecase.NewAuth(reg)
 

@@ -5,7 +5,12 @@ type FindOptionFilter struct {
 	Value any
 }
 
+type FindOptionJoin struct {
+	Query string
+}
+
 type FindOption struct {
 	Filters []*FindOptionFilter
+	Joins   []*FindOptionJoin
 	Order   string
 }

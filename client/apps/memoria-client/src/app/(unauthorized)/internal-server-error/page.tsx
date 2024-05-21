@@ -38,8 +38,8 @@ export default function InternalServerError() {
       >
         Internal server error
       </p>
-      <Button variant="primary" elementType={Link} href="/dashboard">
-        Back to dashboard
+      <Button variant="primary" elementType={Link} href="/timeline">
+        Back to timeline
       </Button>
     </div>
   );

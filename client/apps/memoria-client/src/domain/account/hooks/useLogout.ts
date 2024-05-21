@@ -8,7 +8,7 @@ export const useLogout = () => {
 
   const logout = React.useCallback(() => {
     deleteJwt();
-    router.push('/dashboard');
+    router.push('/timeline');
   }, [router]);
 
   return {

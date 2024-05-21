@@ -1,3 +1,14 @@
+# Overall
+## General
+### Dev productivity is pretty low
+- it takes 1-2 hours to implement api with test
+    - creating boilerplate files
+    - not intuitive error message on test
+- it takes 3-4 hours to complete one screen on frontend
+    - need to get used to tools
+    - storybook needs to be restarted pretty often
+    - nextjs taking fluffying minutes to reflect changes
+
 # AWS
 ## General
 ### aws icons
@@ -29,6 +40,11 @@
         - bastion, client, api, db-migration, alb?
 - alb
     - use only one alb to handle multiple domains
+- eventbridge scheduler
+    - use this to schedule certain operations
+    - for this time, I used it to
+        - stop resources at 0:00 (rds, ecs services)
+        - start resources at 18:00 (rds, ecs services)
 
 ## VPC
 ### what is ip v4 cidr blocks?
@@ -81,6 +97,20 @@ ResourceInitializationError: unable to pull secrets or registry auth: execution 
 ## WorkMail
 ### Getting started
 - https://qiita.com/ysKey2/items/2b019337772f8499beec
+
+## S3
+### 400 for uploading with presigned url
+- https://scrapbox.io/kidaaam-92022284/Presigned_URL%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6S3%E3%81%AB%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92put%E3%81%99%E3%82%8B%E3%81%A8%E3%81%8D%E3%81%AB400%E3%82%A8%E3%83%A9%E3%83%BC%E3%81%AB%E3%81%AA%E3%82%8B%E4%BB%B6
+- Authentication header was getting in the way
+
+### Key name
+- https://docs.aws.amazon.com/AmazonS3/latest/userguide/upload-objects.html
+- it should not contain slach at the beginning of key
+
+### Access denied when accessed from browser
+- https://karukichi-blog.netlify.app/blogs/resolve-403-error-in-s3
+
+---
 
 # HTTP
 ## Status code
@@ -277,6 +307,10 @@ func main() {
 - css in js supporting rsc
 - the css function needs to be imported via direct path to styled-system/css
     - you cannot reexport, the stylesheet would not be attached
+
+### Difficulty with using dynaic values
+- especially specifying size like height
+- cannot really get work-arounded yet
 
 ---
 

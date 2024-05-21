@@ -1,11 +1,8 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { BottomNavigation } from '@repo/design-system';
 import { css } from '@/../styled-system/css';
-
-import { Link } from '@/modules/components';
 
 export const Layout = ({
   children,
@@ -17,26 +14,16 @@ export const Layout = ({
 
   return (
     <div className={Styles.layout}>
-      <nav className={Styles.header}>
-        <Link href="/dashboard">
-          <Image
-            src="/images/Logo-horizontal-black.png"
-            width={150}
-            height={36}
-            alt="service logo"
-          />
-        </Link>
-      </nav>
       <main className={Styles.content}>{children}</main>
       <BottomNavigation>
         <BottomNavigation.Item
-          active={pathname === '/dashboard'}
-          label="Dashboard"
-          icon="article"
-          onPress={() => router.push('/dashboard')}
+          active={pathname === '/timeline'}
+          label="Timeline"
+          icon="news"
+          onPress={() => router.push('/timeline')}
         />
         <BottomNavigation.Item
-          active={pathname === '/albums'}
+          active={pathname.startsWith('/albums') || pathname.startsWith('/media')}
           label="Albums"
           icon="image-album"
           onPress={() => router.push('/albums')}

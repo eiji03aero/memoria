@@ -1,6 +1,6 @@
 .PHONY: build
 build:
-	go build -o ./bin/app ./cmd/app/main.go
+	CGO_ENABLED=1 GOOS=linux go build -o /memoria-api ./cmd/app/*.go
 
 .PHONY: run
 run:
@@ -12,7 +12,7 @@ test:
 
 .PHONY: test-package
 test-package:
-	ENV=test reflex -r '(\.go|go\.mod)' -s go test -v ./
+	ENV=test reflex -r '(\.go|go\.mod)' -s go test -v ./infra/handler/
 
 .PHONY: mockgen
 mockgen:

@@ -3,11 +3,11 @@ package usecase
 import (
 	"time"
 
-	"memoria-api/application/registry"
 	"memoria-api/config"
 	"memoria-api/domain/cerrors"
+	"memoria-api/domain/interfaces"
 	"memoria-api/domain/interfaces/repository"
-	"memoria-api/domain/service"
+	"memoria-api/domain/interfaces/svc"
 
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -21,10 +21,10 @@ type Auth interface {
 
 type auth struct {
 	userRepo repository.User
-	userSvc  *service.User
+	userSvc  svc.User
 }
 
-func NewAuth(reg registry.Registry) Auth {
+func NewAuth(reg interfaces.Registry) Auth {
 	return &auth{
 		userRepo: reg.NewUserRepository(),
 		userSvc:  reg.NewUserService(),

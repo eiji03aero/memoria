@@ -30,9 +30,8 @@ export const useInviteUserConfirm = () => {
   const { mutate, error } = useMutation({
     mutationFn: request,
     onSuccess: ({ data }) => {
-      router.push('/dashboard');
+      router.push('/timeline');
       saveJwt(data.token);
-      console.log('pushed called');
     },
   });
 

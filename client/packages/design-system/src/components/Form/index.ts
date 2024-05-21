@@ -1,1 +1,1 @@
-export { Form } from '@adobe/react-spectrum';
+export { Form } from './Form';

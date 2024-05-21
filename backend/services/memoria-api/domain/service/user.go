@@ -2,6 +2,7 @@ package service
 
 import (
 	"memoria-api/domain/interfaces/repository"
+	"memoria-api/domain/interfaces/svc"
 )
 
 type User struct {
@@ -12,7 +13,7 @@ type NewUserDTO struct {
 	UserRepository repository.User
 }
 
-func NewUser(dto NewUserDTO) *User {
+func NewUser(dto NewUserDTO) svc.User {
 	return &User{
 		userRepo: dto.UserRepository,
 	}

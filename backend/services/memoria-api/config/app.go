@@ -23,9 +23,11 @@ func init() {
 }
 
 var (
-	Env        = os.Getenv("ENV")
-	Host       = os.Getenv("HOST")
-	ClientHost = os.Getenv("CLIENT_HOST")
+	Env          = os.Getenv("ENV")
+	Host         = os.Getenv("HOST")
+	ClientHost   = os.Getenv("CLIENT_HOST")
+	S3BucketName = os.Getenv("S3_BUCKET_NAME")
+	S3BucketHost = os.Getenv("S3_BUCKET_HOST")
 
 	DBHost     = os.Getenv("DB_HOST")
 	DBPort     = os.Getenv("DB_PORT")

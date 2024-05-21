@@ -5,7 +5,6 @@ import (
 
 	"gorm.io/gorm"
 
-	"memoria-api/domain/cerrors"
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/model"
 	"memoria-api/infra/tbl"
@@ -71,21 +70,12 @@ func (d *user[T]) FindByID(userID string) (user *model.User, err error) {
 }
 
 func (d *user[T]) Exists(findOpt *repository.FindOption) (exists bool, err error) {
-	userTbl := tbl.User{}
-	_, err = d.findOneWithFindOption(findOneWithFindOptionDTO{
+	return d.exists(existsDTO{
 		db:         d.db,
 		findOption: findOpt,
-		data:       &userTbl,
+		data:       &tbl.User{},
 		name:       "user",
 	})
-	if errors.As(err, &cerrors.ResourceNotFound{}) {
-		exists = false
-		err = nil
-		return
-	}
-
-	exists = true
-	return
 }
 
 func (d *user[T]) EmailExistsInUserSpace(userSpaceID string, email string) (exists bool, err error) {

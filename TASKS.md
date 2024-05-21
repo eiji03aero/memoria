@@ -1,12 +1,73 @@
 # Tasks
 ## WIP
-- [ ] groundwork for albums feature
+- [ ] work on albums feature
     - create doc for specs
-    - break down the task and work on it
+    - album detail api
+    - upload media api
+        - whether link it to album or not
+        - impl table part
+        - consider adding name and extension for medium record
+    - media list api
+    - decide what to do with thumbnail
+    - show upload status in drawer
+    - restrict the media type to upload
+    - try to introduce thumbnail to the media grid
+        - can we make it like showing loader while loading and try error loading image?
+    - support video
+        - ios default
+        - mp4
+        - create thumbnails
+    - delete media
+    - delete album
+    - link and unlink medium to album
+    - when uploading media, optionally user can select album to add
+    - medium detail page
+    - write tests
 
 ## Todo
-- [ ] research lightsail
-    - see if we can cut cost
+- [ ] improve memoria api docker image
+    - https://github.com/davidbyttow/govips/issues/394
+    - should be at least built file with dynamically linked
+- [ ] apply pagination system to the list apis
+- [ ] implement toast system
+    - use toast from react-spectrum
+- [ ] dao impl refactoring
+    - can we implement modelname method to pass around in basedao?
+- [ ] research how we can implement clickable element
+    - what about div with button role?
+- [ ] resource owner validation for data manipulative endpoints
+- [ ] perf improve
+    - album deletion
+    - add media to album
+    - remove media from album
+- [ ] make media loading paginated
+    - tap link on bottom to load more
+    - update api
+- [ ] consider plan control
+    - premium plan for user space
+    - logic should reside in user space service
+    - documentate the difference
+        - limit of media to upload (200?)
+        - vide duration (30s -> 5min)
+- [ ] improve error handling of upload media
+    - when uploading fails
+    - when user sends browser to background
+- [ ] improve bgjob performance
+    - make it multiple go routines
+    - make it buffered
+- [ ] try to DRY up handler test
+    - create shared struct for the strcutre of test execution?
+    - method for comparing structs?
+    - can we make the failure log to show which test case failed?
+- [ ] implement upload medium limit
+- [ ] make sure timestamp columns are recorded
+- [ ] research useButton props
+    - learn and take note of how it helps
+- [ ] take notes of why i thought i needed context boundary
+    - was thinking of the case where:
+        - Logic for uploading media could differ depending on context
+            - in usespace based context, we need to validate the quantity for the day (how many they can upload per day)
+            - in other context, above logic might not be needed
 - [ ] implement transaction / rollback
     - for all the end points that need it
 - [ ] optimize memoria client docker image
@@ -20,6 +81,8 @@
     - document title
 
 ## Done
+- [x] research lightsail
+    - see if we can cut cost
 - [x] refine the definition of service and usecase and dao
     - create documents
         - definition

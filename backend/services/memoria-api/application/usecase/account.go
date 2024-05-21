@@ -9,11 +9,11 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
-	"memoria-api/application/registry"
 	"memoria-api/config"
 	"memoria-api/domain/cerrors"
 	"memoria-api/domain/interfaces"
 	"memoria-api/domain/interfaces/repository"
+	"memoria-api/domain/interfaces/svc"
 	"memoria-api/domain/service"
 	"memoria-api/domain/value"
 )
@@ -28,19 +28,19 @@ type Account interface {
 }
 
 type account struct {
-	registry                  registry.Registry
+	registry                  interfaces.Registry
 	mailer                    interfaces.Mailer
 	userRepo                  repository.User
 	userSpaceRepo             repository.UserSpace
 	userUserSpaceRelationRepo repository.UserUserSpaceRelation
 	userInvitationRepo        repository.UserInvitation
-	userSvc                   *service.User
-	userInvitationSvc         *service.UserInvitation
-	userSpaceSvc              *service.UserSpace
-	userUserSpaceRelationSvc  *service.UserUserSpaceRelation
+	userSvc                   svc.User
+	userInvitationSvc         svc.UserInvitation
+	userSpaceSvc              svc.UserSpace
+	userUserSpaceRelationSvc  svc.UserUserSpaceRelation
 }
 
-func NewAccount(reg registry.Registry) (u Account, err error) {
+func NewAccount(reg interfaces.Registry) (u Account, err error) {
 	mailer, err := reg.NewSESMailer()
 	if err != nil {
 		return

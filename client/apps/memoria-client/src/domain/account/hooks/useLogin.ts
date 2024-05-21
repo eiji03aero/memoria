@@ -28,8 +28,8 @@ export const useLogin = () => {
   const { mutate, error } = useMutation({
     mutationFn: request,
     onSuccess: ({ data }) => {
-      router.push('/dashboard');
       saveJwt(data.token);
+      router.push('/timeline');
     },
   });
 

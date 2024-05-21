@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"memoria-api/application/ccontext"
-	"memoria-api/application/registry"
 	"memoria-api/application/usecase"
+	"memoria-api/domain/interfaces"
 
 	"github.com/gin-gonic/gin"
 )
@@ -29,7 +29,7 @@ type AppDataGetRes struct {
 	UserSpace AppDataGetResUserSpace `json:"user_space"`
 }
 
-func (h *AppData) Get(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
+func (h *AppData) Get(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
 	cctx := ccontext.NewContext(c)
 
 	appDataUc := usecase.NewAppData(reg)

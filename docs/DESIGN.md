@@ -8,7 +8,6 @@
 ### domain/service
 - Implements executable logic that has contains domain logic.
 
-
 ### infra/dao (domain/interfaces/repository)
 - Implements any database retrieval / manipulation logic here.
     - Querying data

@@ -9,9 +9,12 @@
 - Setting
     - do your thing
 
-## TBD
+## Idea features
 - Timeline
     - maa twitter tekina yatsu
+- Threads on medium
+- Calendar view of album
+
 
 ## Usecases
 ### Signup
@@ -138,86 +141,94 @@
 - 5: Top page
     - User will be feedbacked with the result
 
+---
+
 ### Create an album
 #### Flow
 - 1: Albums page
     - User can open create album page
     - Next
-        - Open create album page to go 2.
-- 2: Create album page
+        - Open create album drawer to go 2.
+- 2: Create album drawer
     - User submits form to create an album
     - Input
         - name
     - Next
         - Submit succeeds to 3.
-- 3: Opens created album page
+- 3: Albums page
     - User will be feedbacked with the result
 
 ### View albums and view media uploaded
 #### Flow
-- 1: Albums page
+- 1: Albums page or All photo page
     - User can see the list of albums created
     - Next
         - Click album to open album page
 - 2: Album page
     - User can see grid of media uploaded to album
+    - Select one of the media
+    - Next
+        - Selects one medium succeeds to 3.
+- 3: Medium page
+    - User can view medium
+    - User can move back and forth between media
 
 ### Upload media
 #### Flow
-- 1: Album page
+- 1: Album page or All photo page
     - User selects album to open dedicated page
-    - Click add media button, which allows selecting media
+    - click on upload medium button
+    - open file explorer and select media and submits
     - Input
-        - any type of media allowed
+        - any type of medium allowed
     - Next
         - Selects to submit to 2.
 - 2: Album page
     - User will be feedbacked with the result
-
 #### Remark
 - Use signed url to upload so that api server won't have to touch the media files
+- System flow:
+    - client gets media
 
-### Link existing media to albums
+### Delete media
 #### Flow
-- 1: Media detail page
-    - User opens media detail page
-    - There is a menu to trigger linking media to album
+- 1: Album page or all photo page
+    - User selects album to open dedicated page
+    - Start selection
+    - User will pushes menu bottom right and select delete media
+    - Input
+        - media ids
     - Next
-        - Selects album to link to go 2.
-- 2: Medi adetail page
+        - confirm request succeeds to to 2.
+- 2: Album page
     - User will be feedbacked with the result
 
-### Comment thread on media
-#### Flow
-- 1: Media detail page
-    - User opens media detail page to open thread drawer
+### Add media to albums
+#### Flow 1
+- 1: Album page or All photo page
+    - User selects photos
+    - User use menu item on bottom right
     - Next
-        - Opens thread drawer to go 2.
-- 2: Media detail page
-    - User can do following stuff on thread drawer
-        - send text message
-        - see messages sent to thread
-            - name
-            - datetime
-            - message content
+        - Click menu item of add to album to go 2.
+- 2: Add to album drawer
+    - User selects albums to add to
+- 3: Album page
+    - User will be feedbacked with result
 
-#### Remark
-- Place refresh button to load latest messages
-
-### View media in calendar
-#### Flow
-- 1: Calendar page
-    - User can view which date has which media taken
+### Remove media from albums
+#### Flow 1
+- 1: Album page
+    - User selects photos
+    - User use menu item on bottom right
     - Next
-        - Click on date to open date detail page
-- 2: Date detail page
-    - User can view grid of media for the given date
-    - User can also:
-        - Go back to calendar page
-        - Go back and forth date
+        - Click menu item of unlink to album to go 2.
+- 2: Unlink to album drawer
+    - Next
+        - Confirm the action succeeds to 3.
+- 3: Album page
+    - User will be feedbacked with result
 
-#### Remark
-- The date to link should be the date it was taken, not the date uploaded
+---
 
 ### Create another user space with existing user
 #### Flow
@@ -305,6 +316,60 @@
 - Input:
     - email: string
     - password: string
+
+---
+
+### Create an album
+- POST /api/auth/albums
+- Input:
+    - name: string
+
+### Get list of albums
+- GET /api/auth/albums
+
+### Get album detail
+- GET /api/auth/albums/:id
+- Input:
+    - id: string
+
+### Request media upload urls
+- POST /api/auth/media/request-upload-urls
+- Input:
+    - file_names: string[]
+    - album_id?: string
+
+### Get list of media
+- GET /api/auth/media
+- Input:
+    - album_id?: string
+
+### Confirm uploads
+- POST /api/auth/media/confirm-uploads
+- General
+    - Confirm the uploads to api server so that the server can do wrap work like:
+        - create thumbnails
+- Input:
+    - medium_ids: []string
+
+### Delete media
+- DELETE /api/auth/media/:id
+
+### Delete media
+- DELETE /api/auth/albums/:id
+
+### Add media to albums
+- POST /api/auth/albums/:id/add-media
+- Input
+    - medium_ids: []string
+    - album_ids: []string
+
+### Remove media from album
+- POST /api/auth/albums/:id/remove-media
+- Input
+    - medium_ids: []string
+    - album_ids: []string
+
+---
 
 # Reminding notes
 ## Workmail

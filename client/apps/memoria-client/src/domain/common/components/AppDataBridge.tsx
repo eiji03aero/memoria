@@ -1,10 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import {
-  restoreStateFromResponse,
-  Response,
-} from '@/domain/common/hooks/useAppData';
+import { restoreStateFromResponse, Response } from '@/domain/common/hooks/useAppData';
 
 type Props = {
   appData: Response;

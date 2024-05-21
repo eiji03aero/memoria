@@ -1,0 +1,1 @@
+export { ThumbnailLinkCard } from './ThumbnailLinkCard';

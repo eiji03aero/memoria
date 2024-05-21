@@ -2,7 +2,8 @@
   "name": "@repo/design-system",
   "version": "1.0.0",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./panda.config": "./panda.config.ts"
   },
   "scripts": {
     "prepare": "panda codegen",
@@ -37,6 +38,7 @@
     "classnames": "^2.5.1",
     "react": "^18.3.0",
     "react-aria": "^3.32.1",
-    "react-dom": "^18.3.0"
+    "react-dom": "^18.3.0",
+    "react-select": "^5.8.0"
   }
 }

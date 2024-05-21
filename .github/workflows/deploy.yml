@@ -91,6 +91,8 @@ jobs:
             CLIENT_HOST=https://memoria-app.com
             AWS_ACCESS_KEY_ID=${{ secrets.API_AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY=${{ secrets.API_AWS_SECRET_ACCESS_KEY }}
+            S3_BUCKET_NAME=memoria-prod
+            S3_BUCKET_HOST=https://memoria-prod.s3.ap-northeast-1.amazonaws.com
             DB_USER=postgres
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
             DB_HOST=${{ env.DB_HOST }}

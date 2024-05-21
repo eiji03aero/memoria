@@ -1,7 +1,7 @@
 # just a sample, do not run this
 .PHONY: generate-migration
 generate-migration:
-	echo migrate create -ext sql -dir db/migrations -seq create_users_table
+	migrate create -ext sql -dir db/migrations -seq create_users_table
 
 .PHONY: migrate
 migrate:

@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"memoria-api/application/ccontext"
-	"memoria-api/application/registry"
 	"memoria-api/application/usecase"
+	"memoria-api/domain/interfaces"
 )
 
 type Account struct{}
@@ -27,7 +27,7 @@ type AccountSignupRes struct {
 	Token string `json:"token"`
 }
 
-func (h *Account) Signup(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
+func (h *Account) Signup(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
 	authUc := usecase.NewAuth(reg)
 	accountUc, err := usecase.NewAccount(reg)
 	if err != nil {
@@ -69,7 +69,7 @@ type AccountSignupConfirmReq struct {
 	ID *string `form:"id"`
 }
 
-func (h *Account) SignupConfirm(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
+func (h *Account) SignupConfirm(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
 	accountUc, err := usecase.NewAccount(reg)
 	if err != nil {
 		return
@@ -103,7 +103,7 @@ type AccountLoginRes struct {
 	Token string `json:"token"`
 }
 
-func (h *Account) Login(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
+func (h *Account) Login(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
 	authUc := usecase.NewAuth(reg)
 	accountUc, err := usecase.NewAccount(reg)
 	if err != nil {
@@ -140,7 +140,7 @@ type AccountInviteUserReq struct {
 	Email *string `json:"email"`
 }
 
-func (h *Account) InviteUser(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
+func (h *Account) InviteUser(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
 	cctx := ccontext.NewContext(c)
 	accountUc, err := usecase.NewAccount(reg)
 	if err != nil {
@@ -174,7 +174,7 @@ type AccountInviteUserConfirmRes struct {
 	Token string `json:"token"`
 }
 
-func (h *Account) InviteUserConfirm(c *gin.Context, reg registry.Registry) (status int, data any, err error) {
+func (h *Account) InviteUserConfirm(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
 	authUc := usecase.NewAuth(reg)
 	accountUc, err := usecase.NewAccount(reg)
 	if err != nil {

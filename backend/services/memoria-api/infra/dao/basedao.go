@@ -47,11 +47,40 @@ func (d *BaseDao[T]) findOneWithFindOption(dto findOneWithFindOptionDTO) (result
 	return
 }
 
+type existsDTO struct {
+	db         *gorm.DB
+	findOption *repository.FindOption
+	data       any
+	name       string
+}
+
+func (d *BaseDao[T]) exists(dto existsDTO) (exists bool, err error) {
+	_, err = d.findOneWithFindOption(findOneWithFindOptionDTO{
+		db:         dto.db,
+		findOption: dto.findOption,
+		data:       dto.data,
+		name:       dto.name,
+	})
+	if errors.As(err, &cerrors.ResourceNotFound{}) {
+		exists = false
+		err = nil
+		return
+	}
+
+	exists = true
+	return
+}
+
 func (d *BaseDao[T]) scopeByFindOption(findOption *repository.FindOption) func(db *gorm.DB) *gorm.DB {
 	return func(db *gorm.DB) *gorm.DB {
 		query := db
+
 		for _, filter := range findOption.Filters {
 			query = query.Where(filter.Query, filter.Value)
+		}
+
+		for _, join := range findOption.Joins {
+			query = query.Joins(join.Query)
 		}
 
 		if findOption.Order != "" {

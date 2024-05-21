@@ -10,6 +10,8 @@ services:
       CORS_ALLOW_ORIGINS: http://localhost:3000
       HOST: http://localhost:4200
       CLIENT_HOST: http://localhost:3000
+      S3_BUCKET_NAME: memoria-dev
+      S3_BUCKET_HOST: https://memoria-dev.s3.ap-northeast-1.amazonaws.com
       DB_USER: memoria
       DB_PASSWORD: password
       DB_NAME: memoria

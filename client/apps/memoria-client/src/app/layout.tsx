@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   title: 'Memoria',
   description: 'A frinedly app helps you cherish your moments.',
 };
+export const fetchCache = 'default-no-store';
+export const dynamic = 'force-dynamic';
 
 export default function RootLayout({
   children,

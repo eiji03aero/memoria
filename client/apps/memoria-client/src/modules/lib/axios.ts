@@ -1,6 +1,8 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 
 import { getJwt } from '@/domain/account/services';
+
+const bareAxios = axios.create();
 
 axios.interceptors.request.use(
   function (config) {
@@ -17,4 +19,5 @@ axios.interceptors.request.use(
   },
 );
 
-export { axios, AxiosError };
+export type { AxiosResponse, AxiosError };
+export { axios, bareAxios };

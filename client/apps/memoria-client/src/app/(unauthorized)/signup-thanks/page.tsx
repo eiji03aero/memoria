@@ -33,8 +33,8 @@ export default function SignupThanks() {
       <p className={css({ fontSize: '1rem', color: 'black' })}>
         Thanks for joining memoria!
       </p>
-      <Button variant="primary" elementType={Link} href="/dashboard">
-        Go to dashboard page
+      <Button variant="primary" elementType={Link} href="/timeline">
+        Go to timeline page
       </Button>
     </div>
   );

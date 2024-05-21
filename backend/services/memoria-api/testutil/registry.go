@@ -4,12 +4,11 @@ import (
 	"context"
 
 	"memoria-api/application/ccontext"
-	"memoria-api/application/registry"
 	"memoria-api/application/usecase"
+	"memoria-api/domain/interfaces"
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/model"
-	"memoria-api/infra/caws"
-	"memoria-api/infra/db"
+	"memoria-api/infra/registry"
 	"memoria-api/testutil/mock"
 	"memoria-api/util"
 
@@ -18,24 +17,21 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetupTestEnvironment(ctrl *gomock.Controller) (reg registry.Registry, api *TestEnvAPI, err error) {
+func SetupTestEnvironment(ctrl *gomock.Controller) (reg interfaces.Registry, api *TestEnvAPI, err error) {
 	ctx := context.Background()
 
 	// -------------------- build real registry --------------------
-	Db, err := db.New()
-	if err != nil {
-		return
-	}
-
-	awsCfg, err := caws.LoadConfig(ctx)
-	if err != nil {
-		return
-	}
-
-	realReg := registry.NewRegistry(registry.NewRegistryDTO{
-		DB:     Db,
-		AWSCfg: awsCfg,
+	realReg, err := registry.NewRegistry(registry.NewRegistryDTO{
+		Ctx: ctx,
+		Shared: interfaces.RegistryShared{
+			BGJobInvokeChan: make(chan interfaces.BGJobInvokePayload),
+		},
 	})
+	if err != nil {
+		return
+	}
+
+	db := realReg.(*registry.Registry).DB
 
 	// -------------------- build mock registry --------------------
 	mockReg := mock.NewMockRegistry(ctrl)
@@ -50,6 +46,10 @@ func SetupTestEnvironment(ctrl *gomock.Controller) (reg registry.Registry, api *
 	mockReg.EXPECT().NewUserSpaceRepository().DoAndReturn(realReg.NewUserSpaceRepository).AnyTimes()
 	mockReg.EXPECT().NewUserUserSpaceRelationRepository().DoAndReturn(realReg.NewUserUserSpaceRelationRepository).AnyTimes()
 	mockReg.EXPECT().NewUserInvitationRepository().DoAndReturn(realReg.NewUserInvitationRepository).AnyTimes()
+	mockReg.EXPECT().NewAlbumRepository().DoAndReturn(realReg.NewAlbumRepository).AnyTimes()
+	mockReg.EXPECT().NewUserSpaceAlbumRelationRepository().DoAndReturn(realReg.NewUserSpaceAlbumRelationRepository).AnyTimes()
+	mockReg.EXPECT().NewMediumRepository().DoAndReturn(realReg.NewMediumRepository).AnyTimes()
+	mockReg.EXPECT().NewAlbumMediumRelationRepository().DoAndReturn(realReg.NewAlbumMediumRelationRepository).AnyTimes()
 	// service
 	mockReg.EXPECT().NewUserService().DoAndReturn(realReg.NewUserService).AnyTimes()
 	mockReg.EXPECT().NewUserSpaceService().DoAndReturn(realReg.NewUserSpaceService).AnyTimes()
@@ -57,26 +57,33 @@ func SetupTestEnvironment(ctrl *gomock.Controller) (reg registry.Registry, api *
 	mockReg.EXPECT().NewUserInvitationService().DoAndReturn(realReg.NewUserInvitationService).AnyTimes()
 
 	// mocked
-
 	mockMailer := mock.NewMockMailer(ctrl)
 	mockReg.EXPECT().NewSESMailer().Return(mockMailer, nil).AnyTimes()
+	mockS3Client := mock.NewMockS3Client(ctrl)
+	mockReg.EXPECT().NewS3Client().Return(mockS3Client).AnyTimes()
 
 	reg = mockReg
 
 	// -------------------- api --------------------
 	api = &TestEnvAPI{
-		db:         Db,
-		registry:   reg,
-		MockMailer: mockMailer,
+		db:           db,
+		registry:     reg,
+		MockMailer:   mockMailer,
+		MockS3Client: mockS3Client,
 	}
 
 	return
 }
 
 type TestEnvAPI struct {
-	db         *gorm.DB
-	registry   registry.Registry
-	MockMailer *mock.MockMailer
+	db           *gorm.DB
+	registry     interfaces.Registry
+	MockMailer   *mock.MockMailer
+	MockS3Client *mock.MockS3Client
+}
+
+func (t *TestEnvAPI) DB() *gorm.DB {
+	return t.db
 }
 
 func (t *TestEnvAPI) CleanupDB() {

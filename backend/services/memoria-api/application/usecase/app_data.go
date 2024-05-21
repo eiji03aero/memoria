@@ -1,10 +1,10 @@
 package usecase
 
 import (
-	"memoria-api/application/registry"
+	"memoria-api/domain/interfaces"
 	"memoria-api/domain/interfaces/repository"
+	"memoria-api/domain/interfaces/svc"
 	"memoria-api/domain/model"
-	"memoria-api/domain/service"
 )
 
 type AppData interface {
@@ -14,11 +14,11 @@ type AppData interface {
 type appData struct {
 	userRepo      repository.User
 	userSpaceRepo repository.UserSpace
-	userSvc       *service.User
-	userSpaceSvc  *service.UserSpace
+	userSvc       svc.User
+	userSpaceSvc  svc.UserSpace
 }
 
-func NewAppData(reg registry.Registry) AppData {
+func NewAppData(reg interfaces.Registry) AppData {
 	return &appData{
 		userRepo:      reg.NewUserRepository(),
 		userSpaceRepo: reg.NewUserSpaceRepository(),
