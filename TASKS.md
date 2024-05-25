@@ -25,6 +25,10 @@
     - write tests
 
 ## Todo
+- [ ] make sure media gallery works okay
+    - starting from middle to load previous page
+    - starting from middle to load next page
+- [ ] try wegic for ui design
 - [ ] improve memoria api docker image
     - https://github.com/davidbyttow/govips/issues/394
     - should be at least built file with dynamically linked

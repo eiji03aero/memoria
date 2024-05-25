@@ -28,7 +28,7 @@ export const useInviteUser = () => {
     (params: Request) => {
       mutate(params);
     },
-    [mutate, router],
+    [mutate],
   );
 
   return {

@@ -87,6 +87,10 @@ func (d *BaseDao[T]) scopeByFindOption(findOption *repository.FindOption) func(d
 			query = query.Order(findOption.Order)
 		}
 
+		if findOption.Offset != nil && findOption.Limit != nil {
+			query = query.Offset(*findOption.Offset).Limit(*findOption.Limit)
+		}
+
 		return query
 	}
 }

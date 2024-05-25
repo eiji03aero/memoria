@@ -42,6 +42,7 @@ export const useUploadMedia = () => {
       const files = Array.from(params.files);
 
       // request creating media objects and signed urls
+      rs.reset();
       rs.setStatus('preparing');
       const {
         data: { upload_urls },
@@ -68,7 +69,7 @@ export const useUploadMedia = () => {
       rs.setStatus('completed');
       params.onSuccess?.();
     },
-    [rs.setStatus, rs.setTotalRequested, rs.setTotalRequests],
+    [rs],
   );
 
   const statusLabel = React.useMemo(() => {
@@ -93,7 +94,7 @@ export const useUploadMedia = () => {
     }
 
     return null;
-  }, [rs.status, rs.totalRequested, rs.totalRequests]);
+  }, [rs]);
 
   return {
     upload,

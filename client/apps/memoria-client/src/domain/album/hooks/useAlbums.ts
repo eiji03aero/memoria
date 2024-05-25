@@ -20,7 +20,7 @@ export const useAlbums = () => {
 
   const refetch = React.useCallback(() => {
     query.refetch();
-  }, [query.refetch]);
+  }, [query]);
 
   return {
     refetch,

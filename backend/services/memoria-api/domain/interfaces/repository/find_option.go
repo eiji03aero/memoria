@@ -13,4 +13,6 @@ type FindOption struct {
 	Filters []*FindOptionFilter
 	Joins   []*FindOptionJoin
 	Order   string
+	Offset  *int
+	Limit   *int
 }

@@ -51,3 +51,16 @@ func NewUnauthorized() error {
 func (e Unauthorized) Error() string {
 	return "unauthorized"
 }
+
+// -------------------- Not implemented --------------------
+type NotImplemented struct {
+	Name string
+}
+
+func NewNotImplemented(name string) error {
+	return NotImplemented{Name: name}
+}
+
+func (e NotImplemented) Error() string {
+	return "not implemented: " + e.Name
+}

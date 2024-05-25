@@ -8,14 +8,31 @@ export const useMultipleRequestsStatus = () => {
   const [totalRequested, setTotalRequested] = React.useState(0);
 
   const incrementRequested = React.useCallback(() => setTotalRequested(prev => prev + 1), []);
+  const reset = React.useCallback(() => {
+    setTotalRequested(0);
+    setTotalRequests(0);
+  }, []);
 
-  return {
-    status,
-    setStatus,
-    totalRequests,
-    setTotalRequests,
-    totalRequested,
-    setTotalRequested,
-    incrementRequested,
-  };
+  return React.useMemo(
+    () => ({
+      status,
+      setStatus,
+      totalRequests,
+      setTotalRequests,
+      totalRequested,
+      setTotalRequested,
+      incrementRequested,
+      reset,
+    }),
+    [
+      status,
+      setStatus,
+      totalRequests,
+      setTotalRequests,
+      totalRequested,
+      setTotalRequested,
+      incrementRequested,
+      reset,
+    ],
+  );
 };

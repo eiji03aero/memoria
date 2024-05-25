@@ -343,6 +343,15 @@
 - Input:
     - album_id?: string
 
+### Get page of media
+- GET /api/auth/media/get-page
+- Input
+    - album_id?: string
+    - medium_id: string
+- Output
+    - current_page: int
+    - total_page: int
+
 ### Confirm uploads
 - POST /api/auth/media/confirm-uploads
 - General

@@ -12,6 +12,7 @@ export const useDeleteMedia = () => {
   const deleteMedia = React.useCallback(
     async (params: { ids: string[]; onSuccess: () => void }) => {
       rs.setStatus('requesting');
+      rs.reset();
       rs.setTotalRequests(params.ids.length);
 
       for (let i = 0; i < params.ids.length; i++) {
@@ -22,7 +23,7 @@ export const useDeleteMedia = () => {
       rs.setStatus('completed');
       params.onSuccess();
     },
-    [rs.setStatus, rs.incrementRequested],
+    [rs],
   );
 
   const statusLabel = React.useMemo(() => {

@@ -92,6 +92,6 @@ const Styles = {
     top: 0,
     height: '0.25rem',
     bg: 'yellow.400',
-    animation: '2s linear 0s loadingBar infinite',
+    animation: '2.5s linear 0s loadingBar infinite',
   }),
 };

@@ -6,7 +6,19 @@ export const keyframes = {
       left: '0',
       right: '100%',
     },
-    '50%': {
+    '40%': {
+      left: '25%',
+      right: '0',
+    },
+    '60%': {
+      left: '100%',
+      right: '0',
+    },
+    '61%': {
+      left: '0',
+      right: '100%',
+    },
+    '80%': {
       left: '25%',
       right: '0',
     },

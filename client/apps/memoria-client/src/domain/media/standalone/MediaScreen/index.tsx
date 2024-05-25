@@ -14,6 +14,7 @@ import { useMedia } from '@/domain/media/hooks/useMedia';
 import { useDeleteMedia } from '@/domain/media/hooks/useDeleteMedia';
 import { useAddMediaToAlbums } from '@/domain/album/hooks/useAddMediaToAlbums';
 import { useRemoveMediaFromAlbums } from '@/domain/album/hooks/useRemoveMediaFromAlbums';
+import * as utils from '@/modules/utils';
 
 type Props = {
   title: string;
@@ -67,6 +68,8 @@ export const MediaScreen = ({ title, albumID }: Props) => {
     (medium: Medium) => {
       if (mode === 'default') {
         // TODO: navigate to medium detail
+        const qs = utils.buildQueryParams({ album_id: albumID, initial_medium_id: medium.id });
+        router.push(`/media/gallery?${qs}`);
       } else if (mode === 'selecting') {
         setSelectedIds(prev => {
           if (prev.includes(medium.id)) {
@@ -77,7 +80,7 @@ export const MediaScreen = ({ title, albumID }: Props) => {
         });
       }
     },
-    [mode],
+    [mode, router, albumID],
   );
 
   const handleDelete = React.useCallback(() => {
@@ -121,7 +124,7 @@ export const MediaScreen = ({ title, albumID }: Props) => {
       albumIDs: [albumID],
       mediumIDs: selectedIds,
     });
-  }, [selectedIds, selectedAlbumIDs, removeMediaFromAlbums]);
+  }, [albumID, selectedIds, removeMediaFromAlbums]);
 
   return (
     <>

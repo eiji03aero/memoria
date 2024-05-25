@@ -39,7 +39,7 @@ export const useInviteUserConfirm = () => {
     (params: Request) => {
       mutate(params);
     },
-    [mutate, router],
+    [mutate],
   );
 
   return {

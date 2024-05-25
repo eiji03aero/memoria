@@ -7,5 +7,5 @@ module.exports = {
     project: './tsconfig.lint.json',
     tsconfigRootDir: __dirname,
   },
-  ignorePatterns: ['next.config.mjs'],
+  ignorePatterns: ['next.config.mjs', 'postcss.config.cjs'],
 };

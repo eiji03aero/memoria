@@ -53,8 +53,8 @@ func InitializeRouter(regb *registry.Builder) *gin.Engine {
 
 		// -------------------- album --------------------
 		album := handler.NewAlbum()
-		authenticated.GET("/albums/:id", wrap(regb, album.FindOne))
 		authenticated.GET("/albums", wrap(regb, album.Find))
+		authenticated.GET("/albums/:id", wrap(regb, album.FindOne))
 		authenticated.POST("/albums", wrap(regb, album.Create))
 		authenticated.DELETE("/albums/:id", wrap(regb, album.Delete))
 		authenticated.POST("/albums/add-media", wrap(regb, album.AddMedia))
@@ -63,6 +63,8 @@ func InitializeRouter(regb *registry.Builder) *gin.Engine {
 		// -------------------- medium --------------------
 		medium := handler.NewMedium()
 		authenticated.GET("/media", wrap(regb, medium.Find))
+		authenticated.GET("/media/:id", wrap(regb, medium.FindOne))
+		authenticated.GET("/media/get-page", wrap(regb, medium.GetPage))
 		authenticated.POST("/media/request-upload-urls", wrap(regb, medium.RequestUploadURLs))
 		authenticated.POST("/media/confirm-uploads", wrap(regb, medium.ConfirmUploads))
 		authenticated.DELETE("/media/:id", wrap(regb, medium.Delete))

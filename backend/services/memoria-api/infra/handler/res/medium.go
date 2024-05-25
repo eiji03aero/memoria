@@ -5,6 +5,7 @@ import "memoria-api/domain/model"
 type Medium struct {
 	ID          string `json:"id"`
 	Name        string `json:"name"`
+	Type        string `json:"type"`
 	Extension   string `json:"extension"`
 	OriginalURL string `json:"original_url"`
 	Tn240URL    string `json:"tn_240_url"`
@@ -14,6 +15,7 @@ func MediumFromModel(m *model.Medium) *Medium {
 	return &Medium{
 		ID:          m.ID,
 		Name:        m.Name,
+		Type:        m.GetType(),
 		Extension:   m.Extension,
 		OriginalURL: m.GetOriginalURL(),
 		Tn240URL:    m.GetTn240URL(),

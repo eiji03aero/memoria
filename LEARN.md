@@ -282,6 +282,11 @@ func main() {
 ---
 
 # Frontend
+## next.js
+### How to import external css with layer specified
+- https://zenn.dev/swallowtail62/articles/4d81a75a6be2e7
+- use postcss's plugin
+
 ## tanstack-query
 ### Difficulty with handling error response body
 - want to run logic with onSuccess

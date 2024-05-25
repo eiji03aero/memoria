@@ -17,14 +17,11 @@ export const Item = ({ label, icon, active = false, onPress }: Props) => {
   const ref = React.useRef<HTMLButtonElement>(null);
   const { buttonProps } = useButton({ onPress }, ref);
 
-  const contentColor = active ? 'yellow.400' : 'gray.600';
+  const contentColor = active ? 'yellow.600' : 'gray.400';
 
   return (
-    <button
-      {...buttonProps}
-      className={styles.classnames(styles.reset.button, Styles.item)}
-    >
-      <Icon size="S" color={active ? 'yellow.600' : 'gray.600'} name={icon} />
+    <button {...buttonProps} className={styles.classnames(styles.reset.button, Styles.item)}>
+      <Icon size="S" color={contentColor} name={icon} />
       <span className={Styles.label} data-active={active}>
         {label}
       </span>
@@ -44,7 +41,7 @@ const Styles = {
   }),
   label: css({
     fontSize: '0.625rem',
-    color: 'gray.600',
+    color: 'gray.400',
     '&[data-active=true]': {
       color: 'yellow.600',
     },

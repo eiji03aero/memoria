@@ -1,1 +1,4 @@
 @layer reset, base, tokens, recipes, utilities;
+
+@import url('slick-carousel/slick/slick.css') layer(utilities);
+@import url('slick-carousel/slick/slick-theme.css') layer(utilities);

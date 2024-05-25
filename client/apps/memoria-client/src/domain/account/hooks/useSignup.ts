@@ -41,7 +41,7 @@ export const useSignup = () => {
     (params: Request) => {
       mutate(params);
     },
-    [mutate, router],
+    [mutate],
   );
 
   return {

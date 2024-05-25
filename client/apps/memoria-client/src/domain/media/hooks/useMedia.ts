@@ -1,37 +1,55 @@
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 import * as config from '@/config';
 import { axios, AxiosResponse } from '@/modules/lib/axios';
-import { Medium } from '@/domain/common/interfaces/api';
+import { Medium, Pagination, Paginate } from '@/domain/common/interfaces/api';
 
-type Request = {
+type Request = Paginate & {
   albumID?: string;
 };
 
 type Response = {
   media: Array<Medium>;
+  pagination: Pagination | undefined;
 };
 
-const request = (params: Request) =>
+const request = (p: Request) =>
   axios.get<Request, AxiosResponse<Response>>(`${config.ApiHost}/api/auth/media`, {
     params: {
-      album_id: params.albumID,
+      album_id: p.albumID,
+      page: p.page,
+      per_page: p.perPage,
     },
   });
 
 type Params = {
   albumID?: string;
+  enabled?: boolean;
+  initialPage?: number;
 };
 
-export const useMedia = ({ albumID }: Params) => {
-  const query = useQuery({
+export const useMedia = ({ albumID, enabled = true, initialPage = 1 }: Params) => {
+  const query = useInfiniteQuery({
     queryKey: ['media', { albumID }],
-    queryFn: () => request({ albumID }),
+    queryFn: ({ pageParam }) => request({ albumID, page: pageParam, perPage: 100 }),
+    enabled,
+    initialPageParam: initialPage,
+    getNextPageParam: (lastPage, _, lastPageParam) => {
+      if (lastPage.data.media.length === 0) {
+        return undefined;
+      }
+      return lastPageParam + 1;
+    },
+    getPreviousPageParam: (_, _2, firstPageParam) => {
+      if (firstPageParam <= 1) {
+        return undefined;
+      }
+      return firstPageParam - 1;
+    },
   });
 
   return {
-    refetch: query.refetch,
-    media: query.data?.data.media,
-    isFetching: query.isFetching,
+    ...query,
+    media: query.data?.pages.flatMap(page => page.data.media),
   };
 };

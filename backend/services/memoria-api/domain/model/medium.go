@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"memoria-api/config"
+	"memoria-api/domain/cerrors"
 )
 
 type Medium struct {
@@ -36,7 +37,7 @@ func NewMedium(dto NewMediumDTO) *Medium {
 }
 
 var (
-	ValidImageExtension = []string{"jpeg", "jpg", "png", "heic"}
+	ValidImageExtension = []string{"jpeg", "jpg", "png", "heic", "webp"}
 	ValidVideoExtension = []string{"mp4", "mov", "3gp", "mkv", "ts", "webm"}
 )
 
@@ -62,6 +63,17 @@ func (m Medium) IsVideo() bool {
 		}
 	}
 	return false
+}
+
+func (m Medium) GetType() string {
+	if m.IsImage() {
+		return "image"
+	}
+	if m.IsVideo() {
+		return "video"
+	}
+
+	panic(cerrors.NewNotImplemented(m.Extension))
 }
 
 func (m Medium) GetFileDirectoryPath() string {

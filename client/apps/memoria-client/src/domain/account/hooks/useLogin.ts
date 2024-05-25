@@ -37,7 +37,7 @@ export const useLogin = () => {
     (params: Request) => {
       mutate(params);
     },
-    [mutate, router],
+    [mutate],
   );
 
   return {
