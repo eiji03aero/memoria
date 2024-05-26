@@ -1,30 +1,9 @@
 # Tasks
 ## WIP
-- [ ] work on albums feature
-    - create doc for specs
-    - album detail api
-    - upload media api
-        - whether link it to album or not
-        - impl table part
-        - consider adding name and extension for medium record
-    - media list api
-    - decide what to do with thumbnail
-    - show upload status in drawer
-    - restrict the media type to upload
-    - try to introduce thumbnail to the media grid
-        - can we make it like showing loader while loading and try error loading image?
-    - support video
-        - ios default
-        - mp4
-        - create thumbnails
-    - delete media
-    - delete album
-    - link and unlink medium to album
-    - when uploading media, optionally user can select album to add
-    - medium detail page
-    - write tests
 
 ## Todo
+- [ ] test code for bgjob impl
+- [ ] consider monetize
 - [ ] make sure media gallery works okay
     - starting from middle to load previous page
     - starting from middle to load next page
@@ -85,6 +64,35 @@
     - document title
 
 ## Done
+- [x] work on albums feature
+    - create doc for specs
+    - album detail api
+    - upload media api
+        - whether link it to album or not
+        - impl table part
+        - consider adding name and extension for medium record
+    - media list api
+    - decide what to do with thumbnail
+    - show upload status in drawer
+    - restrict the media type to upload
+    - try to introduce thumbnail to the media grid
+        - can we make it like showing loader while loading and try error loading image?
+    - support video
+        - ios default
+        - mp4
+        - create thumbnails
+    - delete media
+    - delete album
+    - link and unlink medium to album
+    - when uploading media, optionally user can select album to add
+    - medium detail page
+    - write tests
+        - [x] album add media
+        - [x] album remove media
+        - [x] medium find one
+        - [x] medium get page
+        - [x] medium confirm uploads
+        - [x] medium delete
 - [x] research lightsail
     - see if we can cut cost
 - [x] refine the definition of service and usecase and dao

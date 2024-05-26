@@ -1,8 +1,6 @@
 package testutil
 
 import (
-	"context"
-
 	"memoria-api/application/ccontext"
 	"memoria-api/application/usecase"
 	"memoria-api/domain/interfaces"
@@ -18,15 +16,8 @@ import (
 )
 
 func SetupTestEnvironment(ctrl *gomock.Controller) (reg interfaces.Registry, api *TestEnvAPI, err error) {
-	ctx := context.Background()
-
 	// -------------------- build real registry --------------------
-	realReg, err := registry.NewRegistry(registry.NewRegistryDTO{
-		Ctx: ctx,
-		Shared: interfaces.RegistryShared{
-			BGJobInvokeChan: make(chan interfaces.BGJobInvokePayload),
-		},
-	})
+	realReg, err := registry.NewBuilder().Build()
 	if err != nil {
 		return
 	}
@@ -55,31 +46,37 @@ func SetupTestEnvironment(ctrl *gomock.Controller) (reg interfaces.Registry, api
 	mockReg.EXPECT().NewUserSpaceService().DoAndReturn(realReg.NewUserSpaceService).AnyTimes()
 	mockReg.EXPECT().NewUserUserSpaceRelationService().DoAndReturn(realReg.NewUserUserSpaceRelationService).AnyTimes()
 	mockReg.EXPECT().NewUserInvitationService().DoAndReturn(realReg.NewUserInvitationService).AnyTimes()
+	mockReg.EXPECT().NewAlbumService().DoAndReturn(realReg.NewAlbumService).AnyTimes()
+	mockReg.EXPECT().NewMediumService().DoAndReturn(realReg.NewMediumService).AnyTimes()
 
 	// mocked
 	mockMailer := mock.NewMockMailer(ctrl)
 	mockReg.EXPECT().NewSESMailer().Return(mockMailer, nil).AnyTimes()
 	mockS3Client := mock.NewMockS3Client(ctrl)
 	mockReg.EXPECT().NewS3Client().Return(mockS3Client).AnyTimes()
+	mockBGJobInvoker := mock.NewMockBGJobInvoker(ctrl)
+	mockReg.EXPECT().NewBGJobInvoker().Return(mockBGJobInvoker).AnyTimes()
 
 	reg = mockReg
 
 	// -------------------- api --------------------
 	api = &TestEnvAPI{
-		db:           db,
-		registry:     reg,
-		MockMailer:   mockMailer,
-		MockS3Client: mockS3Client,
+		db:               db,
+		registry:         reg,
+		MockMailer:       mockMailer,
+		MockS3Client:     mockS3Client,
+		MockBGJobInvoker: mockBGJobInvoker,
 	}
 
 	return
 }
 
 type TestEnvAPI struct {
-	db           *gorm.DB
-	registry     interfaces.Registry
-	MockMailer   *mock.MockMailer
-	MockS3Client *mock.MockS3Client
+	db               *gorm.DB
+	registry         interfaces.Registry
+	MockMailer       *mock.MockMailer
+	MockS3Client     *mock.MockS3Client
+	MockBGJobInvoker *mock.MockBGJobInvoker
 }
 
 func (t *TestEnvAPI) DB() *gorm.DB {

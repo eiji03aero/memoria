@@ -5,6 +5,7 @@ import "memoria-api/domain/model"
 type UserSpaceAlbumRelation interface {
 	Find(findOpt *FindOption) ([]*model.UserSpaceAlbumRelation, error)
 	FindOne(findOpt *FindOption) (*model.UserSpaceAlbumRelation, error)
+	FindOneByAlbumID(albumID string) (*model.UserSpaceAlbumRelation, error)
 	Create(dto UserSpaceAlbumRelationCreateDTO) (usar *model.UserSpaceAlbumRelation, err error)
 }
 

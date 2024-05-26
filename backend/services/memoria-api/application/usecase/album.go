@@ -122,15 +122,17 @@ func (u *album) Delete(dto AlbumDeleteDTO) (err error) {
 }
 
 type AlbumAddMediaDTO struct {
-	AlbumIDs  []string
-	MediumIDs []string
+	UserSpaceID string
+	AlbumIDs    []string
+	MediumIDs   []string
 }
 
 func (u *album) AddMedia(dto AlbumAddMediaDTO) (err error) {
 	for _, albumID := range dto.AlbumIDs {
 		e := u.albumSvc.AddMedia(svc.AlbumAddMediaDTO{
-			AlbumID:   albumID,
-			MediumIDs: dto.MediumIDs,
+			UserSpaceID: dto.UserSpaceID,
+			AlbumID:     albumID,
+			MediumIDs:   dto.MediumIDs,
 		})
 		if e != nil {
 			err = e

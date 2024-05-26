@@ -154,7 +154,7 @@ func (u *medium) CreateThumbnails(dto MediumCreateThumbnailsDTO) (err error) {
 			return
 		}
 	} else if medium.IsVideo() {
-		// -------------------- thumbnail creation for image --------------------
+		// -------------------- thumbnail creation for video --------------------
 		buf := bytes.NewBuffer(nil)
 		e := ffmpeg_go.Input(mediumFile.Name()).
 			Filter("select", ffmpeg_go.Args{fmt.Sprintf("gte(n,%d)", 5)}).

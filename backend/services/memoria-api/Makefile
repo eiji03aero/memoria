@@ -12,7 +12,12 @@ test:
 
 .PHONY: test-package
 test-package:
-	ENV=test reflex -r '(\.go|go\.mod)' -s go test -v ./infra/handler/
+	ENV=test reflex -r '(\.go|go\.mod)' -s -- go test ./infra/handler/
+
+.PHONY: test-package-run
+test-package-run:
+	ENV=test DB_LOG_LEVEL=silent GIN_MODE=release \
+			reflex -r '(\.go|go\.mod)' -s -- go test -test.run AlbumRemoveMedia ./infra/handler/
 
 .PHONY: mockgen
 mockgen:

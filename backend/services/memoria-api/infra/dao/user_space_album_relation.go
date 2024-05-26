@@ -52,6 +52,14 @@ func (d *userSpaceAlbumRelation[T]) FindOne(findOption *repository.FindOption) (
 	return
 }
 
+func (d *userSpaceAlbumRelation[T]) FindOneByAlbumID(albumID string) (usar *model.UserSpaceAlbumRelation, err error) {
+	return d.FindOne(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "album_id = ?", Value: albumID},
+		},
+	})
+}
+
 func (d *userSpaceAlbumRelation[T]) Create(dto repository.UserSpaceAlbumRelationCreateDTO) (usar *model.UserSpaceAlbumRelation, err error) {
 	usarTbl := &tbl.UserSpaceAlbumRelation{
 		UserSpaceID: dto.UserSpaceID,

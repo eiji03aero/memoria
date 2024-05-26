@@ -12,7 +12,7 @@ package mock
 import (
 	interfaces "memoria-api/domain/interfaces"
 	repository "memoria-api/domain/interfaces/repository"
-	service "memoria-api/domain/service"
+	svc "memoria-api/domain/interfaces/svc"
 	reflect "reflect"
 
 	gomock "go.uber.org/mock/gomock"
@@ -105,18 +105,18 @@ func (mr *MockRegistryMockRecorder) NewAlbumRepository() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewAlbumRepository", reflect.TypeOf((*MockRegistry)(nil).NewAlbumRepository))
 }
 
-// NewBGJob mocks base method.
-func (m *MockRegistry) NewBGJob() interfaces.BGJob {
+// NewAlbumService mocks base method.
+func (m *MockRegistry) NewAlbumService() svc.Album {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "NewBGJob")
-	ret0, _ := ret[0].(interfaces.BGJob)
+	ret := m.ctrl.Call(m, "NewAlbumService")
+	ret0, _ := ret[0].(svc.Album)
 	return ret0
 }
 
-// NewBGJob indicates an expected call of NewBGJob.
-func (mr *MockRegistryMockRecorder) NewBGJob() *gomock.Call {
+// NewAlbumService indicates an expected call of NewAlbumService.
+func (mr *MockRegistryMockRecorder) NewAlbumService() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewBGJob", reflect.TypeOf((*MockRegistry)(nil).NewBGJob))
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewAlbumService", reflect.TypeOf((*MockRegistry)(nil).NewAlbumService))
 }
 
 // NewBGJobInvoker mocks base method.
@@ -145,6 +145,20 @@ func (m *MockRegistry) NewMediumRepository() repository.Medium {
 func (mr *MockRegistryMockRecorder) NewMediumRepository() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewMediumRepository", reflect.TypeOf((*MockRegistry)(nil).NewMediumRepository))
+}
+
+// NewMediumService mocks base method.
+func (m *MockRegistry) NewMediumService() svc.Medium {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewMediumService")
+	ret0, _ := ret[0].(svc.Medium)
+	return ret0
+}
+
+// NewMediumService indicates an expected call of NewMediumService.
+func (mr *MockRegistryMockRecorder) NewMediumService() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewMediumService", reflect.TypeOf((*MockRegistry)(nil).NewMediumService))
 }
 
 // NewS3Client mocks base method.
@@ -191,10 +205,10 @@ func (mr *MockRegistryMockRecorder) NewUserInvitationRepository() *gomock.Call {
 }
 
 // NewUserInvitationService mocks base method.
-func (m *MockRegistry) NewUserInvitationService() *service.UserInvitation {
+func (m *MockRegistry) NewUserInvitationService() svc.UserInvitation {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NewUserInvitationService")
-	ret0, _ := ret[0].(*service.UserInvitation)
+	ret0, _ := ret[0].(svc.UserInvitation)
 	return ret0
 }
 
@@ -219,10 +233,10 @@ func (mr *MockRegistryMockRecorder) NewUserRepository() *gomock.Call {
 }
 
 // NewUserService mocks base method.
-func (m *MockRegistry) NewUserService() *service.User {
+func (m *MockRegistry) NewUserService() svc.User {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NewUserService")
-	ret0, _ := ret[0].(*service.User)
+	ret0, _ := ret[0].(svc.User)
 	return ret0
 }
 
@@ -261,10 +275,10 @@ func (mr *MockRegistryMockRecorder) NewUserSpaceRepository() *gomock.Call {
 }
 
 // NewUserSpaceService mocks base method.
-func (m *MockRegistry) NewUserSpaceService() *service.UserSpace {
+func (m *MockRegistry) NewUserSpaceService() svc.UserSpace {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NewUserSpaceService")
-	ret0, _ := ret[0].(*service.UserSpace)
+	ret0, _ := ret[0].(svc.UserSpace)
 	return ret0
 }
 
@@ -289,10 +303,10 @@ func (mr *MockRegistryMockRecorder) NewUserUserSpaceRelationRepository() *gomock
 }
 
 // NewUserUserSpaceRelationService mocks base method.
-func (m *MockRegistry) NewUserUserSpaceRelationService() *service.UserUserSpaceRelation {
+func (m *MockRegistry) NewUserUserSpaceRelationService() svc.UserUserSpaceRelation {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "NewUserUserSpaceRelationService")
-	ret0, _ := ret[0].(*service.UserUserSpaceRelation)
+	ret0, _ := ret[0].(svc.UserUserSpaceRelation)
 	return ret0
 }
 

@@ -52,6 +52,14 @@ func (d *album[T]) FindOne(findOption *repository.FindOption) (album *model.Albu
 	return
 }
 
+func (d *album[T]) FindOneByID(id string) (album *model.Album, err error) {
+	return d.FindOne(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "id = ?", Value: id},
+		},
+	})
+}
+
 func (d *album[T]) Create(dto repository.AlbumCreateDTO) (album *model.Album, err error) {
 	albumTbl := &tbl.Album{
 		ID:   dto.ID,

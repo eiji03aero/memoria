@@ -141,6 +141,7 @@ type AlbumAddMediaReq struct {
 }
 
 func (h *Album) AddMedia(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
+	cctx := ccontext.NewContext(c)
 	albumUc := usecase.NewAlbum(reg)
 
 	body := AlbumAddMediaReq{}
@@ -151,8 +152,9 @@ func (h *Album) AddMedia(c *gin.Context, reg interfaces.Registry) (status int, d
 	}
 
 	err = albumUc.AddMedia(usecase.AlbumAddMediaDTO{
-		AlbumIDs:  body.AlbumIDs,
-		MediumIDs: body.MediumIDs,
+		UserSpaceID: cctx.GetUserSpaceID(),
+		AlbumIDs:    body.AlbumIDs,
+		MediumIDs:   body.MediumIDs,
 	})
 	if err != nil {
 		status = http.StatusInternalServerError

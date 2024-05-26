@@ -10,6 +10,7 @@ var (
 	ValidationKey_InvalidFormat    = ValidationKey("invalid-format")
 	ValidationKey_AlreadyTaken     = ValidationKey("already-taken")
 	ValidationKey_ResourceNotFound = ValidationKey("resource-not-found")
+	ValidationKey_Consistency      = ValidationKey("consistency")
 )
 
 type Validation struct {

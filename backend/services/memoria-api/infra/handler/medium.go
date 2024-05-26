@@ -162,6 +162,24 @@ func (h *Medium) GetPage(c *gin.Context, reg interfaces.Registry) (status int, d
 	return
 }
 
+func (h *Medium) Delete(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
+	mediumUc := usecase.NewMedium(reg)
+
+	mediumID := c.Param("id")
+
+	// TODO: turn this into bgjob
+	err = mediumUc.Delete(usecase.MediumDeleteDTO{
+		MediumID: mediumID,
+	})
+	if err != nil {
+		status = http.StatusInternalServerError
+		return
+	}
+
+	status = http.StatusOK
+	return
+}
+
 type MediumRequestUploadURLsReq struct {
 	FileNames []string `json:"file_names"`
 	AlbumIDs  []string `json:"album_ids"`
@@ -222,24 +240,6 @@ func (h *Medium) ConfirmUploads(c *gin.Context, reg interfaces.Registry) (status
 	// TODO: turn this into bgjob
 	err = mediumUc.ConfirmUploads(usecase.MediumConfirmUploadsDTO{
 		MediumIDs: body.MediumIDs,
-	})
-	if err != nil {
-		status = http.StatusInternalServerError
-		return
-	}
-
-	status = http.StatusOK
-	return
-}
-
-func (h *Medium) Delete(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
-	mediumUc := usecase.NewMedium(reg)
-
-	mediumID := c.Param("id")
-
-	// TODO: turn this into bgjob
-	err = mediumUc.Delete(usecase.MediumDeleteDTO{
-		MediumID: mediumID,
 	})
 	if err != nil {
 		status = http.StatusInternalServerError

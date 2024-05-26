@@ -12,7 +12,7 @@ func NewConsistency(message string) error {
 }
 
 func (e Consistency) Error() string {
-	return e.message
+	return fmt.Sprintf("consistency error: %s", e.message)
 }
 
 // -------------------- Resource not found --------------------

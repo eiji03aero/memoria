@@ -6,8 +6,9 @@ type Album interface {
 }
 
 type AlbumAddMediaDTO struct {
-	AlbumID   string
-	MediumIDs []string
+	UserSpaceID string
+	AlbumID     string
+	MediumIDs   []string
 }
 
 type AlbumRemoveMediaDTO struct {
