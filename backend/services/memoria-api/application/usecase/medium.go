@@ -32,6 +32,7 @@ type medium struct {
 	mediumRepo              repository.Medium
 	albumMediumRelationRepo repository.AlbumMediumRelation
 	mediumSvc               svc.Medium
+	usaSvc                  svc.UserSpaceActivity
 }
 
 func NewMedium(reg interfaces.Registry) (u Medium) {
@@ -41,6 +42,7 @@ func NewMedium(reg interfaces.Registry) (u Medium) {
 		mediumRepo:              reg.NewMediumRepository(),
 		albumMediumRelationRepo: reg.NewAlbumMediumRelationRepository(),
 		mediumSvc:               reg.NewMediumService(),
+		usaSvc:                  reg.NewUserSpaceActivityService(),
 	}
 }
 
@@ -108,7 +110,9 @@ func (u medium) RequestUploadURLs(dto MediumRequestUploadURLsDTO) (ret MediumReq
 }
 
 type MediumConfirmUploadsDTO struct {
-	MediumIDs []string
+	UserID      string
+	UserSpaceID string
+	MediumIDs   []string
 }
 
 func (u *medium) ConfirmUploads(dto MediumConfirmUploadsDTO) (err error) {
@@ -117,6 +121,12 @@ func (u *medium) ConfirmUploads(dto MediumConfirmUploadsDTO) (err error) {
 			MediumID: mediumID,
 		})
 	}
+
+	err = u.usaSvc.CreateUserUploadedMedia(svc.UserSpaceActivityCreateUserUploadedMedia{
+		UserSpaceID: dto.UserSpaceID,
+		UserID:      dto.UserID,
+		MediumIDs:   dto.MediumIDs,
+	})
 
 	return
 }

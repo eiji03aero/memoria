@@ -25,6 +25,7 @@ type Registry interface {
 	NewUserSpaceAlbumRelationRepository() repository.UserSpaceAlbumRelation
 	NewMediumRepository() repository.Medium
 	NewAlbumMediumRelationRepository() repository.AlbumMediumRelation
+	NewUserSpaceActivityRepository() repository.UserSpaceActivity
 	// service
 	NewUserService() svc.User
 	NewUserInvitationService() svc.UserInvitation
@@ -32,4 +33,5 @@ type Registry interface {
 	NewUserUserSpaceRelationService() svc.UserUserSpaceRelation
 	NewMediumService() svc.Medium
 	NewAlbumService() svc.Album
+	NewUserSpaceActivityService() svc.UserSpaceActivity
 }

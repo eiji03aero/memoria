@@ -6,6 +6,8 @@ import (
 
 	"memoria-api/domain/interfaces"
 	"memoria-api/domain/interfaces/repository"
+	"memoria-api/domain/model"
+	"memoria-api/domain/value"
 	"memoria-api/infra/handler/res"
 	"memoria-api/infra/tbl"
 	"memoria-api/testutil"
@@ -479,8 +481,8 @@ func TestMediumConfirmUploads_S_Invoker(t *testing.T) {
 
 	tests := []struct {
 		testutil.TestCase
-		body   map[string]any
-		expRes func(e testutil.UserEnv) MediumGetPageRes
+		body    map[string]any
+		expUsas func(e testutil.UserEnv) []model.UserSpaceActivity
 	}{
 		{
 			TestCase: testutil.TestCase{
@@ -497,6 +499,11 @@ func TestMediumConfirmUploads_S_Invoker(t *testing.T) {
 			},
 			body: map[string]any{
 				"medium_ids": []string{"m1", "m2", "m3"},
+			},
+			expUsas: func(e testutil.UserEnv) []model.UserSpaceActivity {
+				return []model.UserSpaceActivity{
+					{UserSpaceID: e.UserSpace.ID, Type: value.UserSpaceActivityType_UserUploadedMedia, Data: `{"UserID": "` + e.User.ID + `","MediumIDs":["m1","m2","m3"]}`},
+				}
 			},
 		},
 	}
@@ -532,5 +539,16 @@ func TestMediumConfirmUploads_S_Invoker(t *testing.T) {
 
 		// -------------------- assertion --------------------
 		assert.NoError(t, err)
+
+		expUsas := test.expUsas(env)
+		actual, err := reg.NewUserSpaceActivityRepository().Find(&repository.FindOption{})
+		assert.NoError(t, err)
+
+		assert.Equal(t, len(expUsas), len(actual))
+		for i := range expUsas {
+			assert.Equal(t, expUsas[i].Type, actual[i].Type)
+			assert.Equal(t, expUsas[i].UserSpaceID, actual[i].UserSpaceID)
+			assert.Equal(t, expUsas[i].Data, actual[i].Data)
+		}
 	}
 }

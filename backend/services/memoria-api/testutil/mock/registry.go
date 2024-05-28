@@ -246,6 +246,34 @@ func (mr *MockRegistryMockRecorder) NewUserService() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewUserService", reflect.TypeOf((*MockRegistry)(nil).NewUserService))
 }
 
+// NewUserSpaceActivityRepository mocks base method.
+func (m *MockRegistry) NewUserSpaceActivityRepository() repository.UserSpaceActivity {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewUserSpaceActivityRepository")
+	ret0, _ := ret[0].(repository.UserSpaceActivity)
+	return ret0
+}
+
+// NewUserSpaceActivityRepository indicates an expected call of NewUserSpaceActivityRepository.
+func (mr *MockRegistryMockRecorder) NewUserSpaceActivityRepository() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewUserSpaceActivityRepository", reflect.TypeOf((*MockRegistry)(nil).NewUserSpaceActivityRepository))
+}
+
+// NewUserSpaceActivityService mocks base method.
+func (m *MockRegistry) NewUserSpaceActivityService() svc.UserSpaceActivity {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewUserSpaceActivityService")
+	ret0, _ := ret[0].(svc.UserSpaceActivity)
+	return ret0
+}
+
+// NewUserSpaceActivityService indicates an expected call of NewUserSpaceActivityService.
+func (mr *MockRegistryMockRecorder) NewUserSpaceActivityService() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewUserSpaceActivityService", reflect.TypeOf((*MockRegistry)(nil).NewUserSpaceActivityService))
+}
+
 // NewUserSpaceAlbumRelationRepository mocks base method.
 func (m *MockRegistry) NewUserSpaceAlbumRelationRepository() repository.UserSpaceAlbumRelation {
 	m.ctrl.T.Helper()

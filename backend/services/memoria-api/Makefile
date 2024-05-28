@@ -17,7 +17,8 @@ test-package:
 .PHONY: test-package-run
 test-package-run:
 	ENV=test DB_LOG_LEVEL=silent GIN_MODE=release \
-			reflex -r '(\.go|go\.mod)' -s -- go test -test.run AlbumRemoveMedia ./infra/handler/
+			reflex -r '(\.go|go\.mod)' -s -- \
+			go test -test.run AccountInvite ./infra/handler/
 
 .PHONY: mockgen
 mockgen:

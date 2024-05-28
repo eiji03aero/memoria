@@ -1,9 +1,13 @@
 # Tasks
 ## WIP
+- [ ] implement timeline
+    - [x] impl user space activity first
+        - when user joined
+        - when user upload media
+    - [ ] impl timeline post
 
 ## Todo
 - [ ] test code for bgjob impl
-- [ ] consider monetize
 - [ ] make sure media gallery works okay
     - starting from middle to load previous page
     - starting from middle to load next page
@@ -11,7 +15,6 @@
 - [ ] improve memoria api docker image
     - https://github.com/davidbyttow/govips/issues/394
     - should be at least built file with dynamically linked
-- [ ] apply pagination system to the list apis
 - [ ] implement toast system
     - use toast from react-spectrum
 - [ ] dao impl refactoring
@@ -64,6 +67,12 @@
     - document title
 
 ## Done
+- [x] consider monetize
+    - probably we can small start like ads based first, then premium plan
+    - [x] document the monetization part
+    - [x] research how can i introduce monetize
+    - seems to be we should have more of the pages ready
+    - let's come back to this once we implemented good chunk
 - [x] work on albums feature
     - create doc for specs
     - album detail api

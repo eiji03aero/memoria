@@ -21,4 +21,5 @@
 # Reference
 - [SPEC.md](docs/SPEC.md)
 - [DESIGN.md](docs/DESIGN.md)
+- [PLAN.md](docs/PLAN.md)
 - Logo data: https://www.canva.com/design/DAGDb1mB68I/3ysozDgehKPU0oWjGwMzBA/edit

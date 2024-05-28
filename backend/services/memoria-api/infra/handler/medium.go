@@ -226,8 +226,7 @@ type MediumConfirmUploadsReq struct {
 }
 
 func (h *Medium) ConfirmUploads(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
-	// TODO utilize this?
-	// cctx := ccontext.NewContext(c)
+	cctx := ccontext.NewContext(c)
 	mediumUc := usecase.NewMedium(reg)
 
 	body := MediumConfirmUploadsReq{}
@@ -239,7 +238,9 @@ func (h *Medium) ConfirmUploads(c *gin.Context, reg interfaces.Registry) (status
 
 	// TODO: turn this into bgjob
 	err = mediumUc.ConfirmUploads(usecase.MediumConfirmUploadsDTO{
-		MediumIDs: body.MediumIDs,
+		UserID:      cctx.GetUserID(),
+		UserSpaceID: cctx.GetUserSpaceID(),
+		MediumIDs:   body.MediumIDs,
 	})
 	if err != nil {
 		status = http.StatusInternalServerError

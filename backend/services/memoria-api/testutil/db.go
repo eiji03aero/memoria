@@ -11,6 +11,7 @@ func CleanupDB(db *gorm.DB) {
 	forceDelete(db, "user_space_album_relations")
 	forceDelete(db, "media")
 	forceDelete(db, "album_medium_relations")
+	forceDelete(db, "user_space_activities")
 }
 
 func forceDelete(db *gorm.DB, tableName string) {

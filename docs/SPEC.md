@@ -230,6 +230,15 @@
 
 ---
 
+### Get timeline for user space
+- General
+    - User can post
+    - Activities are posted as well
+        - uploaded photo
+        - user joined
+
+---
+
 ### Create another user space with existing user
 #### Flow
 - 1: Configuration page
@@ -238,6 +247,8 @@
         - Click menu to go 2.
 - 2: Create user space page
     - User can fill out form to create another user space page
+
+---
 
 # Design
 ## Tech stack

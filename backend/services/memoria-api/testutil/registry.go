@@ -41,6 +41,7 @@ func SetupTestEnvironment(ctrl *gomock.Controller) (reg interfaces.Registry, api
 	mockReg.EXPECT().NewUserSpaceAlbumRelationRepository().DoAndReturn(realReg.NewUserSpaceAlbumRelationRepository).AnyTimes()
 	mockReg.EXPECT().NewMediumRepository().DoAndReturn(realReg.NewMediumRepository).AnyTimes()
 	mockReg.EXPECT().NewAlbumMediumRelationRepository().DoAndReturn(realReg.NewAlbumMediumRelationRepository).AnyTimes()
+	mockReg.EXPECT().NewUserSpaceActivityRepository().DoAndReturn(realReg.NewUserSpaceActivityRepository).AnyTimes()
 	// service
 	mockReg.EXPECT().NewUserService().DoAndReturn(realReg.NewUserService).AnyTimes()
 	mockReg.EXPECT().NewUserSpaceService().DoAndReturn(realReg.NewUserSpaceService).AnyTimes()
@@ -48,6 +49,7 @@ func SetupTestEnvironment(ctrl *gomock.Controller) (reg interfaces.Registry, api
 	mockReg.EXPECT().NewUserInvitationService().DoAndReturn(realReg.NewUserInvitationService).AnyTimes()
 	mockReg.EXPECT().NewAlbumService().DoAndReturn(realReg.NewAlbumService).AnyTimes()
 	mockReg.EXPECT().NewMediumService().DoAndReturn(realReg.NewMediumService).AnyTimes()
+	mockReg.EXPECT().NewUserSpaceActivityService().DoAndReturn(realReg.NewUserSpaceActivityService).AnyTimes()
 
 	// mocked
 	mockMailer := mock.NewMockMailer(ctrl)

@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"net/mail"
 
 	"golang.org/x/crypto/bcrypt"
@@ -38,6 +37,7 @@ type account struct {
 	userInvitationSvc         svc.UserInvitation
 	userSpaceSvc              svc.UserSpace
 	userUserSpaceRelationSvc  svc.UserUserSpaceRelation
+	usaSvc                    svc.UserSpaceActivity
 }
 
 func NewAccount(reg interfaces.Registry) (u Account, err error) {
@@ -56,6 +56,7 @@ func NewAccount(reg interfaces.Registry) (u Account, err error) {
 		userInvitationSvc:         reg.NewUserInvitationService(),
 		userSpaceSvc:              reg.NewUserSpaceService(),
 		userUserSpaceRelationSvc:  reg.NewUserUserSpaceRelationService(),
+		usaSvc:                    reg.NewUserSpaceActivityService(),
 	}
 	return
 }
@@ -384,8 +385,6 @@ func (u *account) InviteUser(dto AccountInviteUserDTO) (ret AccountInviteUserRet
 	}
 
 	userExists, err := u.userRepo.EmailExistsInUserSpace(dto.UserSpaceID, *dto.Email)
-	users, err := u.userRepo.Find(&repository.FindOption{})
-	log.Println(*users[0])
 	if userExists {
 		err = cerrors.NewValidation(cerrors.NewValidationDTO{
 			Key:  cerrors.ValidationKey_AlreadyTaken,
@@ -523,6 +522,14 @@ func (u *account) InviteUserConfirm(dto AccountInviteUserConfirmDTO) (ret Accoun
 	user.PasswordHash = string(hashed)
 	user.SetAccountStatus(value.UserAccountStatus_Confirmed)
 	err = u.userRepo.Update(user)
+	if err != nil {
+		return
+	}
+
+	err = u.usaSvc.CreateInviteUserJoined(svc.UserSpaceActivityCreateInviteUserJoined{
+		UserSpaceID: ui.UserSpaceID,
+		UserID:      ui.UserID,
+	})
 	if err != nil {
 		return
 	}

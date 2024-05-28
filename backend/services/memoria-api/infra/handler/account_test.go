@@ -576,6 +576,15 @@ func TestAccountInviteUserConfirm_S(t *testing.T) {
 		})
 		assert.NoError(t, err)
 		assert.Equal(t, value.UserAccountStatus_Confirmed, user.AccountStatus)
+
+		// user space activity created
+		usas, err := reg.NewUserSpaceActivityRepository().Find(&repository.FindOption{})
+		assert.NoError(t, err)
+		assert.Equal(t, 1, len(usas))
+
+		ad, err := usas[0].ParseData_InviteUserJoined()
+		assert.NoError(t, err)
+		assert.Equal(t, ret.UserID, ad.UserID)
 	}
 }
 

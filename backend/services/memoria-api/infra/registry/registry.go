@@ -88,6 +88,10 @@ func (r *Registry) NewAlbumMediumRelationRepository() repository.AlbumMediumRela
 	return dao.NewAlbumMediumRelation(r.DB)
 }
 
+func (r *Registry) NewUserSpaceActivityRepository() repository.UserSpaceActivity {
+	return dao.NewUserSpaceActivity(r.DB)
+}
+
 // -------------------- service --------------------
 func (r *Registry) NewUserService() svc.User {
 	return service.NewUser(service.NewUserDTO{UserRepository: r.NewUserRepository()})
@@ -111,4 +115,8 @@ func (r *Registry) NewMediumService() svc.Medium {
 
 func (r *Registry) NewAlbumService() svc.Album {
 	return service.NewAlbum(r)
+}
+
+func (r *Registry) NewUserSpaceActivityService() svc.UserSpaceActivity {
+	return service.NewUserSpaceActivity(r)
 }
