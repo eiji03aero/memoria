@@ -19,6 +19,9 @@ import (
 func wrap(regb *registry.Builder, h func(c *gin.Context, reg interfaces.Registry) (status int, data any, err error)) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		reg, err := regb.Build()
+		if err != nil {
+			panic(err)
+		}
 
 		log.Println(fmt.Sprintf(
 			"API Starting: %s %s",
