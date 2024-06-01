@@ -3,7 +3,7 @@
 generate-migration:
 	migrate create -ext sql -dir db/migrations -seq create_users_table
 
-.PHONY: migrate
+.PHONY: db-migrate
 migrate:
 	migrate --path db/migrations --database 'postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/${DB_NAME}?sslmode=disable' -verbose up
 

@@ -68,6 +68,11 @@ func InitializeRouter(regb *registry.Builder) *gin.Engine {
 		authenticated.POST("/media/request-upload-urls", wrap(regb, medium.RequestUploadURLs))
 		authenticated.POST("/media/confirm-uploads", wrap(regb, medium.ConfirmUploads))
 		authenticated.DELETE("/media/:id", wrap(regb, medium.Delete))
+
+		// -------------------- timeline --------------------
+		timeline := handler.NewTimeline()
+		authenticated.GET("/timeline", wrap(regb, timeline.Find))
+		authenticated.POST("/timeline", wrap(regb, timeline.CreatePost))
 	}
 
 	return router

@@ -92,6 +92,34 @@ func (r *Registry) NewUserSpaceActivityRepository() repository.UserSpaceActivity
 	return dao.NewUserSpaceActivity(r.DB)
 }
 
+func (r *Registry) NewTimelineRepository() repository.Timeline {
+	return dao.NewTimeline(r.DB)
+}
+
+func (r *Registry) NewMicroPostMediumRelationRepository() repository.MicroPostMediumRelation {
+	return dao.NewMicroPostMediumRelation(r.DB)
+}
+
+func (r *Registry) NewMicroPostRepository() repository.MicroPost {
+	return dao.NewMicroPost(r.DB)
+}
+
+func (r *Registry) NewThreadMicroPostRelationRepository() repository.ThreadMicroPostRelation {
+	return dao.NewThreadMicroPostRelation(r.DB)
+}
+
+func (r *Registry) NewThreadRepository() repository.Thread {
+	return dao.NewThread(r.DB)
+}
+
+func (r *Registry) NewTimelinePostThreadRelationRepository() repository.TimelinePostThreadRelation {
+	return dao.NewTimelinePostThreadRelation(r.DB)
+}
+
+func (r *Registry) NewTimelinePostRepository() repository.TimelinePost {
+	return dao.NewTimelinePost(r.DB)
+}
+
 // -------------------- service --------------------
 func (r *Registry) NewUserService() svc.User {
 	return service.NewUser(service.NewUserDTO{UserRepository: r.NewUserRepository()})
@@ -119,4 +147,16 @@ func (r *Registry) NewAlbumService() svc.Album {
 
 func (r *Registry) NewUserSpaceActivityService() svc.UserSpaceActivity {
 	return service.NewUserSpaceActivity(r)
+}
+
+func (r *Registry) NewMicroPostService() svc.MicroPost {
+	return service.NewMicroPost(r)
+}
+
+func (r *Registry) NewThreadService() svc.Thread {
+	return service.NewThread(r)
+}
+
+func (r *Registry) NewTimelineService() svc.Timeline {
+	return service.NewTimeline(r)
 }

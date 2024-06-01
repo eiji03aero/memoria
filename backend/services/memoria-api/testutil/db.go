@@ -12,6 +12,12 @@ func CleanupDB(db *gorm.DB) {
 	forceDelete(db, "media")
 	forceDelete(db, "album_medium_relations")
 	forceDelete(db, "user_space_activities")
+	forceDelete(db, "micro_post_medium_relations")
+	forceDelete(db, "micro_posts")
+	forceDelete(db, "thread_micro_post_relations")
+	forceDelete(db, "threads")
+	forceDelete(db, "timeline_post_thread_relations")
+	forceDelete(db, "timeline_posts")
 }
 
 func forceDelete(db *gorm.DB, tableName string) {

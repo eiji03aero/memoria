@@ -236,6 +236,9 @@
     - Activities are posted as well
         - uploaded photo
         - user joined
+#### Flow
+- 1: Open timeline page
+    - User sees timeline
 
 ---
 
@@ -388,6 +391,20 @@
 - Input
     - medium_ids: []string
     - album_ids: []string
+
+---
+
+### Get timeline
+- GET /api/auth/timeline
+- Input
+    - page
+    - per_page
+
+### Post to timeline
+- POST /api/auth/timeline
+- Input
+    - content: string
+    - medium_ids?: []string
 
 ---
 

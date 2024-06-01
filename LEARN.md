@@ -9,6 +9,12 @@
     - storybook needs to be restarted pretty often
     - nextjs taking fluffying minutes to reflect changes
 
+# RDB
+## SQL
+### to merge two datasets
+- https://qiita.com/tarosuke777000/items/391b0291faae45974be1
+- use union or union all
+
 # AWS
 ## General
 ### aws icons

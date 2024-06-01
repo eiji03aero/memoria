@@ -26,6 +26,13 @@ type Registry interface {
 	NewMediumRepository() repository.Medium
 	NewAlbumMediumRelationRepository() repository.AlbumMediumRelation
 	NewUserSpaceActivityRepository() repository.UserSpaceActivity
+	NewTimelineRepository() repository.Timeline
+	NewMicroPostMediumRelationRepository() repository.MicroPostMediumRelation
+	NewMicroPostRepository() repository.MicroPost
+	NewThreadMicroPostRelationRepository() repository.ThreadMicroPostRelation
+	NewThreadRepository() repository.Thread
+	NewTimelinePostThreadRelationRepository() repository.TimelinePostThreadRelation
+	NewTimelinePostRepository() repository.TimelinePost
 	// service
 	NewUserService() svc.User
 	NewUserInvitationService() svc.UserInvitation
@@ -34,4 +41,7 @@ type Registry interface {
 	NewMediumService() svc.Medium
 	NewAlbumService() svc.Album
 	NewUserSpaceActivityService() svc.UserSpaceActivity
+	NewMicroPostService() svc.MicroPost
+	NewThreadService() svc.Thread
+	NewTimelineService() svc.Timeline
 }

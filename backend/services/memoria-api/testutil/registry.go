@@ -42,6 +42,13 @@ func SetupTestEnvironment(ctrl *gomock.Controller) (reg interfaces.Registry, api
 	mockReg.EXPECT().NewMediumRepository().DoAndReturn(realReg.NewMediumRepository).AnyTimes()
 	mockReg.EXPECT().NewAlbumMediumRelationRepository().DoAndReturn(realReg.NewAlbumMediumRelationRepository).AnyTimes()
 	mockReg.EXPECT().NewUserSpaceActivityRepository().DoAndReturn(realReg.NewUserSpaceActivityRepository).AnyTimes()
+	mockReg.EXPECT().NewTimelineRepository().DoAndReturn(realReg.NewTimelineRepository).AnyTimes()
+	mockReg.EXPECT().NewMicroPostMediumRelationRepository().DoAndReturn(realReg.NewMicroPostMediumRelationRepository).AnyTimes()
+	mockReg.EXPECT().NewMicroPostRepository().DoAndReturn(realReg.NewMicroPostRepository).AnyTimes()
+	mockReg.EXPECT().NewThreadMicroPostRelationRepository().DoAndReturn(realReg.NewThreadMicroPostRelationRepository).AnyTimes()
+	mockReg.EXPECT().NewThreadRepository().DoAndReturn(realReg.NewThreadRepository).AnyTimes()
+	mockReg.EXPECT().NewTimelinePostThreadRelationRepository().DoAndReturn(realReg.NewTimelinePostThreadRelationRepository).AnyTimes()
+	mockReg.EXPECT().NewTimelinePostRepository().DoAndReturn(realReg.NewTimelinePostRepository).AnyTimes()
 	// service
 	mockReg.EXPECT().NewUserService().DoAndReturn(realReg.NewUserService).AnyTimes()
 	mockReg.EXPECT().NewUserSpaceService().DoAndReturn(realReg.NewUserSpaceService).AnyTimes()
@@ -50,6 +57,9 @@ func SetupTestEnvironment(ctrl *gomock.Controller) (reg interfaces.Registry, api
 	mockReg.EXPECT().NewAlbumService().DoAndReturn(realReg.NewAlbumService).AnyTimes()
 	mockReg.EXPECT().NewMediumService().DoAndReturn(realReg.NewMediumService).AnyTimes()
 	mockReg.EXPECT().NewUserSpaceActivityService().DoAndReturn(realReg.NewUserSpaceActivityService).AnyTimes()
+	mockReg.EXPECT().NewMicroPostService().DoAndReturn(realReg.NewMicroPostService).AnyTimes()
+	mockReg.EXPECT().NewThreadService().DoAndReturn(realReg.NewThreadService).AnyTimes()
+	mockReg.EXPECT().NewTimelineService().DoAndReturn(realReg.NewTimelineService).AnyTimes()
 
 	// mocked
 	mockMailer := mock.NewMockMailer(ctrl)

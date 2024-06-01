@@ -7,6 +7,9 @@
     - [ ] impl timeline post
 
 ## Todo
+- prepare documents
+    - terms of use
+    - privacy policy
 - [ ] test code for bgjob impl
 - [ ] make sure media gallery works okay
     - starting from middle to load previous page

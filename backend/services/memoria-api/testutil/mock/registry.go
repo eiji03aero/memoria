@@ -161,6 +161,48 @@ func (mr *MockRegistryMockRecorder) NewMediumService() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewMediumService", reflect.TypeOf((*MockRegistry)(nil).NewMediumService))
 }
 
+// NewMicroPostMediumRelationRepository mocks base method.
+func (m *MockRegistry) NewMicroPostMediumRelationRepository() repository.MicroPostMediumRelation {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewMicroPostMediumRelationRepository")
+	ret0, _ := ret[0].(repository.MicroPostMediumRelation)
+	return ret0
+}
+
+// NewMicroPostMediumRelationRepository indicates an expected call of NewMicroPostMediumRelationRepository.
+func (mr *MockRegistryMockRecorder) NewMicroPostMediumRelationRepository() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewMicroPostMediumRelationRepository", reflect.TypeOf((*MockRegistry)(nil).NewMicroPostMediumRelationRepository))
+}
+
+// NewMicroPostRepository mocks base method.
+func (m *MockRegistry) NewMicroPostRepository() repository.MicroPost {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewMicroPostRepository")
+	ret0, _ := ret[0].(repository.MicroPost)
+	return ret0
+}
+
+// NewMicroPostRepository indicates an expected call of NewMicroPostRepository.
+func (mr *MockRegistryMockRecorder) NewMicroPostRepository() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewMicroPostRepository", reflect.TypeOf((*MockRegistry)(nil).NewMicroPostRepository))
+}
+
+// NewMicroPostService mocks base method.
+func (m *MockRegistry) NewMicroPostService() svc.MicroPost {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewMicroPostService")
+	ret0, _ := ret[0].(svc.MicroPost)
+	return ret0
+}
+
+// NewMicroPostService indicates an expected call of NewMicroPostService.
+func (mr *MockRegistryMockRecorder) NewMicroPostService() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewMicroPostService", reflect.TypeOf((*MockRegistry)(nil).NewMicroPostService))
+}
+
 // NewS3Client mocks base method.
 func (m *MockRegistry) NewS3Client() interfaces.S3Client {
 	m.ctrl.T.Helper()
@@ -188,6 +230,104 @@ func (m *MockRegistry) NewSESMailer() (interfaces.Mailer, error) {
 func (mr *MockRegistryMockRecorder) NewSESMailer() *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewSESMailer", reflect.TypeOf((*MockRegistry)(nil).NewSESMailer))
+}
+
+// NewThreadMicroPostRelationRepository mocks base method.
+func (m *MockRegistry) NewThreadMicroPostRelationRepository() repository.ThreadMicroPostRelation {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewThreadMicroPostRelationRepository")
+	ret0, _ := ret[0].(repository.ThreadMicroPostRelation)
+	return ret0
+}
+
+// NewThreadMicroPostRelationRepository indicates an expected call of NewThreadMicroPostRelationRepository.
+func (mr *MockRegistryMockRecorder) NewThreadMicroPostRelationRepository() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewThreadMicroPostRelationRepository", reflect.TypeOf((*MockRegistry)(nil).NewThreadMicroPostRelationRepository))
+}
+
+// NewThreadRepository mocks base method.
+func (m *MockRegistry) NewThreadRepository() repository.Thread {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewThreadRepository")
+	ret0, _ := ret[0].(repository.Thread)
+	return ret0
+}
+
+// NewThreadRepository indicates an expected call of NewThreadRepository.
+func (mr *MockRegistryMockRecorder) NewThreadRepository() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewThreadRepository", reflect.TypeOf((*MockRegistry)(nil).NewThreadRepository))
+}
+
+// NewThreadService mocks base method.
+func (m *MockRegistry) NewThreadService() svc.Thread {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewThreadService")
+	ret0, _ := ret[0].(svc.Thread)
+	return ret0
+}
+
+// NewThreadService indicates an expected call of NewThreadService.
+func (mr *MockRegistryMockRecorder) NewThreadService() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewThreadService", reflect.TypeOf((*MockRegistry)(nil).NewThreadService))
+}
+
+// NewTimelinePostRepository mocks base method.
+func (m *MockRegistry) NewTimelinePostRepository() repository.TimelinePost {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewTimelinePostRepository")
+	ret0, _ := ret[0].(repository.TimelinePost)
+	return ret0
+}
+
+// NewTimelinePostRepository indicates an expected call of NewTimelinePostRepository.
+func (mr *MockRegistryMockRecorder) NewTimelinePostRepository() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewTimelinePostRepository", reflect.TypeOf((*MockRegistry)(nil).NewTimelinePostRepository))
+}
+
+// NewTimelinePostThreadRelationRepository mocks base method.
+func (m *MockRegistry) NewTimelinePostThreadRelationRepository() repository.TimelinePostThreadRelation {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewTimelinePostThreadRelationRepository")
+	ret0, _ := ret[0].(repository.TimelinePostThreadRelation)
+	return ret0
+}
+
+// NewTimelinePostThreadRelationRepository indicates an expected call of NewTimelinePostThreadRelationRepository.
+func (mr *MockRegistryMockRecorder) NewTimelinePostThreadRelationRepository() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewTimelinePostThreadRelationRepository", reflect.TypeOf((*MockRegistry)(nil).NewTimelinePostThreadRelationRepository))
+}
+
+// NewTimelineRepository mocks base method.
+func (m *MockRegistry) NewTimelineRepository() repository.Timeline {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewTimelineRepository")
+	ret0, _ := ret[0].(repository.Timeline)
+	return ret0
+}
+
+// NewTimelineRepository indicates an expected call of NewTimelineRepository.
+func (mr *MockRegistryMockRecorder) NewTimelineRepository() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewTimelineRepository", reflect.TypeOf((*MockRegistry)(nil).NewTimelineRepository))
+}
+
+// NewTimelineService mocks base method.
+func (m *MockRegistry) NewTimelineService() svc.Timeline {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewTimelineService")
+	ret0, _ := ret[0].(svc.Timeline)
+	return ret0
+}
+
+// NewTimelineService indicates an expected call of NewTimelineService.
+func (mr *MockRegistryMockRecorder) NewTimelineService() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewTimelineService", reflect.TypeOf((*MockRegistry)(nil).NewTimelineService))
 }
 
 // NewUserInvitationRepository mocks base method.
