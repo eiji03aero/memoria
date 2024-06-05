@@ -1,13 +1,14 @@
 # Tasks
 ## WIP
-- [ ] Refine meta data for each page
-    - document title
 
 ## Fix
 
 ## Todo
+- [ ] implement toast system
+    - use toast from react-spectrum
 - [ ] i18n
     - gotta do this bro
+    - document title
 - [ ] implement timeline post detail page
 - [ ] try to bounce ideas off of chat gpt
     - what kind of feature would make it better app?
@@ -22,12 +23,8 @@
 - [ ] improve memoria api docker image
     - https://github.com/davidbyttow/govips/issues/394
     - should be at least built file with dynamically linked
-- [ ] implement toast system
-    - use toast from react-spectrum
 - [ ] dao impl refactoring
     - can we implement modelname method to pass around in basedao?
-- [ ] research how we can implement clickable element
-    - what about div with button role?
 - [ ] resource owner validation for data manipulative endpoints
 - [ ] perf improve
     - album deletion
@@ -48,10 +45,6 @@
 - [ ] improve bgjob performance
     - make it multiple go routines
     - make it buffered
-- [ ] try to DRY up handler test
-    - create shared struct for the strcutre of test execution?
-    - method for comparing structs?
-    - can we make the failure log to show which test case failed?
 - [ ] implement upload medium limit
     - consider the limit for basic and premium
     - update the plan document too
@@ -71,9 +64,13 @@
 - [ ] protect api endpoint from malicious access
     - too many requests
 - [ ] implement expire for jwt
-- [ ] make it pwa installable
 
 ## Done
+- [x] make it pwa installable
+- [x] try to DRY up handler test
+    - create shared struct for the strcutre of test execution?
+    - method for comparing structs?
+    - can we make the failure log to show which test case failed?
 - [x] implement timeline
     - [x] impl user space activity first
         - when user joined
