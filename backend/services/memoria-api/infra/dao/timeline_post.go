@@ -31,9 +31,45 @@ func (d *timelinePost[T]) Find(fOpt *repository.FindOption) (tps []*model.Timeli
 
 	tps = make([]*model.TimelinePost, 0, len(tpTbls))
 	for _, tpTbl := range tpTbls {
-		tps = append(tps, tpTbl.ToModel())
+		tp, e := tpTbl.ToModel()
+		if e != nil {
+			err = e
+			return
+		}
+
+		tps = append(tps, tp)
 	}
 	return
+}
+
+func (d *timelinePost[T]) FindOne(fOpt *repository.FindOption) (tp *model.TimelinePost, err error) {
+	tpTbl := &tbl.TimelinePost{}
+	_, err = d.findOneWithFindOption(findOneWithFindOptionDTO{
+		db:         d.db,
+		findOption: fOpt,
+		data:       &tpTbl,
+		name:       "timeline-post",
+	})
+	if err != nil {
+		return
+	}
+
+	tp, err = tpTbl.ToModel()
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func (d *timelinePost[T]) FindOneByID(id string, fOpt *repository.FindOption) (tp *model.TimelinePost, err error) {
+	findOption := &repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "id = ?", Value: id},
+		},
+	}
+	findOption.Merge(fOpt)
+	return d.FindOne(findOption)
 }
 
 func (d *timelinePost[T]) Create(dto repository.TimelinePostCreateDTO) (tp *model.TimelinePost, err error) {
@@ -48,6 +84,10 @@ func (d *timelinePost[T]) Create(dto repository.TimelinePostCreateDTO) (tp *mode
 		return
 	}
 
-	tp = tpTbl.ToModel()
+	tp, err = tpTbl.ToModel()
+	if err != nil {
+		return
+	}
+
 	return
 }

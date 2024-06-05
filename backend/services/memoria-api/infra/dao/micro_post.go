@@ -33,6 +33,7 @@ func (d *microPost[T]) Find(fOpt *repository.FindOption) (mps []*model.MicroPost
 	for _, mpTbl := range mpTbls {
 		mps = append(mps, mpTbl.ToModel())
 	}
+
 	return
 }
 

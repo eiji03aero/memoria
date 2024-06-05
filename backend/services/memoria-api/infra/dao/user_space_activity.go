@@ -42,6 +42,34 @@ func (d *userSpaceActivity[T]) Find(findOption *repository.FindOption) (usas []*
 	return
 }
 
+func (d *userSpaceActivity[T]) FindOne(findOption *repository.FindOption) (usa *model.UserSpaceActivity, err error) {
+	usaTbl := &tbl.UserSpaceActivity{}
+	_, err = d.findWithFindOption(findWithFindOptionDTO{
+		db:         d.db,
+		findOption: findOption,
+		data:       &usaTbl,
+		name:       "user-space-activity",
+	})
+	if err != nil {
+		return
+	}
+
+	usa, err = usaTbl.ToModel()
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func (d *userSpaceActivity[T]) FindOneByID(id string) (usa *model.UserSpaceActivity, err error) {
+	return d.FindOne(&repository.FindOption{
+		Filters: []*repository.FindOptionFilter{
+			{Query: "id = ?", Value: id},
+		},
+	})
+}
+
 func (d *userSpaceActivity[T]) Create(dto repository.UserSpaceActivityCreateDTO) (usa *model.UserSpaceActivity, err error) {
 	usaTbl := &tbl.UserSpaceActivity{
 		ID:          dto.ID,

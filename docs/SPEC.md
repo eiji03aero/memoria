@@ -397,8 +397,9 @@
 ### Get timeline
 - GET /api/auth/timeline
 - Input
-    - page
-    - per_page
+    - cursor: string
+    - before?: int
+    - after?: int
 
 ### Post to timeline
 - POST /api/auth/timeline

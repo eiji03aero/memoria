@@ -20,24 +20,41 @@ func NewTimeline() *Timeline {
 }
 
 type TimelineFindRes struct {
-	Pagi  res.Pagination
 	Units []*res.TimelineUnit `json:"units"`
+	CPagi res.CPagination     `json:"cpagination"`
 }
 
 func (h *Timeline) Find(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
-	fOpt := &repository.FindOption{}
+	cctx := ccontext.NewContext(c)
+
+	fOpt := &repository.FindOption{
+		Filter: map[string]any{
+			"user_space_id": cctx.GetUserSpaceID(),
+		},
+	}
 	err = req.BuildFindOptionWithQuery(c, fOpt)
 	if err != nil {
 		return
 	}
 
-	_, err = reg.NewTimelineRepository().Find(fOpt)
+	units, cpagi, err := reg.NewTimelineRepository().Find(fOpt)
 	if err != nil {
 		return
 	}
 
+	timelineFindRes := TimelineFindRes{
+		CPagi: res.CPagination{
+			PrevCursor: cpagi.PrevCursor,
+			NextCursor: cpagi.NextCursor,
+		},
+		Units: []*res.TimelineUnit{},
+	}
+	for _, tu := range units {
+		timelineFindRes.Units = append(timelineFindRes.Units, res.TimelineUnitFromModel(tu))
+	}
+
 	status = http.StatusOK
-	data = TimelineFindRes{}
+	data = timelineFindRes
 	return
 }
 

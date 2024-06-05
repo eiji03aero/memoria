@@ -126,7 +126,7 @@ const Styles = {
     marginLeft: 'auto',
   }),
   body: css({
-    minHeight: 0,
+    minHeight: 200,
     overflow: 'auto',
     padding: '0 0.5rem',
   }),

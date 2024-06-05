@@ -8,3 +8,15 @@ export type Pagination = {
   current_page: number;
   total_page: number;
 };
+
+export type CPaginate = {
+  cursor?: string;
+  cbefore?: number;
+  cafter?: number;
+  cexclude?: boolean;
+};
+
+export type CPagination = {
+  next_cursor: string;
+  prev_cursor: string;
+};

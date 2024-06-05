@@ -14,6 +14,7 @@ import { useMedia } from '@/domain/media/hooks/useMedia';
 import { useDeleteMedia } from '@/domain/media/hooks/useDeleteMedia';
 import { useAddMediaToAlbums } from '@/domain/album/hooks/useAddMediaToAlbums';
 import { useRemoveMediaFromAlbums } from '@/domain/album/hooks/useRemoveMediaFromAlbums';
+import { FileInput } from '@/modules/components';
 import * as utils from '@/modules/utils';
 
 type Props = {
@@ -59,7 +60,7 @@ export const MediaScreen = ({ title, albumID }: Props) => {
 
     setSelectedIds([]);
     setSelectedAlbumIDs([]);
-    upload({ files, albumIDs: selectedAlbumIDs, onSuccess: refetch });
+    upload({ files, albumIDs: selectedAlbumIDs, onSuccess: () => refetch });
     setShowUploadConfirmDrawer(false);
     setShowUploadingDrawer(true);
   };
@@ -128,14 +129,7 @@ export const MediaScreen = ({ title, albumID }: Props) => {
 
   return (
     <>
-      <input
-        ref={fileInputRef}
-        className={Styles.fileInput}
-        type="file"
-        multiple
-        accept="image/*, image/heic, video/*"
-        onChange={handleChangeFileInput}
-      />
+      <FileInput hidden inputRef={fileInputRef} onChange={handleChangeFileInput} />
 
       <TopicHeader
         label={title}

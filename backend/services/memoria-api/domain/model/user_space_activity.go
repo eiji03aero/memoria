@@ -41,7 +41,7 @@ func NewUserSpaceActivity(dto NewUserSpaceActivityDTO) (usa *UserSpaceActivity, 
 
 // -------------------- InviteUserJoined --------------------
 type UserSpaceActivityData_InviteUserJoined struct {
-	UserID string
+	UserID string `json:"user_id"`
 }
 
 func (u *UserSpaceActivity) ParseData_InviteUserJoined() (d *UserSpaceActivityData_InviteUserJoined, err error) {
@@ -57,8 +57,8 @@ func (u *UserSpaceActivity) ParseData_InviteUserJoined() (d *UserSpaceActivityDa
 
 // -------------------- UserUploadedMedia --------------------
 type UserSpaceActivityData_UserUploadedMedia struct {
-	UserID    string
-	MediumIDs []string
+	UserID    string   `json:"user_id"`
+	MediumIDs []string `json:"medium_ids"`
 }
 
 func (u *UserSpaceActivity) ParseData_UserUploadedMedia() (d *UserSpaceActivityData_UserUploadedMedia, err error) {

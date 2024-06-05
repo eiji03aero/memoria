@@ -7,6 +7,7 @@ type MicroPost struct {
 	UserID      string
 	UserSpaceID string
 	Content     string
+	Media       []*Medium
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
@@ -16,6 +17,7 @@ type NewMicroPostDTO struct {
 	UserID      string
 	UserSpaceID string
 	Content     string
+	Media       []*Medium
 }
 
 func NewMicroPost(dto NewMicroPostDTO) *MicroPost {
@@ -24,5 +26,6 @@ func NewMicroPost(dto NewMicroPostDTO) *MicroPost {
 		UserID:      dto.UserID,
 		UserSpaceID: dto.UserSpaceID,
 		Content:     dto.Content,
+		Media:       dto.Media,
 	}
 }

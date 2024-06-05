@@ -19,5 +19,26 @@ func BuildFindOptionWithQuery(c *gin.Context, findOpt *repository.FindOption) (e
 		findOpt.Limit = pagiQ.PerPage
 	}
 
+	cpagiQ := &CPaginate{}
+	err = c.ShouldBindQuery(cpagiQ)
+	if err != nil {
+		return
+	}
+
+	if cpagiQ.Cursor != nil {
+		if cpagiQ.CBefore != nil {
+			findOpt.Cursor = *cpagiQ.Cursor
+			findOpt.CBefore = *cpagiQ.CBefore
+		}
+		if cpagiQ.CAfter != nil {
+			findOpt.Cursor = *cpagiQ.Cursor
+			findOpt.CAfter = *cpagiQ.CAfter
+		}
+
+		if cpagiQ.CExclude != nil {
+			findOpt.CExclude = *cpagiQ.CExclude == "true"
+		}
+	}
+
 	return
 }

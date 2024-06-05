@@ -7,6 +7,8 @@ import (
 
 type UserSpaceActivity interface {
 	Find(findOpt *FindOption) (usas []*model.UserSpaceActivity, err error)
+	FindOne(findOpt *FindOption) (usa *model.UserSpaceActivity, err error)
+	FindOneByID(id string) (usa *model.UserSpaceActivity, err error)
 	Create(dto UserSpaceActivityCreateDTO) (usa *model.UserSpaceActivity, err error)
 }
 

@@ -7,10 +7,10 @@ import (
 )
 
 type UserSpaceActivity struct {
-	ID          string `gorm:"column:id"`
-	UserSpaceID string
-	Type        string
-	Data        string
+	ID          string    `gorm:"column:id"`
+	UserSpaceID string    `gorm:"column:user_space_id"`
+	Type        string    `gorm:"column:type"`
+	Data        string    `gorm:"column:data"`
 	CreatedAt   time.Time `gorm:"column:created_at"`
 	UpdatedAt   time.Time `gorm:"column:updated_at"`
 }

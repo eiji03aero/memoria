@@ -91,6 +91,10 @@ func (d *BaseDao[T]) scopeByFindOption(findOption *repository.FindOption) func(d
 			query = query.Offset(*findOption.Offset).Limit(*findOption.Limit)
 		}
 
+		for _, pl := range findOption.Preloads {
+			query = query.Preload(pl)
+		}
+
 		return query
 	}
 }

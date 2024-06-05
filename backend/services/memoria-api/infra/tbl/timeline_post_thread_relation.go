@@ -7,10 +7,10 @@ import (
 )
 
 type TimelinePostThreadRelation struct {
-	TimelinePostID string
-	ThreadID       string
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
+	TimelinePostID string    `gorm:"column:timeline_post_id"`
+	ThreadID       string    `gorm:"column:thread_id"`
+	CreatedAt      time.Time `gorm:"column:created_at"`
+	UpdatedAt      time.Time `gorm:"column:updated_at"`
 }
 
 func (t TimelinePostThreadRelation) TableName() string {

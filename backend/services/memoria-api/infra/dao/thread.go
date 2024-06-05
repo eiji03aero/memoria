@@ -36,6 +36,21 @@ func (d *thread[T]) Find(fOpt *repository.FindOption) (ts []*model.Thread, err e
 	return
 }
 
+func (d *thread[T]) FindOne(fOpt *repository.FindOption) (t *model.Thread, err error) {
+	tTbl := &tbl.Thread{}
+
+	_, err = d.findOneWithFindOption(findOneWithFindOptionDTO{
+		db:         d.db,
+		findOption: fOpt,
+		data:       tTbl,
+		name:       "thread",
+	})
+
+	t = tTbl.ToModel()
+
+	return
+}
+
 func (d *thread[T]) Create(dto repository.ThreadCreateDTO) (t *model.Thread, err error) {
 	tTbl := &tbl.Thread{
 		ID:          dto.ID,

@@ -7,10 +7,11 @@ import (
 )
 
 type Thread struct {
-	ID          string    `gorm:"column:id"`
-	UserSpaceID string    `gorm:"column:user_space_id"`
-	CreatedAt   time.Time `gorm:"column:created_at"`
-	UpdatedAt   time.Time `gorm:"column:updated_at"`
+	ID          string      `gorm:"column:id"`
+	UserSpaceID string      `gorm:"column:user_space_id"`
+	MicroPosts  []MicroPost `gorm:"many2many:thread_micro_post_relations;foreignKey:ID;joinForeignKey:ThreadID;References:ID;joinReferences:MicroPostID"`
+	CreatedAt   time.Time   `gorm:"column:created_at"`
+	UpdatedAt   time.Time   `gorm:"column:updated_at"`
 }
 
 func (t Thread) TableName() string {
@@ -22,6 +23,10 @@ func (t Thread) ToModel() (m *model.Thread) {
 		ID:          t.ID,
 		UserSpaceID: t.UserSpaceID,
 	})
+
+	for _, mpTbl := range t.MicroPosts {
+		m.MicroPosts = append(m.MicroPosts, mpTbl.ToModel())
+	}
 
 	m.CreatedAt = t.CreatedAt
 	m.UpdatedAt = t.UpdatedAt

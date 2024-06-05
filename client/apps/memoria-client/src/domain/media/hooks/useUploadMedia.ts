@@ -6,7 +6,7 @@ import { useMultipleRequestsStatus } from '@/modules/hooks/useMultipleRequestsSt
 
 type RequestUploadURLsRequest = {
   file_names: string[];
-  album_ids: string[];
+  album_ids?: string[];
 };
 
 type RequestUploadURLsResponse = {
@@ -38,7 +38,11 @@ export const useUploadMedia = () => {
   const rs = useMultipleRequestsStatus();
 
   const upload = React.useCallback(
-    async (params: { files: FileList; albumIDs: string[]; onSuccess: () => void }) => {
+    async (params: {
+      files: FileList;
+      albumIDs?: string[];
+      onSuccess: (p: { mediumIDs: string[] }) => void;
+    }) => {
       const files = Array.from(params.files);
 
       // request creating media objects and signed urls
@@ -54,20 +58,20 @@ export const useUploadMedia = () => {
       rs.setStatus('requesting');
       // with the signed urls, proceed with upload one by one
       rs.setTotalRequests(files.length);
-      for (var i = 0; i < upload_urls.length; i++) {
+      for (let i = 0; i < upload_urls.length; i++) {
         await requestS3PutObject({
           url: upload_urls[i]?.url!,
           file: files[i]!,
         });
         rs.incrementRequested();
-        rs.setTotalRequested(prev => prev + 1);
       }
 
       rs.setStatus('completing');
-      await requestConfirmUploads({ mediumIDs: upload_urls.map(uu => uu.medium_id) });
+      const mediumIDs = upload_urls.map(uu => uu.medium_id);
+      await requestConfirmUploads({ mediumIDs });
 
       rs.setStatus('completed');
-      params.onSuccess?.();
+      params.onSuccess?.({ mediumIDs });
     },
     [rs],
   );

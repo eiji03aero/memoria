@@ -28,3 +28,4 @@ export { MediaGrid } from './components/MediaGrid';
 export { Picker } from './components/Picker';
 export { Select, AsyncSelect } from './components/Select';
 export { Slider } from './components/Slider';
+export { TextArea } from './components/TextArea';

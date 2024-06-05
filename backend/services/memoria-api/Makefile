@@ -18,7 +18,7 @@ test-package:
 test-package-run:
 	ENV=test DB_LOG_LEVEL=info GIN_MODE=release \
 			reflex -r '(\.go|go\.mod)' -s -- \
-			go test -test.run Timeline ./infra/handler/
+			go test -test.run TimelineFind_S_Timeline -v ./infra/handler/
 
 .PHONY: mockgen
 mockgen:

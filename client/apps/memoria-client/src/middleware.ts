@@ -1,7 +1,15 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const PublicRoutes = ['/lp', '/signup', '/login', '/invite-user-confirm'];
+const PublicRoutes = [
+  '/lp',
+  '/signup',
+  '/signup-guide',
+  '/signup-thanks',
+  '/login',
+  '/invite-user-confirm',
+  '/internal-server-error',
+];
 
 const isAuthenticated = (req: NextRequest) => {
   return req.cookies.has('jwt');

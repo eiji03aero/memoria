@@ -10,10 +10,10 @@ type TimelineUnitType string
 
 var (
 	TimelineUnitType_UserSpaceActivity = TimelineUnitType("user-space-activity")
-	TimelineUnitType_Post              = TimelineUnitType("post")
+	TimelineUnitType_TimelinePost      = TimelineUnitType("timeline-post")
 	TimelineUnitTypes                  = []TimelineUnitType{
 		TimelineUnitType_UserSpaceActivity,
-		TimelineUnitType_Post,
+		TimelineUnitType_TimelinePost,
 	}
 )
 

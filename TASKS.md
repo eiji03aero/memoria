@@ -1,13 +1,17 @@
 # Tasks
 ## WIP
-- [ ] implement timeline
-    - [x] impl user space activity first
-        - when user joined
-        - when user upload media
-    - [ ] impl timeline post
+- [ ] Refine meta data for each page
+    - document title
+
+## Fix
 
 ## Todo
-- prepare documents
+- [ ] i18n
+    - gotta do this bro
+- [ ] implement timeline post detail page
+- [ ] try to bounce ideas off of chat gpt
+    - what kind of feature would make it better app?
+- [ ] prepare documents
     - terms of use
     - privacy policy
 - [ ] test code for bgjob impl
@@ -49,6 +53,8 @@
     - method for comparing structs?
     - can we make the failure log to show which test case failed?
 - [ ] implement upload medium limit
+    - consider the limit for basic and premium
+    - update the plan document too
 - [ ] make sure timestamp columns are recorded
 - [ ] research useButton props
     - learn and take note of how it helps
@@ -66,10 +72,21 @@
     - too many requests
 - [ ] implement expire for jwt
 - [ ] make it pwa installable
-- [ ] Refine meta data for each page
-    - document title
 
 ## Done
+- [x] implement timeline
+    - [x] impl user space activity first
+        - when user joined
+        - when user upload media
+    - [x] impl timeline post
+        - [x] Create post
+        - [x] create post with medium
+        - [x] get timeline
+            - implement with cursor pagination
+    - [x] implement UI
+- [x] sign up flow broken
+    - after clicking signup confirm link, it gets redirected to lp
+    - should redirected to signup-thanks
 - [x] consider monetize
     - probably we can small start like ads based first, then premium plan
     - [x] document the monetization part

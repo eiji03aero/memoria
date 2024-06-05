@@ -11,6 +11,7 @@ type MicroPost struct {
 	UserID      string    `gorm:"column:user_id"`
 	UserSpaceID string    `gorm:"column:user_space_id"`
 	Content     string    `gorm:"column:content"`
+	Media       []*Medium `gorm:"many2many:micro_post_medium_relations;foreignKey:ID;joinForeignKey:micro_post_id;References:ID;joinReferences:medium_id"`
 	CreatedAt   time.Time `gorm:"column:created_at"`
 	UpdatedAt   time.Time `gorm:"column:updated_at"`
 }
@@ -26,6 +27,10 @@ func (t MicroPost) ToModel() (m *model.MicroPost) {
 		UserSpaceID: t.UserSpaceID,
 		Content:     t.Content,
 	})
+
+	for _, mediumTbl := range t.Media {
+		m.Media = append(m.Media, mediumTbl.ToModel())
+	}
 
 	m.CreatedAt = t.CreatedAt
 	m.UpdatedAt = t.UpdatedAt

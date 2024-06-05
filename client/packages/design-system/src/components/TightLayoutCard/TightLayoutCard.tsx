@@ -7,9 +7,7 @@ type Props = {
 };
 
 export const TightLayoutCard = ({ className, children }: Props) => {
-  return (
-    <div className={styles.classnames(Styles.card, className)}>{children}</div>
-  );
+  return <div className={styles.classnames(Styles.card, className)}>{children}</div>;
 };
 
 type BackgroundProps = {
@@ -29,7 +27,7 @@ const Styles = {
     display: 'flex',
     flexDir: 'column',
     gap: '0.125rem',
-    height: '100%',
+    minHeight: '100%',
     paddingY: '0.125rem',
     background: 'gray.300',
     boxSizing: 'border-box',

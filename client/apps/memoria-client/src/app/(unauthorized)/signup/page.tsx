@@ -44,12 +44,7 @@ export default function Signup() {
           marginY: '3rem',
         })}
       >
-        <Image
-          src="/images/Logo-horizontal-black.png"
-          width={300}
-          height={72}
-          alt="service logo"
-        />
+        <Image src="/images/Logo-horizontal-black.png" width={300} height={72} alt="service logo" />
       </div>
 
       <div
@@ -152,13 +147,15 @@ export default function Signup() {
           <form.Subscribe
             selector={state => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
-              <Button
-                variant="primary"
-                type="submit"
-                isDisabled={!canSubmit || isSubmitting}
+              <div
+                className={css({
+                  pt: '0.5rem',
+                })}
               >
-                Submit
-              </Button>
+                <Button variant="primary" type="submit" isDisabled={!canSubmit || isSubmitting}>
+                  Submit
+                </Button>
+              </div>
             )}
           />
         </Form>

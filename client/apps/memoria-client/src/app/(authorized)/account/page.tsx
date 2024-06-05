@@ -4,12 +4,14 @@ import { css } from '@/../styled-system/css';
 import { Button, IconLinkCard } from '@repo/design-system';
 
 import { useLogout } from '@/domain/account/hooks/useLogout';
+import { TopicHeader } from '@/domain/common/standalone/TopicHeader';
 
 export default function Account() {
   const { logout } = useLogout();
 
   return (
     <>
+      <TopicHeader label="Account" />
       <div className={Styles.section}>
         <div className={Styles.iconLinkCards}>
           <IconLinkCard
@@ -27,11 +29,7 @@ export default function Account() {
         </div>
       </div>
       <div className={Styles.section}>
-        <Button
-          UNSAFE_className={Styles.button}
-          variant="primary"
-          onPress={logout}
-        >
+        <Button UNSAFE_className={Styles.button} variant="primary" onPress={logout}>
           Logout
         </Button>
       </div>

@@ -7,8 +7,8 @@ import (
 )
 
 type ThreadMicroPostRelation struct {
-	ThreadID    string
-	MicroPostID string
+	ThreadID    string `gorm:"column:thread_id"`
+	MicroPostID string `gorm:"column:micro_post_id"`
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
