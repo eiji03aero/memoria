@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import { Button } from '@repo/design-system';
 import { css } from '@/../styled-system/css';
@@ -7,6 +8,7 @@ import { css } from '@/../styled-system/css';
 import { Link } from '@/modules/components';
 
 export default function InternalServerError() {
+  const { t } = useTranslation();
   return (
     <div
       className={css({
@@ -36,10 +38,10 @@ export default function InternalServerError() {
           color: 'black',
         })}
       >
-        Internal server error
+        {t('w.internal-server-error')}
       </p>
       <Button variant="primary" elementType={Link} href="/timeline">
-        Back to timeline
+        {t('w.back-to-data', { data: t('w.top') })}
       </Button>
     </div>
   );

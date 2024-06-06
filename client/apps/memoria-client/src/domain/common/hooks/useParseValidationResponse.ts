@@ -1,14 +1,15 @@
+import { useTranslation } from 'react-i18next';
+
 import { ValidationResponseBody } from '@/domain/common/interfaces';
 
 type Params = {
   responseBody: any;
 };
 
-export type ParsedValidationResponse = ReturnType<
-  typeof useParseValidationResponse
->;
+export type ParsedValidationResponse = ReturnType<typeof useParseValidationResponse>;
 
 export const useParseValidationResponse = ({ responseBody }: Params) => {
+  const { t } = useTranslation();
   const isValidationResponse = typeof responseBody?.validation === 'object';
   let validationMessage: string | undefined;
   let key: string | undefined;
@@ -20,16 +21,16 @@ export const useParseValidationResponse = ({ responseBody }: Params) => {
     name = res.validation.name;
     switch (key) {
       case 'required':
-        validationMessage = `${name} is required`;
+        validationMessage = t('v.data-is-required', { data: name });
         break;
       case 'invalid':
-        validationMessage = `${name} is invalid`;
+        validationMessage = t('v.data-is-invalid', { data: name });
         break;
       case 'invalid-format':
-        validationMessage = `${name} format is invalid`;
+        validationMessage = t('v.data-format-is-invalid', { data: name });
         break;
       case 'already-taken':
-        validationMessage = `${name} is already taken`;
+        validationMessage = t('v.data-is-already-taken', { data: name });
         break;
     }
   }

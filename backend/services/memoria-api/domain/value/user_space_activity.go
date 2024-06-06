@@ -9,7 +9,7 @@ import (
 type UserSpaceActivityType string
 
 var (
-	UserSpaceActivityType_InviteUserJoined  = UserSpaceActivityType("invivte-user-joined")
+	UserSpaceActivityType_InviteUserJoined  = UserSpaceActivityType("invite-user-joined")
 	UserSpaceActivityType_UserUploadedMedia = UserSpaceActivityType("user-uploaded-media")
 	UserSpaceActivityTypes                  = []UserSpaceActivityType{
 		UserSpaceActivityType_InviteUserJoined,

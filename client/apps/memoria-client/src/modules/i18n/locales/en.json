@@ -1,0 +1,80 @@
+{
+  "w": {
+    "account": "Account",
+    "album": "Album",
+    "albums": "Albums",
+    "all": "All",
+    "all-data": "All {{data}}",
+    "back-to-data": "Back to {{data}}",
+    "content": "Content",
+    "data-menu": "{{data}} menu",
+    "delete": "Delete",
+    "delete-data": "Delete {{data}}",
+    "deleting-data": "Deleting {{data}}",
+    "deletion-completed": "Deletion completed",
+    "email": "Email",
+    "files": "Files",
+    "go-to-data": "Go to {{data}}",
+    "internal-server-error": "Internal server error",
+    "invite-user": "Invite user",
+    "load-more": "Load more",
+    "loading": "Loading",
+    "login": "Login",
+    "logout": "Logout",
+    "media": "Media",
+    "name": "Name",
+    "password": "Password",
+    "save": "Save",
+    "sign-up-now": "Sign up now",
+    "slides": "Slides",
+    "submit": "Submit",
+    "timeline": "Timeline",
+    "top": "Top",
+    "upload": "Upload",
+    "uploading-data": "Uploading {{data}}",
+    "user-space-name": "User space name"
+  },
+  "v": {
+    "data-format-is-invalid": "{{data}} format is invalid",
+    "data-is-already-taken": "{{data}} is already taken",
+    "data-is-invalid": "{{data}} is invalid",
+    "data-is-required": "{{data}} is required"
+  },
+  "s": {
+    "are-you-sure-to-delete-this-data": "Are you sure to delete this {{data}}?",
+    "completing-media-upload": "Completing the media upload ...",
+    "create-a-post": "Create a post",
+    "create-an-album": "Create an album",
+    "preparing-to-upload-files": "Preparing to upload files ...",
+    "successfully-completed-media-upload": "Successfully completed media upload!",
+    "user-data-has-joined": "User {{data}} has joined!",
+    "user-data-uploaded-media": "User {{data}} uploaded media!"
+  },
+  "p": {
+    "account-invite-user": {
+      "heading": "Let's invite user to this user space."
+    },
+    "invite-user-confirm": {
+      "headings": "You are invited to memoria!\nPlease fill out the following form to join us :)"
+    },
+    "login": {
+      "headings": "Let us begin a long-lasting relationship\nwith your memories"
+    },
+    "signup": {
+      "headings": "Let us begin a long-lasting relationship\nwith your memories"
+    },
+    "lp": {
+      "headings": "Cherish your moments for memories"
+    },
+    "signup-guide": {
+      "headings": "Thanks for signing up memoria!\nWe have sent you an email to verify your email address.\nPlease check it to complete signup process when you got time :)"
+    },
+    "signup-thanks": {
+      "headings": "Thanks for joining Memoria!"
+    },
+    "media-screen": {
+      "adding-media-to-albums": "Adding media to albums",
+      "before-upload-selected-media": "Before upload the selected media ..."
+    }
+  }
+}

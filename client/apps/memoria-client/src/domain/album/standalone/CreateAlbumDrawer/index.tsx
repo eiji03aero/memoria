@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
 import { z } from 'zod';
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export const CreateAlbumDrawer = ({ show, onClose }: Props) => {
+  const { t } = useTranslation();
   const { createAlbum, errorResponseBody } = useCreateAlbum();
   const parsedValidationResponse = useParseValidationResponse({
     responseBody: errorResponseBody,
@@ -47,9 +49,7 @@ export const CreateAlbumDrawer = ({ show, onClose }: Props) => {
         }}
       >
         <BottomDrawer.Content>
-          <BottomDrawer.Header onClose={onClose}>
-            Create an album
-          </BottomDrawer.Header>
+          <BottomDrawer.Header onClose={onClose}>{t('s.create-an-album')}</BottomDrawer.Header>
 
           <BottomDrawer.Body className={css({ mb: '1rem' })}>
             <form.Field
@@ -59,7 +59,7 @@ export const CreateAlbumDrawer = ({ show, onClose }: Props) => {
               }}
               children={field => (
                 <TextField
-                  label="Name"
+                  label={t('w.name')}
                   name={field.name}
                   value={field.state.value}
                   {...buildErrorMessageProps({ field })}
@@ -71,7 +71,7 @@ export const CreateAlbumDrawer = ({ show, onClose }: Props) => {
 
           <BottomDrawer.Footer>
             <Button variant="primary" type="submit">
-              Save
+              {t('w.save')}
             </Button>
           </BottomDrawer.Footer>
         </BottomDrawer.Content>

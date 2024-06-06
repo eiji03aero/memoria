@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Image from 'next/image';
+import { useTranslation } from 'react-i18next';
 import { TightLayoutCard, Button, IconButton, LoadingBlock } from '@repo/design-system';
 import { css } from '@/../styled-system/css';
 
@@ -12,6 +13,7 @@ import { TimelinePostCard } from '@/domain/timeline/standalone/TimelineScreen/co
 import { TimelinePostDrawer } from '@/domain/timeline/standalone/TimelinePostDrawer';
 
 export const TimelineScreen = () => {
+  const { t } = useTranslation();
   const [showCreatePost, setShowCreatePost] = React.useState(false);
   const { units, fetchNextPage, isFetching } = useTimelineUnits();
 
@@ -50,7 +52,7 @@ export const TimelineScreen = () => {
         {!isFetching && (
           <div className={Styles.loadMoreBox}>
             <Button variant="primary" onPress={() => fetchNextPage()} width="100%">
-              Load more
+              {t('w.load-more')}
             </Button>
           </div>
         )}

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import * as config from '@/config';
 import { axios } from '@/modules/lib/axios';
@@ -7,6 +8,7 @@ import { useMultipleRequestsStatus } from '@/modules/hooks/useMultipleRequestsSt
 const request = (id: string) => axios.delete(`${config.ApiHost}/api/auth/media/${id}`);
 
 export const useDeleteMedia = () => {
+  const { t } = useTranslation();
   const rs = useMultipleRequestsStatus();
 
   const deleteMedia = React.useCallback(
@@ -28,11 +30,11 @@ export const useDeleteMedia = () => {
 
   const statusLabel = React.useMemo(() => {
     if (rs.status === 'requesting') {
-      return `Deleting media: ${rs.totalRequested} / ${rs.totalRequests}`;
+      return `${t('w.deleting-data', { data: t('w.media').toLowerCase() })}: ${rs.totalRequested} / ${rs.totalRequests}`;
     }
 
     if (rs.status === 'completed') {
-      return `Deletion completed`;
+      return t('w.deletion-completed');
     }
 
     return null;

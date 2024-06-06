@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 import { IconButton, MediaGrid, BottomDrawer, Button } from '@repo/design-system';
 import { css } from '@/../styled-system/css';
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export const MediaScreen = ({ title, albumID }: Props) => {
+  const { t } = useTranslation();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { upload, statusLabel } = useUploadMedia();
@@ -60,7 +62,7 @@ export const MediaScreen = ({ title, albumID }: Props) => {
 
     setSelectedIds([]);
     setSelectedAlbumIDs([]);
-    upload({ files, albumIDs: selectedAlbumIDs, onSuccess: () => refetch });
+    upload({ files, albumIDs: selectedAlbumIDs, onSuccess: () => refetch() });
     setShowUploadConfirmDrawer(false);
     setShowUploadingDrawer(true);
   };
@@ -90,9 +92,12 @@ export const MediaScreen = ({ title, albumID }: Props) => {
     }
 
     setShowDeletingDrawer(true);
+    setMode('default');
     deleteMedia({
       ids: selectedIds,
-      onSuccess: refetch,
+      onSuccess: () => {
+        refetch();
+      },
     });
   }, [selectedIds, deleteMedia, refetch]);
 
@@ -197,25 +202,21 @@ export const MediaScreen = ({ title, albumID }: Props) => {
         onClose={() => setShowUploadConfirmDrawer(false)}
       >
         <BottomDrawer.Header onClose={() => setShowUploadConfirmDrawer(false)}>
-          Before uplaod the media selected ...
+          {t('p.media-screen.before-upload-selected-media')}
         </BottomDrawer.Header>
-        <BottomDrawer.Body
-          className={css({
-            minH: '200',
-          })}
-        >
+        <BottomDrawer.Body>
           <AlbumSelect onChange={values => setSelectedAlbumIDs(values.map(v => v.value))} />
         </BottomDrawer.Body>
         <BottomDrawer.Footer>
           <Button variant="primary" onPress={handleUploadMedia}>
-            Upload
+            {t('w.upload')}
           </Button>
         </BottomDrawer.Footer>
       </BottomDrawer>
 
       <BottomDrawer show={showUploadingDrawer} onClose={() => setShowUploadingDrawer(false)}>
         <BottomDrawer.Header onClose={() => setShowUploadingDrawer(false)}>
-          Uploading media
+          {t('w.uploading-data', { data: t('w.media') })}
         </BottomDrawer.Header>
         <BottomDrawer.Body>
           <div className={Styles.drawerBody}>{statusLabel}</div>
@@ -224,7 +225,7 @@ export const MediaScreen = ({ title, albumID }: Props) => {
 
       <BottomDrawer show={showDeletingDrawer} onClose={() => setShowDeletingDrawer(false)}>
         <BottomDrawer.Header onClose={() => setShowDeletingDrawer(false)}>
-          Deleting media
+          {t('w.deleting-data', { data: t('w.media').toLowerCase() })}
         </BottomDrawer.Header>
         <BottomDrawer.Body>
           <div className={Styles.drawerBody}>{deleteStatusLabel}</div>
@@ -236,18 +237,14 @@ export const MediaScreen = ({ title, albumID }: Props) => {
         onClose={() => setShowAddMediaToAlbumsDrawer(false)}
       >
         <BottomDrawer.Header onClose={() => setShowAddMediaToAlbumsDrawer(false)}>
-          Adding media to albums
+          {t('p.media-screen.adding-media-to-albums')}
         </BottomDrawer.Header>
-        <BottomDrawer.Body
-          className={css({
-            minH: '200',
-          })}
-        >
+        <BottomDrawer.Body>
           <AlbumSelect onChange={values => setSelectedAlbumIDs(values.map(v => v.value))} />
         </BottomDrawer.Body>
         <BottomDrawer.Footer>
           <Button variant="primary" onPress={handleAddMediaToAlbums}>
-            Save
+            {t('w.save')}
           </Button>
         </BottomDrawer.Footer>
       </BottomDrawer>

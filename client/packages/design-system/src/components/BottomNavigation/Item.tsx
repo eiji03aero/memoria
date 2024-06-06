@@ -31,7 +31,7 @@ export const Item = ({ label, icon, active = false, onPress }: Props) => {
 
 const Styles = {
   item: css({
-    width: '3rem',
+    width: '3.5rem',
     height: '3rem',
     display: 'flex',
     flexDir: 'column',

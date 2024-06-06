@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BottomDrawer } from '@repo/design-system';
 
 import { useUploadMedia } from '@/domain/media/hooks/useUploadMedia';
@@ -9,6 +10,7 @@ type Props = {
 };
 
 export const MediaUploadDrawer = ({ onUploadSuccess }: Props) => {
+  const { t } = useTranslation();
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [showUploadingDrawer, setShowUploadingDrawer] = React.useState(false);
 
@@ -36,7 +38,7 @@ export const MediaUploadDrawer = ({ onUploadSuccess }: Props) => {
 
       <BottomDrawer show={showUploadingDrawer} onClose={() => setShowUploadingDrawer(false)}>
         <BottomDrawer.Header onClose={() => setShowUploadingDrawer(false)}>
-          Uploading media
+          {t('w.uploading-data', { data: t('w.media') })}
         </BottomDrawer.Header>
         <BottomDrawer.Body>{statusLabel}</BottomDrawer.Body>
       </BottomDrawer>

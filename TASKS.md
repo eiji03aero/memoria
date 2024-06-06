@@ -6,9 +6,6 @@
 ## Todo
 - [ ] implement toast system
     - use toast from react-spectrum
-- [ ] i18n
-    - gotta do this bro
-    - document title
 - [ ] implement timeline post detail page
 - [ ] try to bounce ideas off of chat gpt
     - what kind of feature would make it better app?
@@ -63,9 +60,14 @@
     - standalone build
 - [ ] protect api endpoint from malicious access
     - too many requests
+    - request from outside of app
 - [ ] implement expire for jwt
+- [ ] introduce datadog for monitoring
 
 ## Done
+- [x] i18n
+    - gotta do this bro
+    - document title
 - [x] make it pwa installable
 - [x] try to DRY up handler test
     - create shared struct for the strcutre of test execution?

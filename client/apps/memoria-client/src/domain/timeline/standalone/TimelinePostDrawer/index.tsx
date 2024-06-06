@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, BottomDrawer, TextArea } from '@repo/design-system';
 import { css } from '@/../styled-system/css';
 
@@ -11,6 +12,7 @@ type Props = {
 };
 
 export const TimelinePostDrawer = ({ show, onClose }: Props) => {
+  const { t } = useTranslation();
   const [content, setContent] = React.useState('');
   const [uploadedMediumIDs, setUploadedMediumIDs] = React.useState<string[]>([]);
 
@@ -22,10 +24,10 @@ export const TimelinePostDrawer = ({ show, onClose }: Props) => {
 
   return (
     <BottomDrawer show={show} onClose={onClose}>
-      <BottomDrawer.Header onClose={onClose}>Create a post</BottomDrawer.Header>
+      <BottomDrawer.Header onClose={onClose}>{t('s.create-a-post')}</BottomDrawer.Header>
       <BottomDrawer.Body>
         <TextArea
-          label="Post content"
+          label={t('w.content')}
           value={content}
           height="240px"
           width="100%"
@@ -38,7 +40,7 @@ export const TimelinePostDrawer = ({ show, onClose }: Props) => {
       </BottomDrawer.Body>
       <BottomDrawer.Footer>
         <Button variant="primary" onPress={() => handleCreate()}>
-          Submit
+          {t('w.submit')}
         </Button>
       </BottomDrawer.Footer>
     </BottomDrawer>

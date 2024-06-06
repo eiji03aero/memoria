@@ -1,0 +1,80 @@
+{
+  "w": {
+    "account": "アカウント",
+    "album": "アルバム",
+    "albums": "アルバム",
+    "all": "全て",
+    "all-data": "全ての{{data}}",
+    "back-to-data": "{{data}}に戻る",
+    "content": "内容",
+    "data-menu": "{{data}} メニュー",
+    "delete": "削除",
+    "delete-data": "削除 {{data}}",
+    "deleting-data": "削除中: {{data}}",
+    "deletion-completed": "削除が完了しました",
+    "email": "Eメール",
+    "files": "ファイル",
+    "go-to-data": "{{data}}に行く",
+    "internal-server-error": "内部サーバーエラー",
+    "invite-user": "ユーザーを招待する",
+    "load-more": "もっと読み込む",
+    "loading": "読み込み中",
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "media": "メディア",
+    "name": "名前",
+    "password": "パスワード",
+    "save": "保存",
+    "sign-up-now": "今すぐ登録",
+    "slides": "スライド",
+    "submit": "送信",
+    "timeline": "タイムライン",
+    "top": "トップ",
+    "upload": "アップロード",
+    "uploading-data": "アップロード中: {{data}}",
+    "user-space-name": "ユーザースペース名"
+  },
+  "v": {
+    "data-format-is-invalid": "{{data}}のフォーマットが異常です",
+    "data-is-already-taken": "{{data}}はすでに登録されています",
+    "data-is-invalid": "{{data}}が無効です",
+    "data-is-required": "{{data}}は必須項目です"
+  },
+  "s": {
+    "are-you-sure-to-delete-this-data": "本当にこの{{data}}を削除しますか?",
+    "completing-media-upload": "メディアのアップロードを完了しています ...",
+    "create-a-post": "投稿を作成する",
+    "create-an-album": "アルバムを作成する",
+    "preparing-to-upload-files": "ファイルをアップロードする準備中 ...",
+    "successfully-completed-media-upload": "メディアのアップロードが成功しました!",
+    "user-data-has-joined": "ユーザー {{data}} が参加しました!",
+    "user-data-uploaded-media": "ユーザー {{data}} がメディアをアップロードしました!"
+  },
+  "p": {
+    "lp": {
+      "headings": "何気ないひとときを思い出に"
+    },
+    "signup": {
+      "headings": "さあ思い出との末長い付き合いを\n始めましょう"
+    },
+    "signup-guide": {
+      "headings": "Memoriaに登録いただきありがとうございます！\nEメール認証用のお知らせをメールアドレスにお送りしています\nお手隙の際にご確認いただき、登録を完了させてください :)"
+    },
+    "signup-thanks": {
+      "headings": "Memoriaに登録いただきありがとうございます!"
+    },
+    "account-invite-user": {
+      "heading": "このユーザースペースに新しいユーザーを招待しましょう"
+    },
+    "invite-user-confirm": {
+      "headings": "あなたはMemoriaに招待されました!\nこちらのフォームを入力いただき、参加してください :)"
+    },
+    "login": {
+      "headings": "さあ思い出との末長い付き合いを\n始めましょう"
+    },
+    "media-screen": {
+      "adding-media-to-albums": "アルバムにメディアを追加する",
+      "before-upload-selected-media": "メディアをアップロードする前に ..."
+    }
+  }
+}

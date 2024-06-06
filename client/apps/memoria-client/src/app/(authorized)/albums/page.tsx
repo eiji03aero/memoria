@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import {
   TightLayoutCard,
   ThumbnailLinkCard,
@@ -11,13 +12,13 @@ import {
 } from '@repo/design-system';
 
 import { TopicHeader } from '@/domain/common/standalone/TopicHeader';
+import { CreateAlbumDrawer } from '@/domain/album/standalone/CreateAlbumDrawer';
 import { Album } from '@/domain/common/interfaces/api';
 import { useAlbums } from '@/domain/album/hooks/useAlbums';
 import { useDeleteAlbum } from '@/domain/album/hooks/useDeleteAlbum';
 
-import { CreateAlbumDrawer } from '@/app/(authorized)/albums/_standalone/CreateAlbumDrawer';
-
 export default function Albums() {
+  const { t } = useTranslation();
   const [showCreateAlbumDrawer, setShowCreateAlbumDrawer] = React.useState(false);
   const [showDeleteAlbumDrawer, setShowDeleteAlbumDrawer] = React.useState(false);
   const [showAlbumMenuDrawer, setShowAlbumMenuDrawer] = React.useState(false);
@@ -47,7 +48,7 @@ export default function Albums() {
   return (
     <>
       <TopicHeader
-        label="Albums"
+        label={t('w.albums')}
         trailing={
           <IconButton
             variant="elevated"
@@ -61,7 +62,7 @@ export default function Albums() {
 
       <TightLayoutCard.Background>
         <TightLayoutCard>
-          <ThumbnailLinkCard label="All" onPress={() => router.push(`/media`)} />
+          <ThumbnailLinkCard label={t('w.all')} onPress={() => router.push(`/media`)} />
         </TightLayoutCard>
 
         <TightLayoutCard>
@@ -83,7 +84,7 @@ export default function Albums() {
 
       <BottomDrawer show={showAlbumMenuDrawer} onClose={() => setShowAlbumMenuDrawer(false)}>
         <BottomDrawer.Header onClose={() => setShowDeleteAlbumDrawer(false)}>
-          Album menu
+          {t('w.data-menu', { data: t('w.album') })}
         </BottomDrawer.Header>
         <BottomDrawer.Item
           iconName="delete"
@@ -92,23 +93,23 @@ export default function Albums() {
             setShowDeleteAlbumDrawer(true);
           }}
         >
-          Delete
+          {t('w.delete')}
         </BottomDrawer.Item>
         <BottomDrawer.Footer />
       </BottomDrawer>
 
       <BottomDrawer show={showDeleteAlbumDrawer} onClose={() => setShowDeleteAlbumDrawer(false)}>
         <BottomDrawer.Header onClose={() => setShowDeleteAlbumDrawer(false)}>
-          Delete album
+          {t('w.delete-data', { data: t('w.album').toLowerCase() })}
         </BottomDrawer.Header>
         <BottomDrawer.Body>
-          Are you sure to delete this album?
+          {t('s.are-you-sure-to-delete-this-data', { data: t('w.album').toLowerCase() })}
           <br />
           {selectedAlbum?.name}
         </BottomDrawer.Body>
         <BottomDrawer.Footer>
           <Button variant="primary" onPress={() => handleDelete()}>
-            Delete
+            {t('w.delete')}
           </Button>
         </BottomDrawer.Footer>
       </BottomDrawer>

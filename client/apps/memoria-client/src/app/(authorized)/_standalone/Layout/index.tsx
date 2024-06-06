@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 import { BottomNavigation } from '@repo/design-system';
 import { css } from '@/../styled-system/css';
 
@@ -11,6 +12,7 @@ export const Layout = ({
 }>) => {
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useTranslation();
 
   return (
     <div className={Styles.layout}>
@@ -18,25 +20,25 @@ export const Layout = ({
       <BottomNavigation>
         <BottomNavigation.Item
           active={pathname === '/timeline'}
-          label="Timeline"
+          label={t('w.timeline')}
           icon="news"
           onPress={() => router.push('/timeline')}
         />
         <BottomNavigation.Item
           active={pathname.startsWith('/albums') || pathname.startsWith('/media')}
-          label="Albums"
+          label={t('w.albums')}
           icon="image-album"
           onPress={() => router.push('/albums')}
         />
         <BottomNavigation.Item
           active={pathname === '/slides'}
-          label="Slides"
+          label={t('w.slides')}
           icon="image-carousel"
           onPress={() => router.push('/slides')}
         />
         <BottomNavigation.Item
           active={pathname.startsWith('/account')}
-          label="Account"
+          label={t('w.account')}
           icon="user"
           onPress={() => router.push('/account')}
         />

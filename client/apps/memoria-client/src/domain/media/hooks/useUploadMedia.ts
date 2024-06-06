@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 
 import * as config from '@/config';
 import { axios, bareAxios, AxiosResponse } from '@/modules/lib/axios';
@@ -35,6 +36,7 @@ const requestConfirmUploads = (data: { mediumIDs: string[] }) =>
   });
 
 export const useUploadMedia = () => {
+  const { t } = useTranslation();
   const rs = useMultipleRequestsStatus();
 
   const upload = React.useCallback(
@@ -82,23 +84,23 @@ export const useUploadMedia = () => {
     }
 
     if (rs.status === 'preparing') {
-      return 'Preparing to upload files ...';
+      return t('s.preparing-to-upload-files');
     }
 
     if (rs.status === 'requesting') {
-      return `Uploading files: ${rs.totalRequested} / ${rs.totalRequests}`;
+      return `${t('w.uploading-data', { data: t('w.files') })}: ${rs.totalRequested} / ${rs.totalRequests}`;
     }
 
     if (rs.status === 'completing') {
-      return `Completing the media upload ...`;
+      return t('s.completing-media-upload');
     }
 
     if (rs.status === 'completed') {
-      return `Successfully completed media upload!`;
+      return t('s.successfully-completed-media-upload');
     }
 
     return null;
-  }, [rs]);
+  }, [rs, t]);
 
   return {
     upload,

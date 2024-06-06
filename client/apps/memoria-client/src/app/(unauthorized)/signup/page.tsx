@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
@@ -12,6 +13,7 @@ import { useParseValidationResponse } from '@/domain/common/hooks/useParseValida
 import { useValidationErrorProps } from '@/domain/common/hooks/useValidationErrorProps';
 
 export default function Signup() {
+  const { t } = useTranslation();
   const { signup, errorResponseBody } = useSignup();
   const parsedValidationResponse = useParseValidationResponse({
     responseBody: errorResponseBody,
@@ -59,11 +61,10 @@ export default function Signup() {
             textAlign: 'center',
             fontSize: '1rem',
             color: 'black',
+            whiteSpace: 'pre-wrap',
           })}
         >
-          Let us begin a long-lasting relationship
-          <br />
-          with your memories
+          {t('p.signup.headings')}
         </p>
       </div>
 
@@ -89,7 +90,7 @@ export default function Signup() {
             }}
             children={field => (
               <TextField
-                label="Name"
+                label={t('w.name')}
                 name={field.name}
                 value={field.state.value}
                 {...buildErrorMessageProps({ field })}
@@ -104,7 +105,7 @@ export default function Signup() {
             }}
             children={field => (
               <TextField
-                label="User space name"
+                label={t('w.user-space-name')}
                 name={field.name}
                 value={field.state.value}
                 {...buildErrorMessageProps({ field, name: 'user_space_name' })}
@@ -119,7 +120,7 @@ export default function Signup() {
             }}
             children={field => (
               <TextField
-                label="Email"
+                label={t('w.email')}
                 name={field.name}
                 value={field.state.value}
                 {...buildErrorMessageProps({ field })}
@@ -134,7 +135,7 @@ export default function Signup() {
             }}
             children={field => (
               <TextField
-                label="password"
+                label={t('w.password')}
                 type="password"
                 name={field.name}
                 value={field.state.value}
@@ -153,7 +154,7 @@ export default function Signup() {
                 })}
               >
                 <Button variant="primary" type="submit" isDisabled={!canSubmit || isSubmitting}>
-                  Submit
+                  {t('w.submit')}
                 </Button>
               </div>
             )}

@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import { Button } from '@repo/design-system';
 import { css } from '@/../styled-system/css';
@@ -7,6 +8,7 @@ import { css } from '@/../styled-system/css';
 import { Link } from '@/modules/components';
 
 export default function SignupThanks() {
+  const { t } = useTranslation();
   return (
     <div
       className={css({
@@ -30,11 +32,9 @@ export default function SignupThanks() {
           marginBottom: '1rem',
         })}
       />
-      <p className={css({ fontSize: '1rem', color: 'black' })}>
-        Thanks for joining memoria!
-      </p>
+      <p className={css({ fontSize: '1rem', color: 'black' })}>{t('p.signup-thanks.headings')}</p>
       <Button variant="primary" elementType={Link} href="/timeline">
-        Go to timeline page
+        {t('w.go-to-data', { data: t('w.top') })}
       </Button>
     </div>
   );

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { css } from '@/../styled-system/css';
 
 import { useDateFormat } from '@/modules/hooks/useDateFormat';
@@ -9,18 +10,19 @@ type Props = {
 };
 
 export const UserSpaceActivityCard = ({ userSpaceActivity }: Props) => {
+  const { t } = useTranslation();
   const dfmt = useDateFormat();
 
   const { message } = React.useMemo(() => {
     if (userSpaceActivity.type === 'invite-user-joined') {
-      return { message: `User ${userSpaceActivity.data.user_id} has joined!` };
+      return { message: t('s.user-data-has-joined', { data: userSpaceActivity.data.user_id }) };
     }
     if (userSpaceActivity.type === 'user-uploaded-media') {
-      return { message: `User ${userSpaceActivity.data.user_id} uploaded media!` };
+      return { message: t('s.user-data-uploaded-media', { data: userSpaceActivity.data.user_id }) };
     }
 
     throw new Error(`UserSpaceActivityCard does not support type: ${userSpaceActivity}`);
-  }, [userSpaceActivity]);
+  }, [userSpaceActivity, t]);
 
   return (
     <div className={Styles.card}>

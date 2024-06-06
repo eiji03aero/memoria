@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
 import { useForm } from '@tanstack/react-form';
@@ -13,6 +14,7 @@ import { useParseValidationResponse } from '@/domain/common/hooks/useParseValida
 import { useValidationErrorProps } from '@/domain/common/hooks/useValidationErrorProps';
 
 export default function InviteUserConfirm() {
+  const { t } = useTranslation();
   const searchParams = useSearchParams();
   const invitationID = searchParams.get('id');
 
@@ -53,11 +55,7 @@ export default function InviteUserConfirm() {
         className={Styles.logo}
       />
       <div className={Styles.card}>
-        <p className={Styles.instruction}>
-          You are invited to memoria!
-          <br />
-          Please fill out the following form to join us :)
-        </p>
+        <p className={Styles.instruction}>{t('p.invite-user-confirm.headings')}</p>
         <Form
           onSubmit={e => {
             e.preventDefault();
@@ -71,7 +69,7 @@ export default function InviteUserConfirm() {
             }}
             children={field => (
               <TextField
-                label="Name"
+                label={t('w.name')}
                 name={field.name}
                 value={field.state.value}
                 {...buildErrorMessageProps({ field })}
@@ -86,7 +84,7 @@ export default function InviteUserConfirm() {
             }}
             children={field => (
               <TextField
-                label="Password"
+                label={t('w.password')}
                 type="password"
                 name={field.name}
                 value={field.state.value}
@@ -101,12 +99,8 @@ export default function InviteUserConfirm() {
           <form.Subscribe
             selector={state => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
-              <Button
-                variant="primary"
-                type="submit"
-                isDisabled={!canSubmit || isSubmitting}
-              >
-                Submit
+              <Button variant="primary" type="submit" isDisabled={!canSubmit || isSubmitting}>
+                {t('w.submit')}
               </Button>
             )}
           />
@@ -127,6 +121,7 @@ const Styles = {
     marginBottom: '2rem',
   }),
   instruction: css({
+    whiteSpace: 'pre-wrap',
     marginBottom: '0.5rem',
   }),
   card: css({

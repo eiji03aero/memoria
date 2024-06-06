@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
 import Image from 'next/image';
 import { useForm } from '@tanstack/react-form';
 import { zodValidator } from '@tanstack/zod-form-adapter';
@@ -12,6 +13,7 @@ import { useParseValidationResponse } from '@/domain/common/hooks/useParseValida
 import { useValidationErrorProps } from '@/domain/common/hooks/useValidationErrorProps';
 
 export default function Login() {
+  const { t } = useTranslation();
   const { login, errorResponseBody } = useLogin();
   const parsedValidationResponse = useParseValidationResponse({
     responseBody: errorResponseBody,
@@ -42,12 +44,7 @@ export default function Login() {
           marginY: '3rem',
         })}
       >
-        <Image
-          src="/images/Logo-horizontal-black.png"
-          width={300}
-          height={72}
-          alt="service logo"
-        />
+        <Image src="/images/Logo-horizontal-black.png" width={300} height={72} alt="service logo" />
       </div>
 
       <div
@@ -62,11 +59,10 @@ export default function Login() {
             textAlign: 'center',
             fontSize: '1rem',
             color: 'black',
+            whiteSpace: 'pre-wrap',
           })}
         >
-          Let us begin a long-lasting relationship
-          <br />
-          with your memories
+          {t('p.login.headings')}
         </p>
       </div>
 
@@ -92,7 +88,7 @@ export default function Login() {
             }}
             children={field => (
               <TextField
-                label="Email"
+                label={t('w.email')}
                 name={field.name}
                 value={field.state.value}
                 {...buildErrorMessageProps({ field })}
@@ -107,7 +103,7 @@ export default function Login() {
             }}
             children={field => (
               <TextField
-                label="password"
+                label={t('w.password')}
                 type="password"
                 name={field.name}
                 value={field.state.value}
@@ -120,12 +116,8 @@ export default function Login() {
           <form.Subscribe
             selector={state => [state.canSubmit, state.isSubmitting]}
             children={([canSubmit, isSubmitting]) => (
-              <Button
-                variant="primary"
-                type="submit"
-                isDisabled={!canSubmit || isSubmitting}
-              >
-                Submit
+              <Button variant="primary" type="submit" isDisabled={!canSubmit || isSubmitting}>
+                {t('w.submit')}
               </Button>
             )}
           />

@@ -1,13 +1,13 @@
-import { css } from '../../../styled-system/css';
+import { css, cx } from '../../../styled-system/css';
 
 import { Item } from './Item';
 
-export const BottomNavigation = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  return <nav className={Styles.navigation}>{children}</nav>;
+export const BottomNavigation = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <nav className={cx(Styles.navigation, (window as any).navigator.standalone && Styles.pb)}>
+      {children}
+    </nav>
+  );
 };
 
 const Styles = {
@@ -18,6 +18,9 @@ const Styles = {
     borderTop: '1px solid',
     borderColor: 'gray.200',
     backgroundColor: 'white',
+  }),
+  pb: css({
+    pb: '1rem',
   }),
 };
 
