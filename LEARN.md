@@ -285,6 +285,59 @@ func main() {
 }
 ```
 
+### Buffered channel
+- In this example, it won't block the main thread as we have go-ed 3 funcs
+```
+
+// You can edit this code!
+// Click here and start typing.
+package main
+
+import (
+	"log"
+	"strconv"
+	"sync"
+	"time"
+)
+
+type ch chan int
+type rch chan string
+
+func work(wg *sync.WaitGroup, c ch, rc rch) {
+	wg.Add(1)
+	defer wg.Done()
+	log.Println("going to for in work")
+	for i := range c {
+		log.Println("received i in for work")
+		time.Sleep(time.Duration(i) * time.Second)
+		log.Println("hogeee: " + strconv.Itoa(i))
+	}
+
+	rc <- "done working"
+}
+
+func main() {
+	wg := &sync.WaitGroup{}
+	c := make(ch, 1)
+	rc := make(rch)
+	go work(wg, c, rc)
+	go work(wg, c, rc)
+	go work(wg, c, rc)
+
+	log.Println("going to work")
+	c <- 1
+	c <- 2
+	c <- 3
+	close(c)
+	wg.Wait()
+
+	for r := range rc {
+		log.Println("doneee: " + r)
+	}
+	log.Println("done")
+}
+```
+
 ---
 
 # Frontend

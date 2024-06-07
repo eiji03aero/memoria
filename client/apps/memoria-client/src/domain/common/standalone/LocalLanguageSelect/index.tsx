@@ -1,8 +1,10 @@
 import Select from 'react-select';
 
 import i18n, { changeLocaleLanguage } from '@/modules/i18n/config';
+import { useToast } from '@/domain/common/hooks/useToast';
 
 export const LocaleLanguageSelect = () => {
+  const toast = useToast();
   const options = [
     { label: 'Japanese', value: 'ja' },
     { label: 'English', value: 'en' },
@@ -17,6 +19,7 @@ export const LocaleLanguageSelect = () => {
           return;
         }
         changeLocaleLanguage(v.value);
+        toast.changedLocaleLanguage();
       }}
     />
   );

@@ -4,15 +4,6 @@
 ## Fix
 
 ## Todo
-- [ ] implement toast system
-    - use toast from react-spectrum
-- [ ] implement timeline post detail page
-- [ ] try to bounce ideas off of chat gpt
-    - what kind of feature would make it better app?
-- [ ] prepare documents
-    - terms of use
-    - privacy policy
-- [ ] test code for bgjob impl
 - [ ] make sure media gallery works okay
     - starting from middle to load previous page
     - starting from middle to load next page
@@ -39,15 +30,10 @@
 - [ ] improve error handling of upload media
     - when uploading fails
     - when user sends browser to background
-- [ ] improve bgjob performance
-    - make it multiple go routines
-    - make it buffered
 - [ ] implement upload medium limit
     - consider the limit for basic and premium
     - update the plan document too
 - [ ] make sure timestamp columns are recorded
-- [ ] research useButton props
-    - learn and take note of how it helps
 - [ ] take notes of why i thought i needed context boundary
     - was thinking of the case where:
         - Logic for uploading media could differ depending on context
@@ -58,13 +44,25 @@
 - [ ] optimize memoria client docker image
     - multi stage build to pick only required files
     - standalone build
+        - probably npm workspace is causing all the redundant files to be generated
 - [ ] protect api endpoint from malicious access
     - too many requests
     - request from outside of app
 - [ ] implement expire for jwt
 - [ ] introduce datadog for monitoring
+- [ ] implement timeline post detail page
+- [ ] try to bounce ideas off of chat gpt
+    - what kind of feature would make it better app?
+- [ ] prepare documents
+    - terms of use
+    - privacy policy
 
 ## Done
+- [x] improve bgjob performance
+    - make it multiple go routines
+    - make it buffered
+- [x] implement toast system
+    - use toast from react-spectrum
 - [x] i18n
     - gotta do this bro
     - document title

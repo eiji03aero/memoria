@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { ToastContainer } from '@repo/design-system';
 
 import { Providers } from '@/Providers';
 import '@/app/globals.css';
@@ -50,7 +51,10 @@ export default function RootLayout({
         <meta property="og:image" content="https://memoria-app.com/icons/apple-touch-icon.png" />
       </head>
       <body className={inter.className}>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <ToastContainer />
+        </Providers>
       </body>
     </html>
   );

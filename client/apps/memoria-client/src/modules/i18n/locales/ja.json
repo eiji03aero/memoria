@@ -43,6 +43,10 @@
   "s": {
     "are-you-sure-to-delete-this-data": "本当にこの{{data}}を削除しますか?",
     "completing-media-upload": "メディアのアップロードを完了しています ...",
+    "changed-locale-language": "設定言語を変更しました",
+    "invite-user-success": "ユーザーの招待に成功しました",
+    "logout-success": "ログアウトしました",
+    "login-success": "ログインしました",
     "create-a-post": "投稿を作成する",
     "create-an-album": "アルバムを作成する",
     "preparing-to-upload-files": "ファイルをアップロードする準備中 ...",

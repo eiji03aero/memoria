@@ -25,15 +25,16 @@ const request = (p: Request) =>
 type Params = {
   albumID?: string;
   enabled?: boolean;
-  initialPage?: number;
+  initialPosition?: number;
+  perPage?: number;
 };
 
-export const useMedia = ({ albumID, enabled = true, initialPage = 1 }: Params) => {
+export const useMedia = ({ albumID, enabled = true, initialPosition = 1, perPage = 5 }: Params) => {
   const query = useInfiniteQuery({
     queryKey: ['media', { albumID }],
-    queryFn: ({ pageParam }) => request({ albumID, page: pageParam, perPage: 100 }),
+    queryFn: ({ pageParam }) => request({ albumID, page: pageParam, perPage }),
     enabled,
-    initialPageParam: initialPage,
+    initialPageParam: Math.ceil(initialPosition / perPage),
     getNextPageParam: (lastPage, _, lastPageParam) => {
       if (lastPage.data.media.length === 0) {
         return undefined;

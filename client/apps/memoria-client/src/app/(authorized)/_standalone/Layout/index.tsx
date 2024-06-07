@@ -30,12 +30,14 @@ export const Layout = ({
           icon="image-album"
           onPress={() => router.push('/albums')}
         />
+        {/*
         <BottomNavigation.Item
           active={pathname === '/slides'}
           label={t('w.slides')}
           icon="image-carousel"
           onPress={() => router.push('/slides')}
         />
+          */}
         <BottomNavigation.Item
           active={pathname.startsWith('/account')}
           label={t('w.account')}

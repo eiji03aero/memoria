@@ -24,15 +24,8 @@ export const useInviteUser = () => {
     },
   });
 
-  const inviteUser = React.useCallback(
-    (params: Request) => {
-      mutate(params);
-    },
-    [mutate],
-  );
-
   return {
-    inviteUser,
+    inviteUser: mutate,
     errorResponseBody: (error as AxiosError)?.response?.data,
   };
 };

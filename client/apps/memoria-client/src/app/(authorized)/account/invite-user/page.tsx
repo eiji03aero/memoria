@@ -7,12 +7,14 @@ import { z } from 'zod';
 import { TopicHeader, Form, TextField, Button, TightLayoutCard } from '@repo/design-system';
 import { css } from '@/../styled-system/css';
 
+import { useToast } from '@/domain/common/hooks/useToast';
 import { useInviteUser } from '@/domain/account/hooks/useInviteUser';
 import { useParseValidationResponse } from '@/domain/common/hooks/useParseValidationResponse';
 import { useValidationErrorProps } from '@/domain/common/hooks/useValidationErrorProps';
 
 export default function InviteUser() {
   const { t } = useTranslation();
+  const toast = useToast();
   const { inviteUser, errorResponseBody } = useInviteUser();
   const parsedValidationResponse = useParseValidationResponse({
     responseBody: errorResponseBody,
@@ -26,7 +28,11 @@ export default function InviteUser() {
       email: '',
     },
     onSubmit: async ({ value }) => {
-      inviteUser(value);
+      inviteUser(value, {
+        onSuccess: () => {
+          toast.inviteUserSuccess();
+        },
+      });
     },
     validatorAdapter: zodValidator,
   });

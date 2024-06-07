@@ -1,10 +1,12 @@
 import * as React from 'react';
+import type { Slider as SliderT } from '@repo/design-system';
 import { css } from '@/../styled-system/css';
 
 import { useMediumGetPage } from '@/domain/media/hooks/useMediumGetPage';
 import { useMedia } from '@/domain/media/hooks/useMedia';
 import { MediaSlider } from '@/domain/media/standalone/MediaGalleryScreen/components/MediaSlider';
 import { ScreenTools } from '@/domain/media/standalone/MediaGalleryScreen/components/ScreenTools';
+import { usePreviousValue } from '@/modules/hooks/usePreviousValue';
 
 type Props = {
   albumID?: string;
@@ -13,14 +15,15 @@ type Props = {
 };
 
 export const MediaGalleryScreen = ({ albumID, initialMediumID, onBack }: Props) => {
-  const [showTools, setShowTools] = React.useState(false);
+  const sliderRef = React.useRef(null) as React.MutableRefObject<SliderT | null>;
+  const [showTools, setShowTools] = React.useState(true);
 
   const { pagination, isFetched } = useMediumGetPage({ albumID, mediumID: initialMediumID });
   const { media, isFetching, fetchNextPage, fetchPreviousPage, hasNextPage, hasPreviousPage } =
     useMedia({
       albumID,
       enabled: isFetched,
-      initialPage: pagination?.current_page,
+      initialPosition: pagination?.current_page,
     });
   const [cursor, setCursor] = React.useState(initialMediumID);
   const cursorIdx = media?.findIndex(m => m.id === cursor);
@@ -42,7 +45,7 @@ export const MediaGalleryScreen = ({ albumID, initialMediumID, onBack }: Props) 
     }
 
     if (hasPreviousPage) {
-      fetchNextPage();
+      fetchPreviousPage();
       return;
     }
   };
@@ -54,6 +57,7 @@ export const MediaGalleryScreen = ({ albumID, initialMediumID, onBack }: Props) 
 
     return media.map(m => ({
       type: m.type,
+      id: m.id,
       src: m.original_url,
     }));
   }, [media]);
@@ -62,12 +66,33 @@ export const MediaGalleryScreen = ({ albumID, initialMediumID, onBack }: Props) 
     setShowTools(prev => !prev);
   };
 
+  const { previousValue: prevci } = usePreviousValue(cursorIdx);
+  React.useEffect(() => {
+    if (cursorIdx === undefined || prevci === undefined || cursorIdx === prevci) {
+      return;
+    }
+
+    if (cursorIdx > prevci) {
+      window.setTimeout(() => {
+        sliderRef.current?.slickGoTo(cursorIdx - 1, false);
+      }, 100);
+    }
+  }, [cursorIdx, prevci]);
+
   return (
     <div className={Styles.screen} onClick={handleClickScreen}>
       {typeof cursorIdx !== 'undefined' && (
         <MediaSlider
+          sliderRef={sliderRef}
           slides={slides}
           initialSlide={cursorIdx}
+          showTools={showTools}
+          afterChange={idx => {
+            const s = slides[idx];
+            if (s) {
+              setCursor(s.id);
+            }
+          }}
           onEdge={dir => {
             if (dir === 'right') {
               onPrev();
@@ -75,7 +100,6 @@ export const MediaGalleryScreen = ({ albumID, initialMediumID, onBack }: Props) 
             if (dir === 'left') {
               onNext();
             }
-            console.log('gonna dir', dir);
           }}
         />
       )}

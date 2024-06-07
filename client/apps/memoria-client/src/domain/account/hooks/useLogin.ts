@@ -5,6 +5,7 @@ import { useMutation } from '@tanstack/react-query';
 import * as config from '@/config';
 import { axios, AxiosError } from '@/modules/lib/axios';
 
+import { useToast } from '@/domain/common/hooks/useToast';
 import { saveJwt } from '@/domain/account/services';
 
 type Request = {
@@ -24,24 +25,19 @@ const request = (p: Request) =>
 
 export const useLogin = () => {
   const router = useRouter();
+  const toast = useToast();
 
   const { mutate, error } = useMutation({
     mutationFn: request,
     onSuccess: ({ data }) => {
       saveJwt(data.token);
       router.push('/timeline');
+      toast.loginSuccess();
     },
   });
 
-  const login = React.useCallback(
-    (params: Request) => {
-      mutate(params);
-    },
-    [mutate],
-  );
-
   return {
-    login,
+    login: mutate,
     errorResponseBody: (error as AxiosError)?.response?.data,
   };
 };
