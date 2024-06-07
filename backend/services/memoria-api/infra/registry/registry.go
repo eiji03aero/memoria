@@ -1,6 +1,8 @@
 package registry
 
 import (
+	"os"
+
 	"memoria-api/domain/interfaces"
 	"memoria-api/domain/interfaces/repository"
 	"memoria-api/domain/interfaces/svc"
@@ -8,6 +10,7 @@ import (
 	"memoria-api/infra/bgjobivkr"
 	"memoria-api/infra/caws"
 	"memoria-api/infra/dao"
+	"memoria-api/infra/logger"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"gorm.io/gorm"
@@ -39,6 +42,11 @@ func (r *Registry) CloseDB() {
 	}
 
 	d.Close()
+}
+
+// -------------------- logger --------------------
+func (r *Registry) NewLogger() interfaces.Logger {
+	return logger.NewLogger(logger.DEBUG, os.Stdout)
 }
 
 // -------------------- bgjob --------------------

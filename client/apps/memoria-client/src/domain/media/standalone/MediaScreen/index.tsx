@@ -29,7 +29,7 @@ export const MediaScreen = ({ title, albumID }: Props) => {
   const router = useRouter();
   const { upload, statusLabel } = useUploadMedia();
   const [showUploadingDrawer, setShowUploadingDrawer] = React.useState(false);
-  const { media, refetch } = useMedia({ albumID });
+  const { media, refetch, hasNextPage, fetchNextPage } = useMedia({ albumID });
   const { deleteMedia, statusLabel: deleteStatusLabel } = useDeleteMedia();
   const [showDeletingDrawer, setShowDeletingDrawer] = React.useState(false);
   const { addMediaToAlbums } = useAddMediaToAlbums();
@@ -196,6 +196,12 @@ export const MediaScreen = ({ title, albumID }: Props) => {
           );
         })}
       </MediaGrid>
+
+      {hasNextPage && (
+        <Button variant="primary" onPress={() => fetchNextPage()}>
+          {t('w.load-more')}
+        </Button>
+      )}
 
       <BottomDrawer
         show={showUploadConfirmDrawer}

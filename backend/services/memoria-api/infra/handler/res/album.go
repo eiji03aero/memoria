@@ -7,8 +7,9 @@ type Album struct {
 	Name string `json:"name"`
 }
 
-func (a *Album) FromModel(album *model.Album) *Album {
-	a.ID = album.ID
-	a.Name = album.Name
-	return a
+func AlbumFromModel(m *model.Album) (r *Album) {
+	r = &Album{}
+	r.ID = m.ID
+	r.Name = m.Name
+	return
 }

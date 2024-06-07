@@ -11,6 +11,8 @@ type Registry interface {
 	RollbackTx()
 	CommitTx()
 	CloseDB()
+	// tools
+	NewLogger() Logger
 	// bgjob
 	NewBGJobInvoker() BGJobInvoker
 	// aws

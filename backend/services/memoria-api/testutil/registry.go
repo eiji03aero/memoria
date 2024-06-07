@@ -17,7 +17,7 @@ import (
 
 func SetupTestEnvironment(ctrl *gomock.Controller) (reg interfaces.Registry, api *TestEnvAPI, err error) {
 	// -------------------- build real registry --------------------
-	realReg, err := registry.NewBuilder().Build()
+	realReg, err := registry.NewBuilder().Build(registry.BuilderBuildDTO{InitDB: util.BoolToPointer(true)})
 	if err != nil {
 		return
 	}
@@ -32,6 +32,8 @@ func SetupTestEnvironment(ctrl *gomock.Controller) (reg interfaces.Registry, api
 	mockReg.EXPECT().RollbackTx().DoAndReturn(realReg.RollbackTx).AnyTimes()
 	mockReg.EXPECT().CommitTx().DoAndReturn(realReg.CommitTx).AnyTimes()
 	mockReg.EXPECT().CloseDB().DoAndReturn(realReg.CloseDB).AnyTimes()
+	// tools
+	mockReg.EXPECT().NewLogger().DoAndReturn(realReg.NewLogger).AnyTimes()
 	// repository
 	mockReg.EXPECT().NewUserRepository().DoAndReturn(realReg.NewUserRepository).AnyTimes()
 	mockReg.EXPECT().NewUserSpaceRepository().DoAndReturn(realReg.NewUserSpaceRepository).AnyTimes()

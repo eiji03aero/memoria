@@ -6,6 +6,8 @@ import (
 	"memoria-api/domain/interfaces"
 	"memoria-api/infra/caws"
 	"memoria-api/infra/db"
+
+	"gorm.io/gorm"
 )
 
 type Builder struct {
@@ -18,11 +20,19 @@ func NewBuilder() *Builder {
 	}
 }
 
-func (b *Builder) Build() (reg interfaces.Registry, err error) {
-	db, err := db.New()
-	if err != nil {
+type BuilderBuildDTO struct {
+	InitDB *bool
+}
+
+func (b *Builder) Build(dto BuilderBuildDTO) (reg interfaces.Registry, err error) {
+	database, err := func() (database *gorm.DB, err error) {
+		if *dto.InitDB == false {
+			return
+		}
+
+		database, err = db.New()
 		return
-	}
+	}()
 
 	awsCfg, err := caws.LoadConfig(context.TODO())
 	if err != nil {
@@ -30,7 +40,7 @@ func (b *Builder) Build() (reg interfaces.Registry, err error) {
 	}
 
 	reg = &Registry{
-		DB:              db,
+		DB:              database,
 		awsCfg:          awsCfg,
 		bgjobInvokeChan: b.bgjobInvokeChan,
 	}

@@ -1,7 +1,6 @@
 package bgjob
 
 import (
-	"log"
 	"strconv"
 	"sync"
 
@@ -32,8 +31,13 @@ func New(regb *registry.Builder) interfaces.BGJob {
 }
 
 func (b *BGJob) Start() (err error) {
+	reg, err := b.regb.Build(registry.BuilderBuildDTO{})
+	if err != nil {
+		return
+	}
+
 	for i := 0; i < b.workerQty; i++ {
-		log.Println("BGJob starting worker " + strconv.Itoa(i))
+		reg.NewLogger().Info("BGJob starting worker " + strconv.Itoa(i))
 		go b.startWorker()
 	}
 
@@ -42,14 +46,19 @@ func (b *BGJob) Start() (err error) {
 }
 
 func (b *BGJob) startWorker() {
+	reg, err := b.regb.Build(registry.BuilderBuildDTO{})
+	if err != nil {
+		return
+	}
+
 	b.wg.Add(1)
 	defer b.wg.Done()
 
 	for payload := range b.regb.GetBGJobInvokeChan() {
-		log.Println("BGJob received payload", payload.Type, payload.Value)
+		reg.NewLogger().Info("BGJob received payload", payload.Type, payload.Value)
 
 		var e error
-		reg, e := b.regb.Build()
+		reg, e := b.regb.Build(registry.BuilderBuildDTO{})
 		if e != nil {
 			b.sendResult("registry-builder-build", e)
 			continue

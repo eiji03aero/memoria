@@ -3,7 +3,6 @@ package route
 import (
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,28 +13,27 @@ import (
 	"memoria-api/domain/interfaces"
 	"memoria-api/infra/handler/res"
 	"memoria-api/infra/registry"
+	"memoria-api/util"
 )
 
 func wrap(regb *registry.Builder, h func(c *gin.Context, reg interfaces.Registry) (status int, data any, err error)) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		reg, err := regb.Build()
+		reg, err := regb.Build(registry.BuilderBuildDTO{InitDB: util.BoolToPointer(true)})
 		if err != nil {
 			panic(err)
 		}
 
-		log.Println(fmt.Sprintf(
-			"API Starting: %s %s",
-			c.Request.Method, c.Request.URL.Path,
-		))
+		lgr := reg.NewLogger()
+		lgr.Info(fmt.Sprintf("API Starting: %s %s", c.Request.Method, c.Request.URL.Path))
 		defer func() {
-			log.Println("API finished")
+			lgr.Info("API finished")
 			reg.CloseDB()
 		}()
 
 		// -------------------- handler --------------------
 		status, data, err := h(c, reg)
 		if err != nil {
-			log.Println("wrap handler result err: ", err.Error())
+			lgr.Error("wrap handler result err: ", err.Error())
 
 			if errors.As(err, &cerrors.Validation{}) {
 				c.JSON(http.StatusBadRequest, res.NewValidationRes(err.(cerrors.Validation)))
@@ -65,7 +63,7 @@ func wrap(regb *registry.Builder, h func(c *gin.Context, reg interfaces.Registry
 
 func Authenticate(regb *registry.Builder) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		reg, err := regb.Build()
+		reg, err := regb.Build(registry.BuilderBuildDTO{InitDB: util.BoolToPointer(true)})
 		defer reg.CloseDB()
 
 		authUc := usecase.NewAuth(reg)

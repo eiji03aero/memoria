@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"memoria-api/infra/bgjob"
 	"memoria-api/infra/registry"
 	"memoria-api/infra/route"
@@ -15,6 +13,10 @@ func main() {
 	defer vips.Shutdown()
 
 	regb := registry.NewBuilder()
+	reg, err := regb.Build(registry.BuilderBuildDTO{})
+	if err != nil {
+		panic(err)
+	}
 
 	// -------------------- bgjob --------------------
 	bgj := bgjob.New(regb)
@@ -24,9 +26,9 @@ func main() {
 	r := route.InitializeRouter(regb)
 
 	// -------------------- server --------------------
-	log.Println("Starting memoria-api server")
-	err := r.Run("0.0.0.0:4200")
+	reg.NewLogger().Info("Starting memoria-api server")
+	err = r.Run("0.0.0.0:4200")
 	if err != nil {
-		panic(err.Error())
+		panic(err)
 	}
 }

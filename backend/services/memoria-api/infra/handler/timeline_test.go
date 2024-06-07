@@ -185,8 +185,8 @@ func TestTimelineFind_S_Pagination(t *testing.T) {
 			},
 			query:         "cursor=tp1&cafter=3&cexclude=true",
 			exp:           []string{},
-			expNextCursor: "",
-			expPrevCursor: "",
+			expNextCursor: "tp1",
+			expPrevCursor: "tp1",
 		},
 		{
 			TestCase: testutil.TestCase{
@@ -195,8 +195,8 @@ func TestTimelineFind_S_Pagination(t *testing.T) {
 			},
 			query:         "cursor=tp5&cbefore=3&cexclude=true",
 			exp:           []string{},
-			expNextCursor: "",
-			expPrevCursor: "",
+			expNextCursor: "tp5",
+			expPrevCursor: "tp5",
 		},
 	}
 

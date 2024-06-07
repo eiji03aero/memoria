@@ -29,7 +29,12 @@ type Params = {
   perPage?: number;
 };
 
-export const useMedia = ({ albumID, enabled = true, initialPosition = 1, perPage = 5 }: Params) => {
+export const useMedia = ({
+  albumID,
+  enabled = true,
+  initialPosition = 1,
+  perPage = 100,
+}: Params) => {
   const query = useInfiniteQuery({
     queryKey: ['media', { albumID }],
     queryFn: ({ pageParam }) => request({ albumID, page: pageParam, perPage }),

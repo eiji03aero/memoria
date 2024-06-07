@@ -239,7 +239,7 @@ type MediumDeleteDTO struct {
 
 func (u *medium) Delete(dto MediumDeleteDTO) (err error) {
 	err = u.albumMediumRelationRepo.Delete(repository.AlbumMediumRelationDeleteDTO{
-		AlbumID: dto.MediumID,
+		MediumID: dto.MediumID,
 	})
 	if err != nil {
 		return

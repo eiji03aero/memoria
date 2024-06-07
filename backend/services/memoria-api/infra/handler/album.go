@@ -26,11 +26,11 @@ func (h *Album) Find(c *gin.Context, reg interfaces.Registry) (status int, data 
 	cctx := ccontext.NewContext(c)
 
 	albums, err := reg.NewAlbumRepository().Find(&repository.FindOption{
-		Filters: []*repository.FindOptionFilter{
-			{Query: "usar.user_space_id = ?", Value: cctx.GetUserSpaceID()},
-		},
 		Joins: []*repository.FindOptionJoin{
 			{Query: "join user_space_album_relations usar on usar.album_id = albums.id"},
+		},
+		Filters: []*repository.FindOptionFilter{
+			{Query: "usar.user_space_id = ?", Value: cctx.GetUserSpaceID()},
 		},
 		Order: "id",
 	})
@@ -42,8 +42,7 @@ func (h *Album) Find(c *gin.Context, reg interfaces.Registry) (status int, data 
 	status = http.StatusOK
 	albumRess := make([]*res.Album, 0, len(albums))
 	for _, album := range albums {
-		albumRes := &res.Album{}
-		albumRess = append(albumRess, albumRes.FromModel(album))
+		albumRess = append(albumRess, res.AlbumFromModel(album))
 	}
 	data = AlbumFindRes{
 		Albums: albumRess,
@@ -52,7 +51,7 @@ func (h *Album) Find(c *gin.Context, reg interfaces.Registry) (status int, data 
 }
 
 type AlbumFindOneRes struct {
-	Album res.Album `json:"album"`
+	Album *res.Album `json:"album"`
 }
 
 func (h *Album) FindOne(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
@@ -61,12 +60,12 @@ func (h *Album) FindOne(c *gin.Context, reg interfaces.Registry) (status int, da
 	albumID := c.Param("id")
 
 	album, err := reg.NewAlbumRepository().FindOne(&repository.FindOption{
-		Joins: []*repository.FindOptionJoin{
-			{Query: "join user_space_album_relations usar on usar.album_id = albums.id"},
-		},
 		Filters: []*repository.FindOptionFilter{
 			{Query: "usar.user_space_id = ?", Value: cctx.GetUserSpaceID()},
 			{Query: "id = ?", Value: albumID},
+		},
+		Joins: []*repository.FindOptionJoin{
+			{Query: "join user_space_album_relations usar on usar.album_id = albums.id"},
 		},
 	})
 	if err != nil {
@@ -75,9 +74,8 @@ func (h *Album) FindOne(c *gin.Context, reg interfaces.Registry) (status int, da
 	}
 
 	status = http.StatusOK
-	albumRes := &res.Album{}
 	data = AlbumFindOneRes{
-		Album: *albumRes.FromModel(album),
+		Album: res.AlbumFromModel(album),
 	}
 	return
 }
@@ -87,7 +85,7 @@ type AlbumCreateReq struct {
 }
 
 type AlbumCreateRes struct {
-	Album res.Album `json:"album"`
+	Album *res.Album `json:"album"`
 }
 
 func (h *Album) Create(c *gin.Context, reg interfaces.Registry) (status int, data any, err error) {
@@ -111,9 +109,8 @@ func (h *Album) Create(c *gin.Context, reg interfaces.Registry) (status int, dat
 	}
 
 	status = http.StatusOK
-	albumRes := res.Album{}
 	data = AlbumCreateRes{
-		Album: *albumRes.FromModel(createRet.Album),
+		Album: res.AlbumFromModel(createRet.Album),
 	}
 	return
 }

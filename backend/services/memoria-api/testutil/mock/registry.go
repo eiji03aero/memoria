@@ -133,6 +133,20 @@ func (mr *MockRegistryMockRecorder) NewBGJobInvoker() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewBGJobInvoker", reflect.TypeOf((*MockRegistry)(nil).NewBGJobInvoker))
 }
 
+// NewLogger mocks base method.
+func (m *MockRegistry) NewLogger() interfaces.Logger {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewLogger")
+	ret0, _ := ret[0].(interfaces.Logger)
+	return ret0
+}
+
+// NewLogger indicates an expected call of NewLogger.
+func (mr *MockRegistryMockRecorder) NewLogger() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewLogger", reflect.TypeOf((*MockRegistry)(nil).NewLogger))
+}
+
 // NewMediumRepository mocks base method.
 func (m *MockRegistry) NewMediumRepository() repository.Medium {
 	m.ctrl.T.Helper()

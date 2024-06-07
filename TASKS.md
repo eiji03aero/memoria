@@ -4,51 +4,25 @@
 ## Fix
 
 ## Todo
-- [ ] make sure media gallery works okay
-    - starting from middle to load previous page
-    - starting from middle to load next page
-- [ ] try wegic for ui design
-- [ ] improve memoria api docker image
-    - https://github.com/davidbyttow/govips/issues/394
-    - should be at least built file with dynamically linked
-- [ ] dao impl refactoring
-    - can we implement modelname method to pass around in basedao?
-- [ ] resource owner validation for data manipulative endpoints
+- [ ] logger for api
 - [ ] perf improve
     - album deletion
     - add media to album
     - remove media from album
-- [ ] make media loading paginated
-    - tap link on bottom to load more
-    - update api
 - [ ] consider plan control
     - premium plan for user space
     - logic should reside in user space service
     - documentate the difference
         - limit of media to upload (200?)
         - vide duration (30s -> 5min)
-- [ ] improve error handling of upload media
-    - when uploading fails
-    - when user sends browser to background
-- [ ] implement upload medium limit
-    - consider the limit for basic and premium
-    - update the plan document too
-- [ ] make sure timestamp columns are recorded
-- [ ] take notes of why i thought i needed context boundary
-    - was thinking of the case where:
-        - Logic for uploading media could differ depending on context
-            - in usespace based context, we need to validate the quantity for the day (how many they can upload per day)
-            - in other context, above logic might not be needed
+    - [ ] implement upload medium limit
+        - consider the limit for basic and premium
+        - update the plan document too
 - [ ] implement transaction / rollback
     - for all the end points that need it
-- [ ] optimize memoria client docker image
-    - multi stage build to pick only required files
-    - standalone build
-        - probably npm workspace is causing all the redundant files to be generated
 - [ ] protect api endpoint from malicious access
     - too many requests
     - request from outside of app
-- [ ] implement expire for jwt
 - [ ] introduce datadog for monitoring
 - [ ] implement timeline post detail page
 - [ ] try to bounce ideas off of chat gpt
@@ -56,8 +30,30 @@
 - [ ] prepare documents
     - terms of use
     - privacy policy
+- [ ] try wegic for ui design
+
+## Pending
+- [ ] implement expire for jwt
+- [ ] optimize memoria client docker image
+    - multi stage build to pick only required files
+    - standalone build
+        - probably npm workspace is causing all the redundant files to be generated
+- [ ] improve memoria api docker image
+    - https://github.com/davidbyttow/govips/issues/394
+    - should be at least built file with dynamically linked
 
 ## Done
+- [x] make media loading paginated
+    - tap link on bottom to load more
+    - update api
+- [x] resource owner validation for any endpoints
+- [x] make sure timestamp columns are recorded
+- [x] dao impl refactoring
+    - can we implement modelname method to pass around in basedao?
+    - nope, golang does not allow method override, thus we cannot do this
+- [x] make sure media gallery works okay
+    - starting from middle to load previous page
+    - starting from middle to load next page
 - [x] improve bgjob performance
     - make it multiple go routines
     - make it buffered

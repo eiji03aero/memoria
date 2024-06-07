@@ -11,7 +11,6 @@ import (
 	"memoria-api/infra/handler/res"
 	"memoria-api/infra/tbl"
 	"memoria-api/testutil"
-	"memoria-api/util"
 
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
@@ -323,7 +322,9 @@ func TestMediumDelete_S(t *testing.T) {
 			},
 			id: "m1",
 			expMedia: func(e testutil.UserEnv) []*tbl.Medium {
-				return []*tbl.Medium{}
+				return []*tbl.Medium{
+					{ID: "m2"},
+				}
 			},
 			expAmrs: func(e testutil.UserEnv) []*tbl.AlbumMediumRelation {
 				return []*tbl.AlbumMediumRelation{}
@@ -337,18 +338,14 @@ func TestMediumDelete_S(t *testing.T) {
 		// -------------------- preparation --------------------
 		api.CleanupDB()
 		env := api.InstallBaseUserEnv()
+		test.InstallSeeds(api.DB(), env)
 
 		c := newGinContext(
 			http.MethodPost,
 			"/",
 		)
-		c.Params = gin.Params{{Key: "id", Value: "test.id"}}
+		c.Params = gin.Params{{Key: "id", Value: test.id}}
 		env.SetupAuthorization(c)
-
-		api.MockS3Client.EXPECT().
-			PutObject(gomock.Any()).
-			Return(nil).
-			AnyTimes()
 
 		// -------------------- execution --------------------
 		mediumH := NewMedium()
@@ -424,7 +421,7 @@ func TestMediumRequestUploadURLs_S(t *testing.T) {
 			"/",
 			map[string]any{
 				"file_names": test.fileNames,
-				"album_id":   util.StrToNilIfEmpty(test.albumID),
+				"album_ids":  []string{test.albumID},
 			},
 		)
 		env.SetupAuthorization(c)
@@ -502,7 +499,7 @@ func TestMediumConfirmUploads_S_Invoker(t *testing.T) {
 			},
 			expUsas: func(e testutil.UserEnv) []model.UserSpaceActivity {
 				return []model.UserSpaceActivity{
-					{UserSpaceID: e.UserSpace.ID, Type: value.UserSpaceActivityType_UserUploadedMedia, Data: `{"UserID": "` + e.User.ID + `","MediumIDs":["m1","m2","m3"]}`},
+					{UserSpaceID: e.UserSpace.ID, Type: value.UserSpaceActivityType_UserUploadedMedia, Data: `{"user_id": "` + e.User.ID + `", "medium_ids": ["m1", "m2", "m3"]}`},
 				}
 			},
 		},

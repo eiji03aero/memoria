@@ -229,7 +229,7 @@ func TestAlbumFindOne_S(t *testing.T) {
 			},
 			expected: func(e testutil.UserEnv) AlbumFindOneRes {
 				return AlbumFindOneRes{
-					Album: res.Album{
+					Album: &res.Album{
 						ID: "1", Name: "a1",
 					},
 				}
