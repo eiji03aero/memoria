@@ -10,6 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@datadog/browser-logs": "^5.20.0",
     "@tanstack/react-form": "^0.19.4",
     "@tanstack/react-query": "^5.32.0",
     "@tanstack/zod-form-adapter": "^0.19.4",

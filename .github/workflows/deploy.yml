@@ -129,6 +129,8 @@ jobs:
           task-definition: ${{ env.CLIENT_ECS_TASK_DEFINITION }}
           container-name: ${{ env.CLIENT_CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image-client }}
+          environment-variables: |
+            NEXT_PUBLIC_DATADOG_CLIENT_TOKEN=${{ secrets.DATADOG_CLIENT_TOKEN }}
 
       - name: Database migration
         run: |

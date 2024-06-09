@@ -26,7 +26,7 @@ type BuilderBuildDTO struct {
 
 func (b *Builder) Build(dto BuilderBuildDTO) (reg interfaces.Registry, err error) {
 	database, err := func() (database *gorm.DB, err error) {
-		if *dto.InitDB == false {
+		if dto.InitDB != nil && *dto.InitDB == false {
 			return
 		}
 
