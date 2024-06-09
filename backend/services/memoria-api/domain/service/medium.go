@@ -9,17 +9,14 @@ import (
 type Medium struct {
 	s3Client   interfaces.S3Client
 	mediumRepo repository.Medium
+	amrRepo    repository.AlbumMediumRelation
 }
 
-type NewMediumDTO struct {
-	S3Client   interfaces.S3Client
-	MediumRepo repository.Medium
-}
-
-func NewMedium(dto NewMediumDTO) svc.Medium {
+func NewMedium(reg interfaces.Registry) svc.Medium {
 	return &Medium{
-		s3Client:   dto.S3Client,
-		mediumRepo: dto.MediumRepo,
+		s3Client:   reg.NewS3Client(),
+		mediumRepo: reg.NewMediumRepository(),
+		amrRepo:    reg.NewAlbumMediumRelationRepository(),
 	}
 }
 
@@ -28,6 +25,13 @@ func (s *Medium) Delete(dto svc.MediumDeleteDTO) (err error) {
 		Filters: []*repository.FindOptionFilter{
 			{Query: "id = ?", Value: dto.MediumID},
 		},
+	})
+	if err != nil {
+		return
+	}
+
+	err = s.amrRepo.Delete(repository.AlbumMediumRelationDeleteDTO{
+		MediumID: dto.MediumID,
 	})
 	if err != nil {
 		return

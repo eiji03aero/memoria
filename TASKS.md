@@ -1,14 +1,15 @@
 # Tasks
 ## WIP
 
-## Fix
-
 ## Todo
-- [ ] logger for api
-- [ ] perf improve
-    - album deletion
-    - add media to album
-    - remove media from album
+- [ ] protect api endpoint from malicious access
+    - too many requests
+    - request from outside of app
+- [ ] introduce datadog for monitoring
+- [ ] implement transaction / rollback
+- [ ] try to bounce ideas off of chat gpt
+    - what kind of feature would make it better app?
+- [ ] try wegic for ui design
 - [ ] consider plan control
     - premium plan for user space
     - logic should reside in user space service
@@ -18,19 +19,14 @@
     - [ ] implement upload medium limit
         - consider the limit for basic and premium
         - update the plan document too
-- [ ] implement transaction / rollback
     - for all the end points that need it
-- [ ] protect api endpoint from malicious access
-    - too many requests
-    - request from outside of app
-- [ ] introduce datadog for monitoring
 - [ ] implement timeline post detail page
-- [ ] try to bounce ideas off of chat gpt
-    - what kind of feature would make it better app?
 - [ ] prepare documents
     - terms of use
     - privacy policy
-- [ ] try wegic for ui design
+
+- [ ] contact form
+    - on app to collect problems
 
 ## Pending
 - [ ] implement expire for jwt
@@ -43,6 +39,11 @@
     - should be at least built file with dynamically linked
 
 ## Done
+- [x] perf improve
+    - [x] album deletion
+    - [x] add media to album
+    - [x] remove media from album
+- [x] logger for api
 - [x] make media loading paginated
     - tap link on bottom to load more
     - update api

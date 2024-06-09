@@ -15,7 +15,7 @@ test:
 test-run:
 	ENV=test GIN_MODE=release DB_LOG_LEVEL=info \
 			reflex -r '(\.go|go\.mod)' -s -- \
-			go test -test.run MediumConfirmUploads -v ./infra/handler/
+			go test -test.run Delete -v ./infra/handler/
 
 .PHONY: mockgen
 mockgen:

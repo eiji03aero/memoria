@@ -146,7 +146,7 @@ func (r *Registry) NewUserUserSpaceRelationService() svc.UserUserSpaceRelation {
 }
 
 func (r *Registry) NewMediumService() svc.Medium {
-	return service.NewMedium(service.NewMediumDTO{S3Client: r.NewS3Client(), MediumRepo: r.NewMediumRepository()})
+	return service.NewMedium(r)
 }
 
 func (r *Registry) NewAlbumService() svc.Album {

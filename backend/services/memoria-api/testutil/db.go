@@ -1,6 +1,9 @@
 package testutil
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+)
 
 func CleanupDB(db *gorm.DB) {
 	forceDelete(db, "users")
@@ -21,7 +24,12 @@ func CleanupDB(db *gorm.DB) {
 }
 
 func forceDelete(db *gorm.DB, tableName string) {
+	prev := db.Logger
+	db.Logger = prev.LogMode(logger.Silent)
+
 	db.Exec("ALTER TABLE " + tableName + " DISABLE TRIGGER ALL")
 	db.Exec("DELETE FROM " + tableName)
 	db.Exec("ALTER TABLE " + tableName + " ENABLE TRIGGER ALL")
+
+	db.Logger = prev
 }
