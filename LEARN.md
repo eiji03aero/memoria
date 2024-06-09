@@ -20,6 +20,9 @@
 ### aws icons
 - https://aws-icons.com
 
+## secret manager
+the value changes every 7 days
+
 ## Cost
 ### To be extreme stingy
 - ecs

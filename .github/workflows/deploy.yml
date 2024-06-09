@@ -54,15 +54,24 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@62f4f872db3836360b72999f4b87f1ff13310f3a
 
+      - name: Get secrets by name and by ARN
+        id: get-secrets
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
+        with:
+          secret-ids: |
+            DB,rds!db-9cd78e83-7b51-45fb-a57c-17b00207f6cf
+          parse-json-secrets: true
+
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          DD_API_KEY: ${{ secrets.DD_API_KEY }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
           wd=$(pwd)
           cd "${wd}/backend"
-          docker build -t $ECR_REGISTRY/$API_ECR_REPOSITORY:$IMAGE_TAG -f Dockerfile.memoria-api .
+          docker build -t $ECR_REGISTRY/$API_ECR_REPOSITORY:$IMAGE_TAG --build-arg DD_API_KEY=$DD_API_KEY -f Dockerfile.memoria-api .
           docker push $ECR_REGISTRY/$API_ECR_REPOSITORY:$IMAGE_TAG
           echo "image-api=$ECR_REGISTRY/$API_ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
@@ -94,10 +103,11 @@ jobs:
             S3_BUCKET_NAME=memoria-prod
             S3_BUCKET_HOST=https://memoria-prod.s3.ap-northeast-1.amazonaws.com
             DB_USER=postgres
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_PASSWORD=${{ env.DB_PASSWORD }}
             DB_HOST=${{ env.DB_HOST }}
             DB_PORT=5432
             DB_NAME=memoria
+            DD_API_KEY=${{ secrets.DD_API_KEY }}
 
       - name: Render task definition for db-migration
         id: task-def-db-migration
@@ -108,7 +118,7 @@ jobs:
           image: ${{ steps.build-image.outputs.image-db-migration }}
           environment-variables: |
             DB_USER=postgres
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DB_PASSWORD=${{ env.DB_PASSWORD }}
             DB_HOST=${{ env.DB_HOST }}
             DB_NAME=memoria
 

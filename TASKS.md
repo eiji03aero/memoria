@@ -1,11 +1,11 @@
 # Tasks
 ## WIP
+- [ ] introduce datadog for monitoring
 
 ## Todo
 - [ ] protect api endpoint from malicious access
     - too many requests
     - request from outside of app
-- [ ] introduce datadog for monitoring
 - [ ] implement transaction / rollback
 - [ ] try to bounce ideas off of chat gpt
     - what kind of feature would make it better app?
@@ -20,15 +20,20 @@
         - consider the limit for basic and premium
         - update the plan document too
     - for all the end points that need it
-- [ ] implement timeline post detail page
+- [ ] contact form
+    - on app to collect problems
 - [ ] prepare documents
     - terms of use
     - privacy policy
-
-- [ ] contact form
-    - on app to collect problems
+- [ ] start implementing app
+    - [ ] do a selection first
+        - what are the options?
+        - which one should i choose?
+- [ ] add original_created_at column of medium
+    - maybe read info from exif?
 
 ## Pending
+- [ ] implement timeline post detail page
 - [ ] implement expire for jwt
 - [ ] optimize memoria client docker image
     - multi stage build to pick only required files
