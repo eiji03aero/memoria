@@ -18,21 +18,27 @@ import (
 
 type Registry struct {
 	DB              *gorm.DB
+	origDB          *gorm.DB
 	awsCfg          aws.Config
 	bgjobInvokeChan chan interfaces.BGJobInvokePayload
 }
 
 // -------------------- database --------------------
 func (r *Registry) BeginTx() {
-	r.DB.Begin()
+	r.origDB = r.DB
+	r.DB = r.DB.Begin()
 }
 
 func (r *Registry) RollbackTx() {
 	r.DB.Rollback()
+	r.DB = r.origDB
+	r.origDB = nil
 }
 
 func (r *Registry) CommitTx() {
 	r.DB.Commit()
+	r.DB = r.origDB
+	r.origDB = nil
 }
 
 func (r *Registry) CloseDB() {

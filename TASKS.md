@@ -1,12 +1,7 @@
 # Tasks
 ## WIP
-- [ ] introduce datadog for monitoring
 
 ## Todo
-- [ ] protect api endpoint from malicious access
-    - too many requests
-    - request from outside of app
-- [ ] implement transaction / rollback
 - [ ] try to bounce ideas off of chat gpt
     - what kind of feature would make it better app?
 - [ ] try wegic for ui design
@@ -33,6 +28,12 @@
     - maybe read info from exif?
 
 ## Pending
+- [ ] protect api endpoint from malicious access
+    - rate limit. too many requests
+    - request from outside of app
+- [ ] datadog monitoring for api
+    - will need to have a separate agent container, so not gonna do it for now
+    - we can still check logs on cloudwatch
 - [ ] implement timeline post detail page
 - [ ] implement expire for jwt
 - [ ] optimize memoria client docker image
@@ -44,6 +45,8 @@
     - should be at least built file with dynamically linked
 
 ## Done
+- [x] implement transaction / rollback
+- [x] introduce datadog for monitoring
 - [x] perf improve
     - [x] album deletion
     - [x] add media to album

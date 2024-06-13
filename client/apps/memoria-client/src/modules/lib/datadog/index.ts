@@ -3,9 +3,6 @@ import { datadogLogs } from '@datadog/browser-logs';
 import * as config from '@/config';
 
 export const init = () => {
-  console.error('gonna init datadog', {
-    dtoken: config.DatadogClientToken,
-  });
   if (!config.DatadogClientToken) {
     return;
   }

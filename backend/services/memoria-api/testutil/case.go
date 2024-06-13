@@ -15,6 +15,10 @@ type TestCase struct {
 	Seeder Seeder
 }
 
+type TestCaser interface {
+	LogCase(t *testing.T, no int)
+}
+
 type Seeder func(env UserEnv) []any
 
 func (c *TestCase) LogCase(t *testing.T, no int) {
@@ -40,5 +44,17 @@ func (c *TestCase) InstallSeeds(db *gorm.DB, env UserEnv) {
 	seeds := c.Seeder(env)
 	for _, seed := range seeds {
 		db.Create(seed)
+	}
+}
+
+func ExecuteTestCases[T TestCaser](
+	t *testing.T,
+	tests []T,
+	fn func(test T),
+) {
+	for i, test := range tests {
+		test.LogCase(t, i)
+
+		fn(test)
 	}
 }
