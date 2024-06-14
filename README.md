@@ -22,4 +22,7 @@
 - [SPEC.md](docs/SPEC.md)
 - [DESIGN.md](docs/DESIGN.md)
 - [PLAN.md](docs/PLAN.md)
+- [SELECTION.md](docs/SELECTION.md)
+- [SERVICE.md](docs/SERVICE.md)
 - Logo data: https://www.canva.com/design/DAGDb1mB68I/3ysozDgehKPU0oWjGwMzBA/edit
+- Mobile app design: https://app.uizard.io/prototypes/ogO8Amq4PAiKxW7B8Oly

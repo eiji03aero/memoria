@@ -381,6 +381,27 @@ func main() {
 
 ---
 
+# Generative AI tools
+## UIzard
+- the tool's UX was good
+- I was just prompted with conversational UI, and there was a ready to use design
+- But the generated design patterns were limited
+- Plus you need to pay extra to take a look at those slides. most of them were not available for free plan
+
+## Galileo
+- So far it is looking pretty good
+- it takes steps to generate final design
+- The designs are following what I asked in prompt
+- nope it was not good
+    - the design style was just not taking my instructions
+        - kept on asking to make it heartwarming yellow, but the design did not change at all
+    - could not generate detailed instruction
+        - asked to create graphical diagram editor (member and relationship and belonging media), but did not do at all
+    - at some point, somehow I could not input prompt any more. bad ux
+- who pays for this quality?
+
+---
+
 # Makefile
 ## Difficulty with exntending
 - cannot pass arguments like sh file can

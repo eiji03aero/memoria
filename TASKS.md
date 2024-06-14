@@ -2,9 +2,11 @@
 ## WIP
 
 ## Todo
-- [ ] try to bounce ideas off of chat gpt
-    - what kind of feature would make it better app?
-- [ ] try wegic for ui design
+- [ ] start implementing app
+    - [ ] do a selection first
+        - what are the options?
+        - which one should i choose?
+
 - [ ] consider plan control
     - premium plan for user space
     - logic should reside in user space service
@@ -15,19 +17,15 @@
         - consider the limit for basic and premium
         - update the plan document too
     - for all the end points that need it
-- [ ] contact form
-    - on app to collect problems
+
+## Pending
 - [ ] prepare documents
     - terms of use
     - privacy policy
-- [ ] start implementing app
-    - [ ] do a selection first
-        - what are the options?
-        - which one should i choose?
 - [ ] add original_created_at column of medium
     - maybe read info from exif?
-
-## Pending
+- [ ] contact form
+    - on app to collect problems
 - [ ] protect api endpoint from malicious access
     - rate limit. too many requests
     - request from outside of app
@@ -45,6 +43,17 @@
     - should be at least built file with dynamically linked
 
 ## Done
+- [x] try wegic for ui design
+- [x] try galileo for ui design
+- [x] try uizard for ui design
+- [x] Service document
+    - Document core concepts
+    - What pain to solve by which feature
+    - Roadmap
+        - in which order I will be implementing?
+    - what kind of feature would make it better app?
+- [x] try to bounce ideas off of chat gpt
+    - what kind of feature would make it better app?
 - [x] implement transaction / rollback
 - [x] introduce datadog for monitoring
 - [x] perf improve
