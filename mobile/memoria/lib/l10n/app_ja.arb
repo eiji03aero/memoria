@@ -1,0 +1,19 @@
+{
+    "w_email": "Eメール",
+    "w_go_back": "戻る",
+    "w_login": "ログイン",
+    "w_or": "または",
+    "w_password": "パスワード",
+    "w_password_confirm": "パスワード確認",
+    "w_signup": "サインアップ",
+    "w_signup": "サインアップ",
+    "w_timeline": "タイムライン",
+    "w_user_name": "ユーザー名",
+    "w_user_space_name": "ユーザースペース名",
+    "v_password_mismatch": "パスワードが合致しません",
+    "v_required": "{name}は必須項目です",
+    "s_welcome_heading_1": "Memoriaへようこそ！",
+    "s_welcome_heading_2": "思い出を作っていきましょう",
+    "s_welcome_guide_h_1": "Meoriaへサインアッププロセスはまだ完了していません！",
+    "s_welcome_guide_p_1": "メールボックスに招待が送信されていますので、ご確認ください。"
+}

@@ -40,3 +40,23 @@
     - if it fits, let's go with usecase
     - if it didn't, think if it's a fit for domain service
     - else, probably it is a time to introduce another coneptual module
+
+---
+
+# Mobile
+## Stack
+- flutter_hooks
+    - for separating ui and logics for reusability
+- dio
+    - http client
+- hive
+    - local database solution
+
+## Components
+- data/repositories
+- data/models
+- data/services
+- domain/models
+- domain/usecases
+- ui/components
+- ui/screens

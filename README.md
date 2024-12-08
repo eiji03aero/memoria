@@ -1,6 +1,18 @@
 # Memoria
 - An friendly application that tightens family bond.
 
+# Development
+```sh
+# Start up backend
+cd backend
+./docker-compose.sh up
+
+# Start emulator of mobile app
+# Start ios device simulator first through launcher
+cd mobile/memoria
+flutter run --hot
+```
+
 # System
 ## memoria-api
 - An api server which provides functionalities for memoria.

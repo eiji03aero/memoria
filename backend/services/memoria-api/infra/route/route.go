@@ -28,7 +28,9 @@ func InitializeRouter(regb *registry.Builder) *gin.Engine {
 	public := api.Group("/public")
 
 	public.GET("/health", func(c *gin.Context) {
-		c.JSON(http.StatusOK, nil)
+		c.JSON(http.StatusOK, map[string]any{
+			"message": "ok dayo",
+		})
 	})
 
 	{

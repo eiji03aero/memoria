@@ -381,6 +381,26 @@ func main() {
 
 ---
 
+# Flutter
+## Architecture
+- https://qiita.com/mainoue/items/e6c9341b0cd74ebe4870
+- https://qiita.com/takashimelon/items/8da8a63b399a48afed9f
+- https://pentagon.tokyo/app/2937/
+- https://github.com/wasabeef/flutter-architecture-blueprints
+
+## Library stack
+- https://blog.kinto-technologies.com/posts/2023-12-10-flutter-architecture/
+    - has one sample flow of how to compose app
+
+## l10n
+- https://docs.flutter.dev/ui/accessibility-and-internationalization/internationalization
+
+
+## AsyncValue
+- https://codewithandrea.com/articles/loading-error-states-state-notifier-async-value/
+
+---
+
 # Generative AI tools
 ## UIzard
 - the tool's UX was good

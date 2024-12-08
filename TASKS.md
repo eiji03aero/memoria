@@ -2,23 +2,15 @@
 ## WIP
 
 ## Todo
-- [ ] start implementing app
-    - [ ] do a selection first
-        - what are the options?
-        - which one should i choose?
-
-- [ ] consider plan control
-    - premium plan for user space
-    - logic should reside in user space service
-    - documentate the difference
-        - limit of media to upload (200?)
-        - vide duration (30s -> 5min)
-    - [ ] implement upload medium limit
-        - consider the limit for basic and premium
-        - update the plan document too
-    - for all the end points that need it
+- [ ] implement time capsule
+    - [ ] ui design
+    - [ ] api
+    - [ ] mobile
 
 ## Pending
+- [ ] mobile refactor
+     - let usecase handle validation of input
+- [ ] handle password rotation of aws secret manager on rds
 - [ ] prepare documents
     - terms of use
     - privacy policy
@@ -43,6 +35,34 @@
     - should be at least built file with dynamically linked
 
 ## Done
+- [x] impl signup and login
+- [x] refactor existing mobile codebase
+- [x] document the mobile architecture
+    - update drawio
+- [x] demolish aws env
+    - [x] try document the current environment
+    - [x] demolish the env
+        - application load balancer (memoria-alb)
+        - target group
+        - ecs
+        - rds
+        - ecr
+        - vpc
+        - event bridge
+        - ec2
+- [x] start implementing app
+    - [x] do a selection first
+        - what are the options?
+        - which one should i choose?
+    - [x] consider directory architecture
+        - go with the onion-ish layered architecture
+    - [x] research riverpod
+    - [x] reserach go_router
+    - [x] research custom hook
+- [x] try out figma ai
+    - with personal plan
+    - probably it is better than uizard
+    - the feature is not public yet
 - [x] try wegic for ui design
 - [x] try galileo for ui design
 - [x] try uizard for ui design

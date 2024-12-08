@@ -1,0 +1,29 @@
+{
+    "w_email": "Email",
+    "w_go_back": "Go back",
+    "w_login": "Login",
+    "w_or": "or",
+    "w_password": "Password",
+    "w_password_confirm": "Password confirm",
+    "w_signup": "Signup",
+    "w_signup": "Signup",
+    "w_timeline": "Timeline",
+    "w_timeline": "Timeline",
+    "w_user_name": "User name",
+    "w_user_space_name": "User space name",
+    "v_password_mismatch": "Passwords do not match",
+    "v_required": "{name} is required",
+    "@v_required": {
+      "description": "Validation for required",
+      "placeholders": {
+        "name": {
+          "type": "String",
+          "example": "Email"
+        }
+      }
+    },
+    "s_welcome_heading_1": "Welcome to Memoria!",
+    "s_welcome_heading_2": "Let's begin your journey",
+    "s_welcome_guide_h_1": "The signup process for Memoria has not been completed just yet!",
+    "s_welcome_guide_p_1": "We have sent an invitation to your email address, so please check it out!"
+}

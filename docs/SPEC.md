@@ -228,8 +228,6 @@
 - 3: Album page
     - User will be feedbacked with result
 
----
-
 ### Get timeline for user space
 - General
     - User can post
@@ -240,8 +238,6 @@
 - 1: Open timeline page
     - User sees timeline
 
----
-
 ### Create another user space with existing user
 #### Flow
 - 1: Configuration page
@@ -250,6 +246,48 @@
         - Click menu to go 2.
 - 2: Create user space page
     - User can fill out form to create another user space page
+
+### Create time capsule
+#### Flow
+- 1: Time capsule top page
+    - Opens create new
+- 2: Create time capsule page
+    - Input
+        - Name
+        - Open date
+    - Next
+        - Goes back to Time capsule top page
+
+### Create a capsule in time capsule
+#### Flow
+- 1: Time capsule top page
+    - In the list, tap a time capsule to open detail page
+- 2: Time capsule detail page
+    - Create a capsule
+- 3: Create a capsule page
+    - input
+        - text
+        - voice
+            - up to 3 min
+        - photo
+        - video
+    - Next
+        - Goes back to Time capsule detail page
+
+### Open Time capsule
+#### Flow
+- 1: Time capsule detail page
+    - If not opened yet, open capsule button is shown
+    - After opened, capsule list will be shown
+    - Tap list item to open capsule gallery page
+- 2: Capsule gallery page
+    - content will be shown
+    - in layout of
+        - media files
+        - voice message
+        - text
+    - can navigate through capsules
+
 
 ---
 
